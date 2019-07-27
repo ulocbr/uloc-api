@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="app_user" name="Uloc\ApiBundle\Entity\User\User" repository-class="Uloc\ApiBundle\Repository\User\UserRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="username" column="username" type="string" length="180" />
+
+        <field name="email" column="email" type="string" length="180" />
+
+        <field name="password" column="password" type="string" />
+
+        <field name="salt" column="salt" type="string" nullable="true" />
+
+        <field name="roles" column="roles" type="array" />
+
+        <field name="createdAt" type="datetime"/>
+
+        <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
+
+        <field name="confirmationToken" column="confirmation_token" type="string" length="180" unique="true" nullable="true" />
+
+        <field name="passwordRequestedAt" column="password_requested_at" type="datetime" nullable="true" />
+
+        <field name="enabled" column="enabled" type="boolean" />
+
+        <field name="status" type="smallint"/>
+
+        <many-to-many field="groups" target-entity="Uloc\ApiBundle\Entity\User\Group" inversed-by="users">
+            <join-table name="app_users_group">
+                <join-columns>
+                    <join-column name="user_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="group_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="users">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-column name="person_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

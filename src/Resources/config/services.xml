@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="uloc_api.response_factory" class="Uloc\ApiBundle\Api\ResponseFactory" public="true"/>
+
+        <service id="Uloc\ApiBundle\EventListener\ApiExceptionSubscriber" public="true">
+            <argument>%kernel.debug%</argument>
+            <argument type="service" id="uloc_api.response_factory"/>
+            <argument type="service" id="logger"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service class="Uloc\ApiBundle\Security\JwtTokenAuthenticator" id="uloc_api.jwt_token_authenticator" autowire="true"/>
+        <service id="Uloc\ApiBundle\Api\ResponseFactory"/>
+        <!--<service class="Uloc\ApiBundle\Services\JWT\Encoder\LcobucciJWTEncoder" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>-->
+
+        <service id="uloc_api.response_listener" class="Uloc\ApiBundle\EventListener\ResponseListener" public="true">
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse"/>
+        </service>
+
+        <service class="Uloc\ApiBundle\Manager\PersonManager" id="uloc_api.manager.person_manager">
+            <argument type="tagged" tag="uloc.person" />
+        </service>
+        <service id="Uloc\ApiBundle\Manager\PersonManager" alias="uloc_api.manager.person_manager"/>
+
+        <!-- EM -->
+        <service id="uloc_api.object_manager" class="Doctrine\Common\Persistence\ObjectManager" public="false">
+        </service>
+    </services>
+</container>

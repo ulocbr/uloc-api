@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="uloc_api.encoder.lcobucci" class="Uloc\ApiBundle\Services\JWT\Encoder\LcobucciJWTEncoder">
+            <argument type="service" id="uloc_api.jws_provider.lcobucci" />
+        </service>
+        <!--<service alias="uloc_api.encoder.lcobucci" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>-->
+        <!--<service class="Uloc\ApiBundle\Services\JWT\Encoder\LcobucciJWTEncoder" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>-->
+
+        <service id="Uloc\ApiBundle\Services\JWT\JWSProvider\JWSProviderInterface" alias="uloc_api.jws_provider.lcobucci" />
+        <service id="uloc_api.jws_provider.lcobucci" class="Uloc\ApiBundle\Services\JWT\JWSProvider\LcobucciJWSProvider" public="false">
+            <argument type="service" id="uloc_api.key_loader.raw"/>
+            <argument>%uloc_api.encoder.crypto_engine%</argument>
+            <argument>%uloc_api.encoder.signature_algorithm%</argument>
+            <argument>%uloc_api.token_ttl%</argument>
+            <argument>%uloc_api.clock_skew%</argument>
+        </service>
+    </services>
+</container>

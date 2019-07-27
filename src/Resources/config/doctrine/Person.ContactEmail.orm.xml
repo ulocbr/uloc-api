@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person_contact_email" name="Uloc\ApiBundle\Entity\Person\ContactEmail" repository-class="Uloc\ApiBundle\Repository\Person\ContactEmailRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="otherPurpose" type="string" length="100" nullable="true"/>
+
+        <field name="email" type="string"/>
+
+        <field name="valid" type="boolean" nullable="true"/>
+
+        <field name="default" type="boolean" nullable="false"/>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="emails">
+            <join-column name="person_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="purpose" target-entity="Uloc\ApiBundle\Entity\Person\TypeEmailPurpose" inversed-by="emails">
+            <join-column name="type_purpose_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

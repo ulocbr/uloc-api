@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="notification" name="Uloc\ApiBundle\Entity\Notification\Notification" repository-class="Uloc\ApiBundle\Repository\Notification\NotificationRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" type="string"/>
+
+        <field name="description" type="text" nullable="true"/>
+
+        <field name="date" type="datetime"/>
+
+        <field name="extra" type="object" nullable="true"/>
+
+        <field name="showDate" type="datetime"/>
+
+        <field name="expirationDate" type="datetime" nullable="true"/>
+
+        <field name="fixed" type="boolean"/>
+
+        <field name="status" type="smallint"/>
+
+        <one-to-many field="users" target-entity="Uloc\ApiBundle\Entity\Notification\UserNotification" mapped-by="notification"/>
+
+    </entity>
+
+</doctrine-mapping>

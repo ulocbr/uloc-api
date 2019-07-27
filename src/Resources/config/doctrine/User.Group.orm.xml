@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="app_user_group" name="Uloc\ApiBundle\Entity\User\Group" repository-class="Uloc\ApiBundle\Repository\User\GroupRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" type="string" length="50" />
+
+        <field name="roles" type="array"/>
+
+        <many-to-many field="users" target-entity="Uloc\ApiBundle\Entity\User\User" mapped-by="groups"/>
+
+    </entity>
+
+</doctrine-mapping>

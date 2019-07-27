@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="uloc_api.key_loader.abstract"  abstract="true" public="false">
+            <argument/> <!-- private key -->
+            <argument/> <!-- public key -->
+            <argument>%uloc_api.pass_phrase%</argument>
+        </service>
+        <service id="uloc_api.key_loader.raw" class="Uloc\ApiBundle\Services\JWT\KeyLoader\RawKeyLoader" parent="uloc_api.key_loader.abstract"/>
+    </services>
+</container>

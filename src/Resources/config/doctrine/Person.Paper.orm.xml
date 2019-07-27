@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person_paper" name="Uloc\ApiBundle\Entity\Person\Paper" repository-class="Uloc\ApiBundle\Repository\Person\PaperRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="start" type="date"/>
+        <field name="end" type="date" nullable="true"/>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="papers">
+            <join-column name="person_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="superPerson" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="superPapers">
+            <join-column name="super_person_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="typePaper" target-entity="Uloc\ApiBundle\Entity\Person\TypePaper" inversed-by="papers">
+            <join-column name="type_paper_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+</doctrine-mapping>

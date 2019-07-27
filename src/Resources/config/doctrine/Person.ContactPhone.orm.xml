@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person_contact_phone" name="Uloc\ApiBundle\Entity\Person\ContactPhone" repository-class="Uloc\ApiBundle\Repository\Person\ContactPhoneRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="otherPurpose" type="string" length="100" nullable="true"/>
+
+        <field name="areaCode" type="string" length="5"/>
+
+        <field name="phoneNumber" type="string" length="50"/>
+
+        <field name="cellphone" type="boolean" nullable="true"/>
+
+        <field name="default" type="boolean" nullable="true"/>
+
+        <field name="im" type="object" nullable="true"/>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="phoneNumbers">
+            <join-column name="person_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="purpose" target-entity="Uloc\ApiBundle\Entity\Person\TypePhonePurpose" inversed-by="phoneNumbers">
+            <join-column name="type_purpose_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

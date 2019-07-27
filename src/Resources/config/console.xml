@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="uloc.token_get_command" class="Uloc\ApiBundle\Command\UlocTokenGetCommand" public="true" autowire="true">
+            <tag name="console.command" />
+        </service>
+        <service id="uloc.user_create_command" class="Uloc\ApiBundle\Command\UlocUserCreateCommand" public="true" autowire="true">
+            <tag name="console.command" />
+        </service>
+    </services>
+
+</container>

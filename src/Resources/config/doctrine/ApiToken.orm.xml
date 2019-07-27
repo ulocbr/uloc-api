@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Uloc\ApiBundle\Entity\ApiToken" repository-class="Uloc\ApiBundle\Repository\ApiTokenRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="token" type="string" length="100" unique="true" />
+
+        <field name="permission" type="object"/>
+
+        <field name="notes" type="text" nullable="true"/>
+
+        <field name="createdAt" type="datetime"/>
+
+        <field name="expires" type="datetime" nullable="true"/>
+
+    </entity>
+
+</doctrine-mapping>

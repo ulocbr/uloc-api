@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person_address" name="Uloc\ApiBundle\Entity\Person\Address" repository-class="Uloc\ApiBundle\Repository\Person\AddressRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="address" type="string"/>
+
+        <field name="complement" type="string"/>
+
+        <field name="number" type="string" nullable="true"/>
+
+        <field name="district" type="string" nullable="true"/>
+
+        <field name="districtId" type="integer" nullable="true"/>
+
+        <field name="zip" type="string" nullable="true"/>
+
+        <field name="city" type="string" length="100" nullable="true"/>
+
+        <field name="cityId" type="integer" nullable="true"/>
+
+        <field name="state" type="string" length="100" nullable="true"/>
+
+        <field name="stateId" type="integer" nullable="true"/>
+
+        <field name="otherPurpose" type="string" nullable="true"/>
+
+        <field name="default" type="boolean"/>
+
+        <field name="latitude" type="string" nullable="true"/>
+
+        <field name="longitude" type="string" nullable="true"/>
+
+        <many-to-one field="purpose" target-entity="Uloc\ApiBundle\Entity\Person\TypeAddressPurpose" inversed-by="addresses">
+            <join-column name="purpose_id" nullable="true" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="addresses">
+            <join-column name="person_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

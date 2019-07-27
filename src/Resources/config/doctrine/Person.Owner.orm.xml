@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person_owner" name="Uloc\ApiBundle\Entity\Person\Owner" repository-class="Uloc\ApiBundle\Repository\Person\OwnerRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="date" type="datetime"/>
+
+        <field name="descriptionAssignment" type="text" nullable="true"/>
+
+        <field name="enabled" type="boolean"/>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="owners">
+            <join-column name="person_id" nullable="true" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="owner" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="personsManaged">
+            <join-column name="owner_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person" name="Uloc\ApiBundle\Entity\Person\Person" repository-class="Uloc\ApiBundle\Repository\Person\PersonRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" type="string" length="100"/>
+
+        <field name="classification" type="smallint" nullable="true"/>
+
+        <field name="photo" type="string" nullable="true"/>
+
+        <field name="type" type="smallint"/>
+
+        <field name="treatment" type="string" length="10" nullable="true"/>
+
+        <field name="gender" type="smallint" nullable="true"/>
+
+        <field name="birthDate" type="date" nullable="true"/>
+
+        <field name="status" type="smallint"/>
+
+        <field name="ipRegistration" type="string" nullable="true"/>
+
+        <field name="nationality" type="smallint" nullable="true"/>
+
+        <field name="description" type="text" nullable="true"/>
+
+        <one-to-many field="owners" target-entity="Uloc\ApiBundle\Entity\Person\Owner" mapped-by="person"/>
+        <one-to-many field="personsManaged" target-entity="Uloc\ApiBundle\Entity\Person\Owner" mapped-by="owner"/>
+
+        <many-to-one field="registrationOrigin" target-entity="Uloc\ApiBundle\Entity\Person\RegistrationOrigin" inversed-by="persons">
+            <join-column name="registration_origin_id" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+
+        <one-to-many field="papers" target-entity="Uloc\ApiBundle\Entity\Person\Paper" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="superPapers" target-entity="Uloc\ApiBundle\Entity\Person\Paper" mapped-by="superPerson">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="notes" target-entity="Uloc\ApiBundle\Entity\Person\Note" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="extraFields" target-entity="Uloc\ApiBundle\Entity\Person\PersonExtraField" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="emails" target-entity="Uloc\ApiBundle\Entity\Person\ContactEmail" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="phoneNumbers" target-entity="Uloc\ApiBundle\Entity\Person\ContactPhone" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="contactExtra" target-entity="Uloc\ApiBundle\Entity\Person\ContactExtra" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="documents" target-entity="Uloc\ApiBundle\Entity\Person\PersonDocument" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="addresses" target-entity="Uloc\ApiBundle\Entity\Person\Address" mapped-by="person">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <many-to-many field="tags" target-entity="Uloc\ApiBundle\Entity\Person\Tag" inversed-by="persons">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+            <join-table name="person_tagperson">
+                <join-columns>
+                    <join-column name="person_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="tag_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <many-to-many field="tagsCreated" target-entity="Uloc\ApiBundle\Entity\Person\Tag" mapped-by="creator"/>
+
+        <one-to-many field="users" target-entity="Uloc\ApiBundle\Entity\User\User" mapped-by="person"/>
+
+        <one-to-many field="communicationHistory" target-entity="Uloc\ApiBundle\Entity\Person\CommunicationHistory" mapped-by="person"/>
+
+    </entity>
+
+</doctrine-mapping>

@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Uloc\ApiBundle\Entity\User\User">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">email</option>
+            <option name="errorPath">username</option>
+            <option name="message">uloc_user.username.already_used</option>
+            <option name="groups">
+                <value>Registration</value>
+                <value>Profile</value>
+            </option>
+        </constraint>
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">email</option>
+            <option name="errorPath">email</option>
+            <option name="message">uloc_user.email.already_used</option>
+            <option name="groups">
+                <value>Registration</value>
+                <value>Profile</value>
+            </option>
+        </constraint>
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\User\Group">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="errorPath">name</option>
+            <option name="message">uloc_group.name.already_used</option>
+            <option name="groups">
+                <value>Registration</value>
+            </option>
+        </constraint>
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\Person\Person">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.name.not_blank</option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\App\File">
+        <property name="file">
+            <constraint name="NotBlank">
+                <option name="message">uloc_app_file.file.not_blank</option>
+            </constraint>
+            <constraint name="File">
+                <option name="maxSize">8M</option>
+            </constraint>
+        </property>
+    </class>
+
+</constraint-mapping>

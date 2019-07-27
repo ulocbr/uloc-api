@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="permission_module" name="Uloc\ApiBundle\Entity\Permission\ModulePermission" repository-class="Uloc\ApiBundle\Repository\Permission\ModulePermissionRepository">
+
+        <id name="module" type="string" length="50"/>
+        <id name="component" type="string" length="50"/>
+        <id name="action" type="integer"/>
+
+        <field name="name" type="string"/>
+
+        <field name="description" type="text" nullable="true"/>
+
+    </entity>
+
+</doctrine-mapping>

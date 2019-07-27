@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity table="person_note_history" name="Uloc\ApiBundle\Entity\Person\NoteHistory" repository-class="Uloc\ApiBundle\Repository\Person\NoteHistoryRepository">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="date" type="datetime"/>
+
+        <field name="oldData" type="object" nullable="true"/>
+
+        <many-to-one field="note" target-entity="Uloc\ApiBundle\Entity\Person\Note" inversed-by="history">
+            <join-column name="note_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person">
+            <join-column name="person_id" nullable="true" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+</doctrine-mapping>
