@@ -27,7 +27,7 @@ class PersonDocument
     private $agentDispatcher;
 
     /**
-     * Muitos Identifieres tem Um TypeIdentifierRegistrado.
+     * Muitos Identifieres tem Um TypePersonDocument.
      */
     private $type;
 

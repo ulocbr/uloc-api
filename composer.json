@@ -1,5 +1,5 @@
 {
-  "name": "ulocbr/uloc-bundle",
+  "name": "ulocbr/uloc-api",
   "description": "A powerful API with the basics that every web application needs",
   "type": "symfony-bundle",
   "license": "MIT",

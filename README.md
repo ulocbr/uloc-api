@@ -13,7 +13,7 @@ Security & Authentication API with JWT and Guard
 **Install with Composer**
 
 ```
-composer require ulocbr/uloc-bundle
+composer require ulocbr/uloc-api
 ```
 
 ## Thanks!

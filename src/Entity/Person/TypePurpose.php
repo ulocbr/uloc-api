@@ -15,10 +15,6 @@ abstract class TypePurpose
      */
     private $code;
 
-    public function __construct()
-    {
-    }
-
     /**
      * @return string
      */
