@@ -14,7 +14,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ResponseFactory;
-use Uloc\ApiBundle\Entity\Usuario;
+use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Uloc\ApiBundle\Services\JWT\TokenExtractor\AuthorizationHeaderTokenExtractor;
 
@@ -58,7 +58,7 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
         $username = $data['username'];
 
         $user = $this->em
-            ->getRepository(Usuario::class)
+            ->getRepository(User::class)
             ->findOneBy(['username' => $username]);
 
         if(!method_exists($user, 'getRoles')){

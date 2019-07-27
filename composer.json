@@ -18,7 +18,8 @@
     "lcobucci/jwt": "^3.2",
     "namshi/jose": "^7.2",
     "symfony/security-bundle": "^4.3",
-    "doctrine/doctrine-bundle": "^1.11"
+    "doctrine/doctrine-bundle": "^1.11",
+    "symfony/form": "^4.3"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "^4.3",

@@ -21,10 +21,10 @@ class PersonCompilerPass implements CompilerPassInterface
         // find all service IDs with the uloc.person tag
         $taggedServices = $container->findTaggedServiceIds('uloc.person');
 
-        foreach ($taggedServices as $id => $tags) {
+        /*foreach ($taggedServices as $id => $tags) {
             // add the transport service to the ChainTransport service
-            $definition->addMethodCall('addTransport', array(new Reference($id)));
-        }
+            $definition->addMethodCall('setXxx', array(new Reference($id)));
+        }*/
 
     }
 
