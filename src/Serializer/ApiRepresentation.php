@@ -10,9 +10,6 @@
 
 namespace Uloc\ApiBundle\Serializer;
 
-
-use Symfony\Component\Process\Exception\RuntimeException;
-use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Uloc\ApiBundle\Serializer\Encoders\JsonEncoder;
 
 class ApiRepresentation

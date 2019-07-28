@@ -78,20 +78,19 @@ class TokenController extends BaseController
     {
         $user = $this->getUser();
 
-        if (!$user->getPerson()) {
-           $this->throwApiProblemException('Person não encontrada.');
+        $response = [
+            "id" => $user->getId(),
+            "email" => $user->getEmail(),
+            "token" => $user->getPassword(),
+        ];
+
+        if ($user->getPerson()) {
+           $response = array_merge($response, ["person" => [
+               "id" => $user->getPerson()->getId(),
+               "name" => $user->getPerson()->getName()
+           ]]);
         }
 
-        return $this->createApiResponseEncodeArray(
-            [
-                "id" => $user->getId(),
-                "email" => $user->getEmail(),
-                "token" => $user->getPassword(),
-                "person" => [
-                    "id" => $user->getPerson()->getId(),
-                    "name" => $user->getPerson()->getName()
-                ]
-            ]
-        );
+        return $this->createApiResponseEncodeArray($response);
     }
 }

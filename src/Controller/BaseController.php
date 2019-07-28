@@ -135,20 +135,6 @@ abstract class BaseController extends Controller
     */
     protected function serialize($data, $format = 'json', $group = 'public', $metadata = null)
     {
-        /* TODO: Analisar o JMSerialize para uso */
-        /* $context = new SerializationContext();
-        $context->setSerializeNull(true);
-
-        $request = $this->get('request_stack')->getCurrentRequest();
-        $groups = array('Default');
-        if ($request->query->get('deep')) {
-            $groups[] = 'deep';
-        }
-        $context->setGroups($groups);
-
-        return $this->container->get('jms_serializer')
-            ->serialize($data, $format, $context); */
-
         $apiRepresentation = new ApiRepresentation();
         if (null !== $metadata) {
             $apiRepresentation->setMetadata($metadata);
@@ -156,8 +142,6 @@ abstract class BaseController extends Controller
         $serialize = $apiRepresentation->serialize($data, $format, $group);
 
         return $serialize;
-
-        //return \json_encode($data);
     }
 
     /**
@@ -168,7 +152,7 @@ abstract class BaseController extends Controller
      */
     protected function processForm(Request $request, FormInterface $form)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
         if ($data === null) {
             $apiProblem = new ApiProblem(400, ApiProblem::TYPE_INVALID_REQUEST_BODY_FORMAT);
 
@@ -211,24 +195,6 @@ abstract class BaseController extends Controller
         $apiProblem->set('errors', $errors);
 
         throw new ApiProblemException($apiProblem);
-    }
-
-    protected function sendMail($subject, $to, $toName, $from = null, $fromName = null, $template, array $params, $format = 'text/html')
-    {
-
-        //Envia e-mail
-        $mailer = $this->get('mailer');
-        $message = (new \Swift_Message($subject))
-            ->setFrom($from, $fromName)
-            ->setTo($to, $toName)
-            ->setBody(
-                $this->renderView(
-                    $template,
-                    $params
-                ),
-                $format
-            );
-        return $mailer->send($message);
     }
 
     public function getPagination(Request $request, $default, $max)

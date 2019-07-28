@@ -208,4 +208,28 @@ trait Utils
             'pattern' => $pattern
         );
     }
+
+    /*
+     * Recebe erros de um manipulador de formulários e retorna um array de erros
+     * Get errors from a form handler and return an array of errors
+     * @param FormInterface $form
+     * @return array
+     */
+    protected function getErrorsFromForm(FormInterface $form)
+    {
+        $errors = array();
+        foreach ($form->getErrors() as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $childForm) {
+            if ($childForm instanceof FormInterface) {
+                if ($childErrors = $this->getErrorsFromForm($childForm)) {
+                    $errors[$childForm->getName()] = $childErrors;
+                }
+            }
+        }
+
+        return $errors;
+    }
 }
