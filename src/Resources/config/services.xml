@@ -10,7 +10,7 @@
         <service id="Uloc\ApiBundle\EventListener\ApiExceptionSubscriber" public="true">
             <argument>%kernel.debug%</argument>
             <argument type="service" id="uloc_api.response_factory"/>
-            <argument type="service" id="logger"/>
+            <argument type="service" id="uloc_api.logger"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
@@ -22,13 +22,21 @@
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse"/>
         </service>
 
-        <service class="Uloc\ApiBundle\Manager\PersonManager" id="uloc_api.manager.person_manager">
+        <service class="Uloc\ApiBundle\Manager\PersonManager" id="uloc_api.manager.person_manager" public="true">
             <argument type="tagged" tag="uloc.person" />
         </service>
         <service id="Uloc\ApiBundle\Manager\PersonManager" alias="uloc_api.manager.person_manager"/>
 
         <!-- EM -->
         <service id="uloc_api.object_manager" class="Doctrine\Common\Persistence\ObjectManager" public="false">
+        </service>
+
+        <!-- Logger -->
+        <service id="uloc_api.logger" class="Uloc\ApiBundle\Services\Log\SystemLog" public="true">
+            <argument type="service" id="uloc_api.native.logger"/>
+        </service>
+        <service id="Uloc\ApiBundle\Services\Log\SystemLog" alias="uloc_api.logger"/>
+        <service id="uloc_api.native.logger" class="Symfony\Component\HttpKernel\Log\Logger" public="false">
         </service>
     </services>
 </container>

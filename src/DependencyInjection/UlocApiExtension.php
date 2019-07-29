@@ -2,6 +2,7 @@
 
 namespace Uloc\ApiBundle\DependencyInjection;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -9,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 
 class UlocApiExtension extends Extension
@@ -50,6 +52,16 @@ class UlocApiExtension extends Extension
             ->findDefinition('uloc_api.key_loader')
             ->replaceArgument(0, $config['secret_key'])
             ->replaceArgument(1, $config['public_key']);
+
+        $container
+            ->findDefinition('uloc_api.token_get_command')
+            ->setArgument(0, EntityManagerInterface::class)
+            ->setArgument(1, JWTEncoderInterface::class);
+
+        $container
+            ->findDefinition('uloc_api.user_create_command')
+            ->setArgument(0, EntityManagerInterface::class)
+            ->setArgument(1, UserPasswordEncoderInterface::class);
 
         $container->setParameter('uloc_api.encoder.signature_algorithm', $encoderConfig['signature_algorithm']);
         $container->setParameter('uloc_api.encoder.crypto_engine', $encoderConfig['crypto_engine']);

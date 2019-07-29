@@ -12,8 +12,8 @@
         <ini name="intl.error_level" value="0" />
         <ini name="memory_limit" value="-1" />
         <env name="TEST_BASE_URL" value="http://127.0.0.1:8000" />
-        <server name="KERNEL_DIR" value="app/" />
-        <server name="KERNEL_CLASS" value="AppKernel" />
+        <server name="KERNEL_DIR" value="src/" />
+        <server name="KERNEL_CLASS" value="Kernel" />
     </php>
 
     <testsuites>

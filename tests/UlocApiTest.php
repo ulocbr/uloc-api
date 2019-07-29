@@ -3,7 +3,7 @@ namespace Uloc\ApiBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-class UlocApiTest
+class UlocApiTest extends TestCase
 {
 
 }

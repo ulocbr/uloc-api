@@ -10,26 +10,20 @@
 
 namespace Uloc\ApiBundle\Services\Log;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Uloc\ApiBundle\Model\UserInterface;
+use Psr\Log\LoggerInterface;
 
-/**
- * Serviço responsável pelo armazenamento do Logger de todas as ações dos usuários
- */
-class UserLog implements LogInterface
+class SystemLog implements LogInterface
 {
 
-    private $em;
-    /**
-     * UserLog constructor.
-     * @param object $em    EntityManager para persistência do log
-     */
-    public function __construct(EntityManagerInterface $em)
+    private $logger;
+
+    public function __construct($logger)
     {
-        $this->em = $em;
+        $this->logger = $logger;
     }
 
-    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null){
+    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null)
+    {
 
     }
 

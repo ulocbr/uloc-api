@@ -5,12 +5,11 @@ namespace Uloc\ApiBundle\EventListener;
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ApiProblemException;
 use Uloc\ApiBundle\Api\ResponseFactory;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Uloc\ApiBundle\Services\Log\SystemLog;
 
 /*
  * Ouvinte para uma exceção que envolva a API
@@ -24,7 +23,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
     private $logger;
 
-    public function __construct($debug, ResponseFactory $responseFactory, LoggerInterface $logger)
+    public function __construct($debug, ResponseFactory $responseFactory, SystemLog $logger)
     {
         $this->debug = $debug;
         $this->responseFactory = $responseFactory;
