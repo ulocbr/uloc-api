@@ -23,11 +23,12 @@
         </service>
 
         <service class="Uloc\ApiBundle\Manager\PersonManager" id="uloc_api.manager.person_manager" public="true">
+            <argument type="service" id="uloc_api.object_manager"/>
             <argument type="tagged" tag="uloc.person" />
         </service>
         <service id="Uloc\ApiBundle\Manager\PersonManager" alias="uloc_api.manager.person_manager"/>
 
-        <!-- EM -->
+        <!-- OM -->
         <service id="uloc_api.object_manager" class="Doctrine\Common\Persistence\ObjectManager" public="false">
         </service>
 

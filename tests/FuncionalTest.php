@@ -2,6 +2,7 @@
 
 namespace Uloc\ApiBundle\Tests;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Uloc\ApiBundle\Manager\PersonManager;
 use Uloc\ApiBundle\UlocApiBundle;
 use PHPUnit\Framework\TestCase;
@@ -26,11 +27,13 @@ class UlocApiTestingKernel extends Kernel
     public function registerBundles()
     {
         return [
+            new DoctrineBundle(),
             new UlocApiBundle(),
         ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
+        $loader->load(__DIR__ . '/config/doctrine.yaml');
     }
 }

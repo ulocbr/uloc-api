@@ -2,12 +2,14 @@
 
 namespace Uloc\ApiBundle\DependencyInjection;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -66,6 +68,8 @@ class UlocApiExtension extends Extension
         $container->setParameter('uloc_api.encoder.signature_algorithm', $encoderConfig['signature_algorithm']);
         $container->setParameter('uloc_api.encoder.crypto_engine', $encoderConfig['crypto_engine']);
 
+        $container->findDefinition('uloc_api.object_manager')
+            ->setFactory([new Reference('doctrine'), 'getManager']);
         #$container
         #    ->getDefinition('uloc_api.extractor.chain_extractor')
         #    ->replaceArgument(0, $this->createTokenExtractors($container, $config['token_extractors']));

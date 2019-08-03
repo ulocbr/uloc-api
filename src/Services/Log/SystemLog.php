@@ -10,8 +10,6 @@
 
 namespace Uloc\ApiBundle\Services\Log;
 
-use Psr\Log\LoggerInterface;
-
 class SystemLog implements LogInterface
 {
 

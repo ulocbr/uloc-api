@@ -1,0 +1,15 @@
+# hack to use doctrine service in functional tests
+doctrine:
+    dbal:
+        driver: 'pdo_mysql'
+        server_version: '5.7'
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+
+        url: 'mysql://root:@127.0.0.1:3306/uloc_api'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: false
