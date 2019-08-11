@@ -81,5 +81,4 @@ interface PersonManagerInterface
      */
     public function search(string $search);
 
-
 }
