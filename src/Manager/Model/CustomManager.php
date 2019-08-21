@@ -20,7 +20,7 @@ class CustomManager implements CustomManagerInterface
 
     /**
      * CustomManager constructor.
-     * @param object $om ObjectManager para persistência
+     * @param ObjectManager $om para persistência
      */
     public function __construct(ObjectManager $om)
     {

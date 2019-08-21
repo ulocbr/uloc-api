@@ -23,7 +23,7 @@ interface PersonManagerInterface
      * @param array $options
      * @return mixed
      */
-    public function create(string $name, int $type = 1, bool $active = true, array $extras, array $options);
+    public function create(string $name, int $type = 1, bool $active = true, array $extras = null, array $options = null);
 
     /**
      * Find and return an Person entity
@@ -49,15 +49,15 @@ interface PersonManagerInterface
     public function isManaging();
 
     /**
-     * Update a Person managed
-     * This method is best of ->persist and ->flush of ObjectManager becaus here call same events and features when
+     * Update a managed Person managed
+     * This method is best of ->persist and ->flush of ObjectManager because here call same events and features when
      * update an person
      * @return Person
      */
     public function update();
 
     /**
-     * Remove a Person entity
+     * Remove a managed Person entity
      *
      * @return boolean
      */
