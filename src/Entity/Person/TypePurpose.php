@@ -2,11 +2,13 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Entity\FormEntity;
+
 /**
  * TypePurpose
  *
  */
-abstract class TypePurpose
+abstract class TypePurpose extends FormEntity
 {
 
     /**

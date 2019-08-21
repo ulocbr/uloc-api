@@ -43,7 +43,7 @@ class Person extends FormEntity
     /**
      * @var int
      */
-    protected $classification;
+    protected $classification = 0;
 
     /**
      * @var string

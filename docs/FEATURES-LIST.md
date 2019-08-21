@@ -6,6 +6,7 @@ Editar Pessoa
 Excluir Pessoa  
 Listar Pessoa  
 Visualizar uma Pessoa  
+Atualizar classificação de Pessoa    
 Cria um documento de identificação   
 Edita um documento de identificação  
 Lista um documento de identificação  
@@ -13,7 +14,7 @@ Visualiza um documento de identificação
 Criar Tipo de um Documento de Idendificação  
 Editar Tipo de um Documento de Idendificação  
 Excluir Tipo de um Documento de Idendificação  
-Listar Tipos de Documento de Idendificaçãos
+Listar Tipos de Documento de Idendificaçãos  
 Cadastrar Endereço  
 Editar Endereço  
 Excluir Endereço  
@@ -126,3 +127,7 @@ Editar permissão de módulo
 Excluir permissão de módulo  
 Listar permissões de módulos  
 Visualizar permissão de módulo  
+
+- Form entity
+Iniciar Checkout de entidade  
+Verificar cheked out

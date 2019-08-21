@@ -10,6 +10,8 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
+
 /**
  * Classe responsável por armazenar a origem do cadastro de uma Person
  *
@@ -163,5 +165,10 @@ class RegistrationOrigin extends TypePurpose
     public function removePerson(\Uloc\ApiBundle\Entity\Person\Person $person)
     {
         $this->persons->removeElement($person);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        // TODO: Implement loadApiRepresentation() method.
     }
 }

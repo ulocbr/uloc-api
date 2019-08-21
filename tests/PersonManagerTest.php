@@ -10,7 +10,8 @@ class PersonManagerTest extends AbstractFuncionalTest
     {
         $personManager = $this->container->get('uloc_api.manager.person_manager');
 
-        $person = $personManager->create('Tiago');
+        $person = $personManager->disablePersist()->create('Tiago');
         $this->assertInstanceOf(Person::class, $person);
+        $this->assertEquals('Tiago', $person->getName());
     }
 }

@@ -10,7 +10,7 @@
 
 namespace Uloc\ApiBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Helpers\Sluggable;
 
 /**
@@ -31,7 +31,7 @@ abstract class FormEntity extends CommonEntity
     /**
      * @var bool
      */
-    private $isPublished = false;
+    private $active = false;
 
     /**
      * @var null|\DateTime
@@ -64,7 +64,6 @@ abstract class FormEntity extends CommonEntity
     private $modifiedByUser;
 
     /**
-     * @ORM\Column(name="checked_out", type="datetime", nullable=true)
      * @var null|\DateTime
      */
     private $checkedOut;
@@ -97,7 +96,7 @@ abstract class FormEntity extends CommonEntity
         $this->dateAdded = null;
         $this->dateModified = null;
         $this->checkedOut = null;
-        $this->isPublished = false;
+        $this->active = false;
     }
 
     /**
@@ -175,13 +174,13 @@ abstract class FormEntity extends CommonEntity
     /**
      * Set createdBy.
      *
-     * @param Usuario $createdBy
+     * @param User $createdBy
      *
      * @return $this
      */
     public function setCreatedBy($createdBy = null)
     {
-        if ($createdBy != null && !$createdBy instanceof Usuario) {
+        if ($createdBy != null && !$createdBy instanceof User) {
             $this->createdBy = $createdBy;
         } else {
             $this->createdBy = ($createdBy != null) ? $createdBy->getId() : null;
@@ -206,13 +205,13 @@ abstract class FormEntity extends CommonEntity
     /**
      * Set modifiedBy.
      *
-     * @param Usuario $modifiedBy
+     * @param User $modifiedBy
      *
      * @return mixed
      */
     public function setModifiedBy($modifiedBy = null)
     {
-        if ($modifiedBy != null && !$modifiedBy instanceof Usuario) {
+        if ($modifiedBy != null && !$modifiedBy instanceof User) {
             $this->modifiedBy = $modifiedBy;
         } else {
             $this->modifiedBy = ($modifiedBy != null) ? $modifiedBy->getId() : null;
@@ -238,13 +237,13 @@ abstract class FormEntity extends CommonEntity
     /**
      * Set checkedOutBy.
      *
-     * @param Usuario $checkedOutBy
+     * @param User $checkedOutBy
      *
      * @return mixed
      */
     public function setCheckedOutBy($checkedOutBy = null)
     {
-        if ($checkedOutBy != null && !$checkedOutBy instanceof Usuario) {
+        if ($checkedOutBy != null && !$checkedOutBy instanceof User) {
             $this->checkedOutBy = $checkedOutBy;
         } else {
             $this->checkedOutBy = ($checkedOutBy != null) ? $checkedOutBy->getId() : null;
@@ -268,27 +267,27 @@ abstract class FormEntity extends CommonEntity
     }
 
     /**
-     * Set isPublished.
+     * Set active.
      *
-     * @param bool $isPublished
+     * @param bool $active
      *
      * @return $this
      */
-    public function setIsPublished($isPublished)
+    public function setActive($active)
     {
-        $this->isPublished = $isPublished;
+        $this->active = $active;
 
         return $this;
     }
 
     /**
-     * Get isPublished.
+     * Get active.
      *
      * @return bool
      */
-    public function getIsPublished()
+    public function istActive()
     {
-        return $this->isPublished;
+        return $this->active;
     }
 
     /**

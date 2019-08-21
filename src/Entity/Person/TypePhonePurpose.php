@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Entity\Person;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * TypePhonePurpose
@@ -94,5 +95,10 @@ class TypePhonePurpose extends TypePurpose
     public function removePhoneNumber(ContactPhone $phone)
     {
         $this->phoneNumbers->removeElement($phone);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        // TODO: Implement loadApiRepresentation() method.
     }
 }

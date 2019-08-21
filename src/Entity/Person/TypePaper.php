@@ -12,6 +12,7 @@ namespace Uloc\ApiBundle\Entity\Person;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * TypePaper
@@ -99,5 +100,10 @@ class TypePaper extends TypePurpose
     public function removePaper(\Uloc\ApiBundle\Entity\Person\Paper $paper)
     {
         $this->papers->removeElement($paper);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        // TODO: Implement loadApiRepresentation() method.
     }
 }

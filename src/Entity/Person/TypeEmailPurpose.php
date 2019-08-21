@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Entity\Person;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * TypeEmailPurpose
@@ -94,5 +95,10 @@ class TypeEmailPurpose extends TypePurpose
     public function removeEmail(ContactEmail $email)
     {
         $this->emails->removeElement($email);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        // TODO: Implement loadApiRepresentation() method.
     }
 }

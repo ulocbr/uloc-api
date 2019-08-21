@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Entity\Person;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * TypeAddressPurpose
@@ -97,5 +98,10 @@ class TypeAddressPurpose extends TypePurpose
     public function removeEndereco(Address $endereco)
     {
         $this->addresses->removeElement($endereco);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        // TODO: Implement loadApiRepresentation() method.
     }
 }

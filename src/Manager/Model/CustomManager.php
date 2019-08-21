@@ -13,6 +13,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CustomManager implements CustomManagerInterface
 {
     protected $flushEnabled = true;
+    protected $persistEnabled = true;
     protected $transactionalEnabled = true;
 
     /* @var ObjectManager $om */
@@ -25,6 +26,18 @@ class CustomManager implements CustomManagerInterface
     public function __construct(ObjectManager $om)
     {
         $this->om = $om;
+    }
+
+    public function disablePersist()
+    {
+        $this->persistEnabled = false;
+        return $this;
+    }
+
+    public function enablePersist()
+    {
+        $this->persistEnabled = true;
+        return $this;
     }
 
     public function disableFlush()
@@ -45,9 +58,16 @@ class CustomManager implements CustomManagerInterface
         return $this;
     }
 
+    public function persist($obj)
+    {
+        if ($this->persistEnabled) {
+            $this->om->persist($obj);
+        }
+    }
+
     public function flush()
     {
-        if ($this->flushEnabled) {
+        if ($this->flushEnabled && $this->persistEnabled) {
             $this->om->flush();
         }
     }

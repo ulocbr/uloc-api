@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Entity\Person;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * TypePersonDocument
@@ -100,5 +101,10 @@ class TypePersonDocument extends TypePurpose
     public function removeIdentifier(PersonDocument $identifier)
     {
         $this->identifiers->removeElement($identifier);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        // TODO: Implement loadApiRepresentation() method.
     }
 }
