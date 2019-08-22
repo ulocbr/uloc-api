@@ -9,10 +9,14 @@
 namespace Uloc\ApiBundle\Manager;
 
 use Uloc\ApiBundle\Entity\Person\Address;
+use Uloc\ApiBundle\Entity\Person\ContactPhone;
+use Uloc\ApiBundle\Entity\Person\Note;
+use Uloc\ApiBundle\Entity\Person\Paper;
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\Person\PersonDocument;
 use Uloc\ApiBundle\Entity\Person\RegistrationOrigin;
 use Uloc\ApiBundle\Entity\Person\TypeAddressPurpose;
+use Uloc\ApiBundle\Entity\Person\TypePaper;
 use Uloc\ApiBundle\Entity\Person\TypePersonDocument;
 
 interface PersonManagerInterface
@@ -125,5 +129,30 @@ interface PersonManagerInterface
     public function updateTypeAddressPurpose(TypeAddressPurpose $type);
     public function removeTypeAddressPurpose(TypeAddressPurpose $type);
     public function listTypeAddressPurposes(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addPaper(Person $person, $type, \DateTime $start = null, \DateTime $end = null);
+    public function findPaper(int $id);
+    public function endPaper(Paper $paper);
+    public function updatePaper(Paper $paper);
+    public function removePaper(Paper $paper);
+    public function listPapers(int $limit = null, int $offset = 0, $filter = null);
+
+    public function createTypePaper($name, $code = null);
+    public function findTypePaper(int $id);
+    public function updateTypePaper(TypePaper $type);
+    public function removeTypePaper(TypePaper $type);
+    public function listTypePapers(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addNote($annotation, $label = null);
+    public function findNote(int $id);
+    public function updateNote(Note $type);
+    public function removeNote(Note $type);
+    public function listNotes(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addPhone($areaCode, $number, $cellphone = false, $default = false, $im = null, $otherPurpose = null, $type = null);
+    public function findPhone(int $id);
+    public function updatePhone(ContactPhone $type);
+    public function removePhone(ContactPhone $type);
+    public function listNotes(int $limit = null, int $offset = 0, $filter = null);
 
 }
