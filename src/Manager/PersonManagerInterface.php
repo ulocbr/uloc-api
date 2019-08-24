@@ -9,15 +9,23 @@
 namespace Uloc\ApiBundle\Manager;
 
 use Uloc\ApiBundle\Entity\Person\Address;
+use Uloc\ApiBundle\Entity\Person\ContactEmail;
+use Uloc\ApiBundle\Entity\Person\ContactExtra;
 use Uloc\ApiBundle\Entity\Person\ContactPhone;
+use Uloc\ApiBundle\Entity\Person\ExtraField;
 use Uloc\ApiBundle\Entity\Person\Note;
 use Uloc\ApiBundle\Entity\Person\Paper;
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\Person\PersonDocument;
+use Uloc\ApiBundle\Entity\Person\PersonExtraField;
 use Uloc\ApiBundle\Entity\Person\RegistrationOrigin;
+use Uloc\ApiBundle\Entity\Person\Tag;
 use Uloc\ApiBundle\Entity\Person\TypeAddressPurpose;
+use Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose;
+use Uloc\ApiBundle\Entity\Person\TypeEmailPurpose;
 use Uloc\ApiBundle\Entity\Person\TypePaper;
 use Uloc\ApiBundle\Entity\Person\TypePersonDocument;
+use Uloc\ApiBundle\Entity\Person\TypePhonePurpose;
 
 interface PersonManagerInterface
 {
@@ -151,8 +159,61 @@ interface PersonManagerInterface
 
     public function addPhone($areaCode, $number, $cellphone = false, $default = false, $im = null, $otherPurpose = null, $type = null);
     public function findPhone(int $id);
-    public function updatePhone(ContactPhone $type);
-    public function removePhone(ContactPhone $type);
-    public function listNotes(int $limit = null, int $offset = 0, $filter = null);
+    public function updatePhone(ContactPhone $phone);
+    public function removePhone(ContactPhone $phone);
+    public function listPhones(int $limit = null, int $offset = 0, $filter = null);
+
+    public function createTypePhonePurpose($name);
+    public function findTypePhonePurpose(int $id);
+    public function updateTypePhonePurpose(TypePhonePurpose $type);
+    public function removeTypePhonePurpose(TypePhonePurpose $type);
+    public function listTypePhonePurposes(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addEmail($email, $valid = true, $default = false, $otherPurpose = null, $type = null);
+    public function findEmail(int $id);
+    public function updateEmail(ContactEmail $email);
+    public function removeEmail(ContactEmail $email);
+    public function listEmails(int $limit = null, int $offset = 0, $filter = null);
+
+    public function createTypeEmailPurpose($name);
+    public function findTypeEmailPurpose(int $id);
+    public function updateTypeEmailPurpose(TypeEmailPurpose $type);
+    public function removeTypeEmailPurpose(TypeEmailPurpose $type);
+    public function listTypeEmailPurposes(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addContactExtra($name, $tag, $value, $label = null, $type = null);
+    public function findContactExtra(int $id);
+    public function updateContactExtra(ContactExtra $contact);
+    public function removeContactExtra(ContactExtra $contact);
+    public function listContactExtras(int $limit = null, int $offset = 0, $filter = null);
+
+    public function createTypeContactExtraPurpose($name);
+    public function findTypeContactExtraPurpose(int $id);
+    public function updateTypeContactExtraPurpose(TypeContactExtraPurpose $type);
+    public function removeTypeContactExtraPurpose(TypeContactExtraPurpose $type);
+    public function listTypeContactExtraPurposes(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addExtraField($name, $code = null, $description = null, $required = true);
+    public function findExtraField(int $id);
+    public function updateExtraField(ExtraField $extraField);
+    public function removeExtraField(ExtraField $extraField);
+    public function listExtraFields(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addPersonExtraField(ExtraField $field, $value);
+    public function findPersonExtraField(int $id);
+    public function updatePersonExtraField(PersonExtraField $contact);
+    public function removePersonExtraField(PersonExtraField $contact);
+    public function listPersonExtraFields(int $limit = null, int $offset = 0, $filter = null);
+
+    public function addTag($name, $description = null);
+    public function findTag(int $id);
+    public function updateTag(Tag $tag);
+    public function removeTag(Tag $tag);
+    public function listTags(int $limit = null, int $offset = 0, $filter = null);
+
+    public function communicate(); // TODO
+    public function registerHistoryCommunicate(); // TODO
+    public function findCommunicate(int $id);
+    public function listCommunicates(int $limit = null, int $offset = 0, $filter = null);
 
 }

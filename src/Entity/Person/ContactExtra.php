@@ -33,10 +33,9 @@ class ContactExtra
     private $value;
 
     /**
-     * @var int
-     *
+     * @var TypeContactExtraPurpose
      */
-    private $type;
+    private $purpose;
 
     /**
      * Muitos ContatosExtras tem Um Person.
@@ -163,5 +162,29 @@ class ContactExtra
     public function getType()
     {
         return $this->type;
+    }
+
+    public function getPurpose()
+    {
+        return $this->purpose;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPurposeArray()
+    {
+        /*if( null === $this->purpose ){
+            return $this->otherPurpose;
+        }*/
+        return array("id" => $this->purpose->getId(), "name" => $this->purpose->getName());
+    }
+
+    /**
+     * @param TypeEmailPurpose $purpose
+     */
+    public function setPurpose(TypeEmailPurpose $purpose)
+    {
+        $this->purpose = $purpose;
     }
 }

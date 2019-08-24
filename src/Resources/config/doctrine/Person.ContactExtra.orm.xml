@@ -16,7 +16,9 @@
 
         <field name="value" type="text"/>
 
-        <field name="type" type="smallint"/>
+        <many-to-one field="purpose" target-entity="Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose" inversed-by="contacts">
+            <join-column name="type_purpose_id" referenced-column-name="id"/>
+        </many-to-one>
 
         <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="contactExtra">
             <join-column name="person_id" referenced-column-name="id"/>
