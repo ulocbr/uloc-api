@@ -388,7 +388,7 @@ class Address
     /**
      * @return string
      */
-    public function getDistrictId(): string
+    public function getDistrictId()
     {
         return $this->districtId;
     }
@@ -396,7 +396,7 @@ class Address
     /**
      * @param string $districtId
      */
-    public function setDistrictId(string $districtId): void
+    public function setDistrictId($districtId)
     {
         $this->districtId = $districtId;
     }
@@ -404,7 +404,7 @@ class Address
     /**
      * @return string
      */
-    public function getCityId(): string
+    public function getCityId()
     {
         return $this->cityId;
     }
@@ -412,7 +412,7 @@ class Address
     /**
      * @param string $cityId
      */
-    public function setCityId(string $cityId): void
+    public function setCityId($cityId)
     {
         $this->cityId = $cityId;
     }
@@ -420,7 +420,7 @@ class Address
     /**
      * @return string
      */
-    public function getState(): string
+    public function getState()
     {
         return $this->state;
     }
@@ -428,7 +428,7 @@ class Address
     /**
      * @param string $state
      */
-    public function setState(string $state): void
+    public function setState($state)
     {
         $this->state = $state;
     }
@@ -436,7 +436,7 @@ class Address
     /**
      * @return string
      */
-    public function getStateId(): string
+    public function getStateId()
     {
         return $this->stateId;
     }
@@ -444,7 +444,7 @@ class Address
     /**
      * @param string $stateId
      */
-    public function setStateId(string $stateId): void
+    public function setStateId($stateId)
     {
         $this->stateId = $stateId;
     }

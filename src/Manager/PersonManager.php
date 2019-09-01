@@ -34,14 +34,52 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         $person->setType($type);
         $person->setActive($active);
 
+        // self-manager
+        $this->manager($person);
+        $enablePersist = false;
+        if ($this->persistEnabled) {
+            $this->disablePersist();
+            $enablePersist = true;
+        }
+
         /**
          * Set Extra Data
          */
+        if (is_array($extras)) {
+            /**
+             * Addresses
+             * Need parse 'address' key to $extras with array contains one or more address
+             */
+            if (isset($extras['address'])) {
+                foreach ($extras['address'] as $address) {
+                    $this->addAddress(
+                        $address['address'],
+                        @$address['complement'],
+                        @$address['number'],
+                        @$address['district'],
+                        @$address['districtId'],
+                        @$address['zip'],
+                        @address['city'],
+                        @$address['cityId'],
+                        @$address['state'],
+                        @$address['stateId'],
+                        @$address['otherPurpose'],
+                        @$address['default'],
+                        @$address['latitude'],
+                        @$address['longitude'],
+                        @$address['type']
+                    );
+                }
+            }
+        }
 
         /**
          * Options
          */
 
+        if ($enablePersist) {
+            $this->enablePersist();
+        }
         $this->persist($person);
         $this->flush();
 
@@ -208,7 +246,39 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function addAddress($address, $complement = null, $number = null, $district = null, $districtId = null, $zip = null, $city = null, $cityId = null, $state = null, $stateId = null, $otherPurpose = null, $default = false, $latitude = null, $longitude = null, $type = null)
     {
-        // TODO: Implement addAddress() method.
+        $entity = new Address();
+        $entity->setAddress($address);
+        $entity->setComplement($complement);
+        $entity->setNumber($number);
+        $entity->setDistrict($district);
+        $entity->setDistrictId($districtId);
+        $entity->setZip($zip);
+        $entity->setCity($city);
+        $entity->setCityId($cityId);
+        $entity->setState($state);
+        $entity->setStateId($stateId);
+        $entity->setOtherPurpose($otherPurpose);
+        $entity->setDefault($default);
+        $entity->setLatitude($latitude);
+        $entity->setLongitude($longitude);
+
+        if ($type instanceof TypeAddressPurpose) {
+            $entity->setPurpose($type);
+        } elseif (!empty($type)) {
+            $typeId = intval($type);
+            $typeEntity = $this->om->getRepository(TypeAddressPurpose::class)->find($typeId);
+            if (!$typeEntity) {
+                throw new \Exception('TypeAddressPurpose with id ' . $typeId . ' not found');
+            }
+        }
+
+        if($this->isManaging()){
+            $this->person->addAddress($entity);
+            $entity->setPerson($this->person);
+            $this->persist($entity);
+        }
+
+        return $entity;
     }
 
     public function findAddress(int $id)
