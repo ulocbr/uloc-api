@@ -181,9 +181,9 @@ class ContactExtra
     }
 
     /**
-     * @param TypeEmailPurpose $purpose
+     * @param TypeContactExtraPurpose $purpose
      */
-    public function setPurpose(TypeEmailPurpose $purpose)
+    public function setPurpose(TypeContactExtraPurpose $purpose)
     {
         $this->purpose = $purpose;
     }

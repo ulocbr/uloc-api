@@ -88,6 +88,40 @@ class PersonManager extends CustomManager implements PersonManagerInterface
                     );
                 }
             }
+
+            /**
+             * Phones
+             * Need parse 'phone' key to $extras with array contains one or more phones
+             */
+            if (isset($extras['phones'])) {
+                foreach ($extras['phones'] as $phone) {
+                    $this->addPhone(
+                        $phone['areaCode'],
+                        $phone['number'],
+                        @$phone['cellphone'],
+                        @$phone['default'],
+                        @$phone['im'],
+                        @$phone['otherPurpose'],
+                        @$phone['type']
+                    );
+                }
+            }
+
+            /**
+             * ContactExtras
+             * Need parse 'contactExtra' key to $extras with array contains one or more contactExtras
+             */
+            if (isset($extras['contactExtra'])) {
+                foreach ($extras['contactExtra'] as $contact) {
+                    $this->addContactExtra(
+                        $contact['name'],
+                        $contact['tag'],
+                        $contact['value'],
+                        @$contact['label'],
+                        @$contact['type']
+                    );
+                }
+            }
         }
 
         /**
@@ -425,7 +459,31 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function addPhone($areaCode, $number, $cellphone = false, $default = false, $im = null, $otherPurpose = null, $type = null)
     {
-        // TODO: Implement addPhone() method.
+        $entity = new ContactPhone();
+        $entity->setAreaCode($areaCode);
+        $entity->setPhoneNumber($number);
+        $entity->setCellphone($cellphone);
+        $entity->setDefault($default);
+        $entity->setIm($im);
+        $entity->setOtherPurpose($otherPurpose);
+
+        if ($type instanceof TypePhonePurpose) {
+            $entity->setPurpose($type);
+        } elseif (!empty($type)) {
+            $typeId = intval($type);
+            $typeEntity = $this->om->getRepository(TypePhonePurpose::class)->find($typeId);
+            if (!$typeEntity) {
+                throw new \Exception('TypePhonePurpose with id ' . $typeId . ' not found');
+            }
+        }
+
+        if($this->isManaging()){
+            $this->person->addPhone($entity);
+            $entity->setPerson($this->person);
+            $this->persist($entity);
+        }
+
+        return $entity;
     }
 
     public function findPhone(int $id)
@@ -547,7 +605,29 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function addContactExtra($name, $tag, $value, $label = null, $type = null)
     {
-        // TODO: Implement addContactExtra() method.
+        $entity = new ContactExtra();
+        $entity->setName($name);
+        $entity->setTag($tag);
+        $entity->setValue($value);
+        #$entity->setLabel($label); // TODO: ?
+
+        if ($type instanceof TypeContactExtraPurpose) {
+            $entity->setPurpose($type);
+        } elseif (!empty($type)) {
+            $typeId = intval($type);
+            $typeEntity = $this->om->getRepository(TypeContactExtraPurpose::class)->find($typeId);
+            if (!$typeEntity) {
+                throw new \Exception('TypeContactExtraPurpose with id ' . $typeId . ' not found');
+            }
+        }
+
+        if($this->isManaging()){
+            $this->person->addContactExtra($entity);
+            $entity->setPerson($this->person);
+            $this->persist($entity);
+        }
+
+        return $entity;
     }
 
     public function findContactExtra(int $id)

@@ -4,7 +4,9 @@ namespace Uloc\ApiBundle\Tests;
 
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\Person\TypeAddressPurpose;
+use Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose;
 use Uloc\ApiBundle\Entity\Person\TypeEmailPurpose;
+use Uloc\ApiBundle\Entity\Person\TypePhonePurpose;
 
 class PersonManagerTest extends AbstractFuncionalTest
 {
@@ -42,6 +44,25 @@ class PersonManagerTest extends AbstractFuncionalTest
                         'otherPurpose' => 'Other',
                         'type' => (new TypeEmailPurpose())->setName('Type Email 1')
                     ]
+                ],
+                'phones' => [
+                    [
+                        'areaCode' => '38',
+                        'number' => '999507998',
+                        'cellphone' => true,
+                        'default' => true,
+                        'im' => 'abc',
+                        'otherPurpose' => 'Other',
+                        'type' => (new TypePhonePurpose())->setName('Type Phone 1')
+                    ]
+                ],
+                'contactExtra' => [
+                    [
+                        'name' => 'facebook',
+                        'tag' => 'facebook',
+                        'value' => 'facebook.com/tiagofelipeamorim',
+                        'type' => (new TypeContactExtraPurpose())->setName('Type ContactExtra 1')
+                    ]
                 ]
             ]);
 
@@ -73,5 +94,21 @@ class PersonManagerTest extends AbstractFuncionalTest
         $this->assertEquals(true, $email->getDefault());
         $this->assertEquals('Other', $email->getOtherPurpose());
         $this->assertEquals('Type Email 1', $email->getPurpose()->getName());
+
+        /* @var \Uloc\ApiBundle\Entity\Person\ContactPhone $phone */
+        $phone = $person->getPhoneNumbers()[0];
+        $this->assertEquals('38', $phone->getAreaCode());
+        $this->assertEquals('999507998', $phone->getPhoneNumber());
+        $this->assertEquals(true, $phone->getCellphone());
+        $this->assertEquals(true, $phone->getDefault());
+        $this->assertEquals('Other', $phone->getOtherPurpose());
+        $this->assertEquals('Type Phone 1', $phone->getPurpose()->getName());
+
+        /* @var \Uloc\ApiBundle\Entity\Person\ContactExtra $contact */
+        $contact = $person->getContactExtra()[0];
+        $this->assertEquals('facebook', $contact->getName());
+        $this->assertEquals('facebook', $contact->getTag());
+        $this->assertEquals('facebook.com/tiagofelipeamorim', $contact->getValue());
+        $this->assertEquals('Type ContactExtra 1', $contact->getPurpose()->getName());
     }
 }
