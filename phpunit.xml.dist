@@ -14,10 +14,12 @@
         <env name="TEST_BASE_URL" value="http://127.0.0.1:8000" />
         <server name="KERNEL_DIR" value="src/" />
         <server name="KERNEL_CLASS" value="Kernel" />
+        <server name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="8.5.1" />
     </php>
 
     <testsuites>
-        <testsuite name="Test suite">
+        <testsuite name="Uloc Api">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>

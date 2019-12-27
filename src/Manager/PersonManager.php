@@ -44,6 +44,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
         /**
          * Set Extra Data
+         * Possibilites: Address, Emails, Phones, ContactExtra
          */
         if (is_array($extras)) {
             /**
@@ -59,7 +60,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
                         @$address['district'],
                         @$address['districtId'],
                         @$address['zip'],
-                        @address['city'],
+                        @$address['city'],
                         @$address['cityId'],
                         @$address['state'],
                         @$address['stateId'],
@@ -68,6 +69,22 @@ class PersonManager extends CustomManager implements PersonManagerInterface
                         @$address['latitude'],
                         @$address['longitude'],
                         @$address['type']
+                    );
+                }
+            }
+
+            /**
+             * Emails
+             * Need parse 'email' key to $extras with array contains one or more emails
+             */
+            if (isset($extras['emails'])) {
+                foreach ($extras['emails'] as $email) {
+                    $this->addEmail(
+                        $email['email'],
+                        @$email['valid'],
+                        @$email['default'],
+                        @$email['otherPurpose'],
+                        @$email['type']
                     );
                 }
             }
@@ -458,7 +475,29 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function addEmail($email, $valid = true, $default = false, $otherPurpose = null, $type = null)
     {
-        // TODO: Implement addEmail() method.
+        $entity = new ContactEmail();
+        $entity->setEmail($email);
+        $entity->setValid($valid);
+        $entity->setDefault($default);
+        $entity->setOtherPurpose($otherPurpose);
+
+        if ($type instanceof TypeEmailPurpose) {
+            $entity->setPurpose($type);
+        } elseif (!empty($type)) {
+            $typeId = intval($type);
+            $typeEntity = $this->om->getRepository(TypeEmailPurpose::class)->find($typeId);
+            if (!$typeEntity) {
+                throw new \Exception('TypeEmailPurpose with id ' . $typeId . ' not found');
+            }
+        }
+
+        if($this->isManaging()){
+            $this->person->addEmail($entity);
+            $entity->setPerson($this->person);
+            $this->persist($entity);
+        }
+
+        return $entity;
     }
 
     public function findEmail(int $id)
