@@ -8,7 +8,7 @@
 
 namespace Uloc\ApiBundle\Manager\Model;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class CustomManager implements CustomManagerInterface
 {
