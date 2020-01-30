@@ -7,9 +7,13 @@
     <services>
         <service id="uloc_api.token_get_command" class="Uloc\ApiBundle\Command\UlocTokenGetCommand" public="true" autowire="true">
             <tag name="console.command" />
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+            <argument type="service" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>
         </service>
         <service id="uloc_api.user_create_command" class="Uloc\ApiBundle\Command\UlocUserCreateCommand" public="true" autowire="true">
             <tag name="console.command" />
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+            <argument type="service" id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface"/>
         </service>
     </services>
 

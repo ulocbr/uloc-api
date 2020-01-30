@@ -56,14 +56,14 @@ class UlocApiExtension extends Extension
             ->replaceArgument(1, $config['public_key']);
 
         $container
-            ->findDefinition('uloc_api.token_get_command')
-            ->setArgument(0, EntityManagerInterface::class)
-            ->setArgument(1, JWTEncoderInterface::class);
+            ->findDefinition('uloc_api.token_get_command');
+            // ->setArgument(0, EntityManagerInterface::class) # remove in 4.4
+            // ->setArgument(1, JWTEncoderInterface::class); # remove in 4.4
 
         $container
-            ->findDefinition('uloc_api.user_create_command')
-            ->setArgument(0, EntityManagerInterface::class)
-            ->setArgument(1, UserPasswordEncoderInterface::class);
+            ->findDefinition('uloc_api.user_create_command');
+            // ->setArgument(0, EntityManagerInterface::class) # remove in 4.4
+            // ->setArgument(1, UserPasswordEncoderInterface::class); # remove in 4.4
 
         $container->setParameter('uloc_api.encoder.signature_algorithm', $encoderConfig['signature_algorithm']);
         $container->setParameter('uloc_api.encoder.crypto_engine', $encoderConfig['crypto_engine']);
