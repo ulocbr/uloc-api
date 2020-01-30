@@ -122,6 +122,45 @@ class PersonManager extends CustomManager implements PersonManagerInterface
                     );
                 }
             }
+
+            /**
+             * Other data
+             */
+            if (isset($extras['classification'])) {
+                $person->setClassification($extras['classification']);
+            }
+
+            if (isset($extras['photo'])) {
+                $person->setPhoto($extras['photo']);
+            }
+
+            if (isset($extras['treatment'])) {
+                $person->setTreatment($extras['treatment']);
+            }
+
+            if (isset($extras['gender'])) {
+                $person->setGender($extras['gender']);
+            }
+
+            if (isset($extras['birtDate'])) {
+                $person->setBirthDate($extras['birtDate']);
+            }
+
+            if (isset($extras['status'])) {
+                $person->setStatus($extras['status']);
+            }
+
+            if (isset($extras['ipRegistration'])) {
+                $person->setIpRegistration($extras['ipRegistration']);
+            }
+
+            if (isset($extras['nationality'])) {
+                $person->setNationality($extras['nationality']);
+            }
+
+            if (isset($extras['description'])) {
+                $person->setDescription($extras['description']);
+            }
         }
 
         /**
@@ -323,7 +362,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
             }
         }
 
-        if($this->isManaging()){
+        if ($this->isManaging()) {
             $this->person->addAddress($entity);
             $entity->setPerson($this->person);
             $this->persist($entity);
@@ -477,7 +516,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
             }
         }
 
-        if($this->isManaging()){
+        if ($this->isManaging()) {
             $this->person->addPhone($entity);
             $entity->setPerson($this->person);
             $this->persist($entity);
@@ -549,7 +588,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
             }
         }
 
-        if($this->isManaging()){
+        if ($this->isManaging()) {
             $this->person->addEmail($entity);
             $entity->setPerson($this->person);
             $this->persist($entity);
@@ -621,7 +660,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
             }
         }
 
-        if($this->isManaging()){
+        if ($this->isManaging()) {
             $this->person->addContactExtra($entity);
             $entity->setPerson($this->person);
             $this->persist($entity);

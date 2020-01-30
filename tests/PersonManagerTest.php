@@ -63,7 +63,17 @@ class PersonManagerTest extends AbstractFuncionalTest
                         'value' => 'facebook.com/tiagofelipeamorim',
                         'type' => (new TypeContactExtraPurpose())->setName('Type ContactExtra 1')
                     ]
-                ]
+                ],
+
+                'classification' => $classification = 4,
+                'photo' => $photo = 'http://...',
+                'treatment' => $treatment = 'Sr',
+                'gender' => $gender = 1,
+                'birtDate' => $birtDate = new \DateTime('1988-07-22'),
+                'status' => $status = '1',
+                'ipRegistration' => $ip = '1.1.1.1',
+                'nationality' => $nationality = 'Br',
+                'description' => $description = 'Nd...',
             ]);
 
         $this->assertInstanceOf(Person::class, $person);
@@ -110,5 +120,16 @@ class PersonManagerTest extends AbstractFuncionalTest
         $this->assertEquals('facebook', $contact->getTag());
         $this->assertEquals('facebook.com/tiagofelipeamorim', $contact->getValue());
         $this->assertEquals('Type ContactExtra 1', $contact->getPurpose()->getName());
+
+        /* Other Extra Data */
+        $this->assertEquals($classification, $person->getClassification());
+        $this->assertEquals($photo, $person->getPhoto());
+        $this->assertEquals($treatment, $person->getTreatment());
+        $this->assertEquals($gender, $person->getGender());
+        $this->assertEquals($birtDate, $person->getBirthDate());
+        $this->assertEquals($status, $person->getStatus());
+        $this->assertEquals($ip, $person->getIpRegistration());
+        $this->assertEquals($nationality, $person->getNationality());
+        $this->assertEquals($description, $person->getDescription());
     }
 }

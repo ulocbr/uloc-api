@@ -105,42 +105,50 @@ class Person extends FormEntity
     protected $description;
 
     /**
+     * R
      * Um Person tem Muitos Owners
      */
     protected $owners;
 
     /**
+     * R
      * Um Person tem Muitos PersonsManaged
      */
     protected $personsManaged;
 
     /**
+     * R
      * Muitos Persons tem Um RegistrationOrigin.
      */
     protected $registrationOrigin;
 
     /**
+     * R
      * Um Person tem Muitos Papers
      */
     protected $papers;
 
     /**
+     * R
      * Um SuperPerson tem Muitos SuperPapers
      */
     protected $superPapers;
 
     /**
+     * R
      * Um Person tem Muitos Notes
      */
     protected $notes;
 
     /**
+     * R
      * Um Person tem Muitos ExtraFields
      * !!Assert\Valid
      */
     protected $extraFields;
 
     /**
+     * R
      * Um Person tem Muitos Emails
      * !!Assert\Valid
      * !!Assert\Count(
@@ -154,6 +162,7 @@ class Person extends FormEntity
     protected $emails;
 
     /**
+     * R
      * Um Person tem Muitos PhoneNumbers
      * !!Assert\Valid
      * !!Assert\Count(
@@ -166,18 +175,21 @@ class Person extends FormEntity
     protected $phoneNumbers;
 
     /**
+     * R
      * Um Person tem Muitos ContactExtra
      * !!Assert\Valid
      */
     protected $contactExtra;
 
     /**
+     * R
      * Um Person tem Muitos PersonDocument
      * !!Assert\Valid
      */
     protected $documents;
 
     /**
+     * R
      * Um Person tem Muitos Addresses
      * !!Assert\Valid
      * !!Assert\Count(
@@ -189,21 +201,25 @@ class Person extends FormEntity
     protected $addresses;
 
     /**
+     * R
      * Um Person tem Muitos Tags
      */
     protected $tags;
 
     /**
+     * R
      * Um Criador tem Muitos TagsCreated
      */
     protected $tagsCreated;
 
     /**
+     * R
      * Um Person tem Muitos Users
      */
     protected $users;
 
     /**
+     * R
      * Um Person tem Muitos CommunicationHistory
      */
     protected $communicationHistory;
