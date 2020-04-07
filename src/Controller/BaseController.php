@@ -12,7 +12,7 @@ namespace Uloc\ApiBundle\Controller;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -26,7 +26,7 @@ use Uloc\ApiBundle\Model\UserInterface;
 use Uloc\ApiBundle\Serializer\ApiRepresentation;
 use Uloc\ApiBundle\Services\JWT\TokenExtractor\AuthorizationHeaderTokenExtractor;
 
-abstract class BaseController extends Controller
+abstract class BaseController extends AbstractController
 {
 
     use Utils;

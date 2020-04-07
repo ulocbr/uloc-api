@@ -6,7 +6,7 @@ use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ApiProblemException;
 use Uloc\ApiBundle\Api\ResponseFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Uloc\ApiBundle\Services\Log\SystemLog;
@@ -30,14 +30,14 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event) // TODO: Change from GetResponseForExceptionEvent
     {
         // only reply to /api and /uapi URLs
         if (strpos($event->getRequest()->getPathInfo(), '/api') !== 0 && strpos($event->getRequest()->getPathInfo(), '/uapi') !== 0) {
             return;
         }
 
-        $e = $event->getException();
+        $e = $event->getThrowable();
 
         $statusCode = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
 

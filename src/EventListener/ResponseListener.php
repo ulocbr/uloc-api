@@ -15,11 +15,11 @@
 
 namespace Uloc\ApiBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class ResponseListener {
 
-    public function onKernelResponse(FilterResponseEvent $event) {
+    public function onKernelResponse(ResponseEvent $event) { // TODO: Changed from FilterResponseEvent
         $response = $event->getResponse();
         $request = $event->getRequest();
         $responseHeaders = $response->headers;
