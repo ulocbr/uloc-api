@@ -69,6 +69,8 @@ class UlocUserCreateCommand extends Command
         $io->text('Email: '. $user->getEmail() );
         $io->text('Senha: '. $plainPassword );
         $io->newLine();
+
+        return 0;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Uloc\ApiBundle\Controller\Api;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Uloc\ApiBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,7 @@ use Uloc\ApiBundle\Api\Exception\BadCredentialsException;
 
 class TokenController extends BaseController
 {
-    public function newToken(Request $request, JWTEncoderInterface $encoder)
+    public function newToken(Request $request, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder)
     {
         $userGET = $request->request->get('user');
         if (strlen($userGET) < 2) {
@@ -43,7 +44,7 @@ class TokenController extends BaseController
             throw new BadCredentialsException('Usuário sem permissão de acesso à api');
         }
 
-        $isValid = $this->get('security.password_encoder')
+        $isValid = $passwordEncoder
             ->isPasswordValid($user, $passGET);
 
         if (!$isValid) {

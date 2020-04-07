@@ -71,6 +71,8 @@ class UlocTokenGetCommand extends Command
             '====================================',
             '<info>'.$token.'</info>',
         ]);*/
+
+        return 0;
     }
 
 }

@@ -4,6 +4,6 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="uloc_token_new" controller="uloc_api.controller.token_controller::newToken" path="/auth"/>
-    <route id="uloc_token_user_credentials" controller="uloc_api.controller.token_controller::userCredentials" path="/userCredentials"/>
+    <route id="uloc_token_new" controller="Uloc\ApiBundle\Controller\Api\TokenController::newToken" path="/auth"/>
+    <route id="uloc_token_user_credentials" controller="Uloc\ApiBundle\Controller\Api\TokenController::userCredentials" path="/userCredentials"/>
 </routes>
