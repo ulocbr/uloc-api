@@ -14,9 +14,9 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="uloc_api.password_encoder" class="Symfony\Component\Security\Core\Encoder\UserPasswordEncoder" public="true" autoconfigure="true" />
+        <service id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoder" public="true" />
 
-        <service class="Uloc\ApiBundle\Security\JwtTokenAuthenticator" id="uloc_api.jwt_token_authenticator" autowire="true"/>
+        <service class="Uloc\ApiBundle\Security\JwtTokenAuthenticator" id="uloc_api.jwt_token_authenticator" autowire="true" autoconfigure="true"/>
         <service id="Uloc\ApiBundle\Api\ResponseFactory"/>
         <!--<service class="Uloc\ApiBundle\Services\JWT\Encoder\LcobucciJWTEncoder" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>-->
 

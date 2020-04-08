@@ -19,7 +19,7 @@ class UlocUserCreateCommand extends Command
     private $em;
     private $encoder;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder = null)
     {
         $this->em = $em;
         $this->encoder = $encoder;

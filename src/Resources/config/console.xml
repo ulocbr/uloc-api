@@ -13,7 +13,7 @@
         <service id="uloc_api.user_create_command" class="Uloc\ApiBundle\Command\UlocUserCreateCommand" public="true" autowire="true" autoconfigure="true">
             <tag name="console.command" />
             <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
-            <argument type="service" id="uloc_api.password_encoder"/>
+            <argument type="service" id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface" on-invalid="null" />
         </service>
     </services>
 
