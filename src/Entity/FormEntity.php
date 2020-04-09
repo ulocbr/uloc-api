@@ -285,7 +285,7 @@ abstract class FormEntity extends CommonEntity
      *
      * @return bool
      */
-    public function istActive()
+    public function isActive()
     {
         return $this->active;
     }

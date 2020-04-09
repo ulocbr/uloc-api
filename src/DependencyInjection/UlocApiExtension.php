@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Uloc\ApiBundle\Manager\UserManagerInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 
 class UlocApiExtension extends Extension
@@ -49,6 +50,8 @@ class UlocApiExtension extends Extension
             'uloc_api.key_loader',
             new Alias('uloc_api.key_loader.raw', true)
         );
+
+        $container->setAlias(UserManagerInterface::class, 'uloc_api.manager.user_manager');
 
         $container
             ->findDefinition('uloc_api.key_loader')

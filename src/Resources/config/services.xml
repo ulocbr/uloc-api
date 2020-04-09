@@ -30,6 +30,14 @@
         </service>
         <service id="Uloc\ApiBundle\Manager\PersonManager" alias="uloc_api.manager.person_manager"/>
 
+        <service class="Uloc\ApiBundle\Manager\UserManager" id="uloc_api.manager.user_manager" public="true">
+            <argument type="service" id="uloc_api.object_manager"/>
+            <argument type="service" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>
+            <argument type="service" id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface" on-invalid="null"/>
+            <argument type="tagged" tag="uloc.user" />
+        </service>
+        <service id="Uloc\ApiBundle\Manager\UserManager" alias="uloc_api.manager.user_manager"/>
+
         <!-- OM -->
         <service id="uloc_api.object_manager" class="Doctrine\Persistence\ObjectManager" public="false">
         </service>

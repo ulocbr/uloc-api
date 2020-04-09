@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Controller\Api;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Uloc\ApiBundle\Manager\UserManagerInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Uloc\ApiBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +13,7 @@ use Uloc\ApiBundle\Api\Exception\BadCredentialsException;
 
 class TokenController extends BaseController
 {
-    public function newToken(Request $request, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder)
+    public function newToken(Request $request, UserManagerInterface $userManager)
     {
         $userGET = $request->request->get('user');
         if (strlen($userGET) < 2) {
@@ -23,16 +24,14 @@ class TokenController extends BaseController
             throw new BadCredentialsException('Senha inválida');
         }
 
-        // TODO: Move to UserManager
         /** @var User $user */
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->loadUserByUsername($userGET, false);
+        $user = $userManager->findByUsername($userGET);
 
         if (!$user) {
             throw $this->createNotFoundException("Credenciais não encontrada");
         }
 
+        $userManager->manager($user);
         $roles = $user->getRoles();
         if (!is_array($roles)) {
             return new JsonResponse(['error' => 'Usuário sem permissão'], JsonResponse::HTTP_NOT_FOUND);
@@ -44,17 +43,13 @@ class TokenController extends BaseController
             throw new BadCredentialsException('Usuário sem permissão de acesso à api');
         }
 
-        $isValid = $passwordEncoder
-            ->isPasswordValid($user, $passGET);
+        $isValid = $userManager->isPasswordValid($passGET);
 
         if (!$isValid) {
             throw new BadCredentialsException('Credenciais inválidas');
         }
 
-        $token = $encoder->encode([
-                'username' => $user->getUsername(),
-                'exp' => time() + (3600 * 24) // 1 day expiration
-            ]);
+        $token = $userManager->generateToken();
 
         $userContent = [
             "id" => $user->getId(),
