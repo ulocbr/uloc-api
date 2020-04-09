@@ -6,10 +6,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Uloc\ApiBundle\DependencyInjection\Compiler\PersonCompilerPass;
 use Uloc\ApiBundle\DependencyInjection\UlocApiExtension;
+use Uloc\ApiBundle\Manager\Model\CustomManagerInterface;
 use Uloc\ApiBundle\Manager\PersonManagerInterface;
+use Uloc\ApiBundle\Manager\UserManagerInterface;
 
 class UlocApiBundle extends Bundle
 {
+
     public function getContainerExtension()
     {
         if (null === $this->extension) {
@@ -24,8 +27,9 @@ class UlocApiBundle extends Bundle
         //parent::build($container);
         $container->addCompilerPass(new PersonCompilerPass());
         $container->registerForAutoconfiguration(PersonManagerInterface::class)
-            ->addTag('uloc.person')
-        ;
+            ->addTag('uloc.person');
+        $container->registerForAutoconfiguration(UserManagerInterface::class)
+            ->addTag('uloc.user');
 
         #$this->addRegisterMappingsPass($container);
     }

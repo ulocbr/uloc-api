@@ -34,12 +34,16 @@
             <argument type="service" id="uloc_api.object_manager"/>
             <argument type="service" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>
             <argument type="service" id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface" on-invalid="null"/>
+            <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface" on-invalid="null"/>
             <argument type="tagged" tag="uloc.user" />
         </service>
         <service id="Uloc\ApiBundle\Manager\UserManager" alias="uloc_api.manager.user_manager"/>
 
         <!-- OM -->
         <service id="uloc_api.object_manager" class="Doctrine\Persistence\ObjectManager" public="false">
+        </service>
+
+        <service id="uloc_api.custom_manager" class="Uloc\ApiBundle\Manager\Model\CustomManager" public="false" autoconfigure="true" autowire="true">
         </service>
 
         <!-- Logger -->

@@ -13,6 +13,13 @@ use Uloc\ApiBundle\Api\Exception\BadCredentialsException;
 
 class TokenController extends BaseController
 {
+    /**
+     * TODO: DOC! Doc use this or rewrite
+     * @param Request $request
+     * @param UserManagerInterface $userManager
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function newToken(Request $request, UserManagerInterface $userManager)
     {
         $userGET = $request->request->get('user');
@@ -51,13 +58,7 @@ class TokenController extends BaseController
 
         $token = $userManager->generateToken();
 
-        $userContent = [
-            "id" => $user->getId(),
-            "email" => $user->getEmail(),
-            "name" => $user->getPerson() ? $user->getPerson()->getName() : $user->getUsername(),
-            "foto" => 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($user->getEmail()))),
-
-        ];
+        $userContent = $userManager->getUserContent();
 
         if ($user->getPerson()) {
             $userContent['person'] = $user->getPerson()->getId();

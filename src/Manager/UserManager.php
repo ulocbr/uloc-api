@@ -4,7 +4,11 @@ namespace Uloc\ApiBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Uloc\ApiBundle\Entity\User\User;
+use Uloc\ApiBundle\Event\UlocApiBundleEvents;
+use Uloc\ApiBundle\Event\UserNewTokenEvent;
 use Uloc\ApiBundle\Manager\Model\CustomManager;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 
@@ -12,11 +16,13 @@ class UserManager extends CustomManager implements UserManagerInterface
 {
     private $encoder;
     private $passwordEncoder;
+    private $eventDispatcher;
 
-    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder = null)
+    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->encoder = $encoder;
         $this->passwordEncoder = $passwordEncoder;
+        $this->eventDispatcher = $eventDispatcher;
         parent::__construct($om);
     }
 
@@ -156,6 +162,33 @@ class UserManager extends CustomManager implements UserManagerInterface
             'username' => $this->user->getUsername(),
             'exp' => time() + $expiration // 1 day expiration
         ]);
+    }
+
+    public function getUserContent () {
+        $response = [
+            "id" => $this->user->getId(),
+            "email" => $this->user->getEmail(),
+            "name" => $this->user->getPerson() ? $this->user->getPerson()->getName() : $this->user->getUsername(),
+            "image" => 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))),
+
+        ];
+
+        $data = [
+            'response' => $response,
+            'user' => $this->user
+        ];
+
+        $event = new UserNewTokenEvent($data);
+        $this->dispatch($event, UlocApiBundleEvents::EVENT_USER_NEW_TOKEN);
+
+        return $event->getData()['response'];
+    }
+
+    public function dispatch(Event $event, $eventName)
+    {
+        if ($this->eventDispatcher) {
+        $this->eventDispatcher->dispatch($event, $eventName);
+        }
     }
 
 }

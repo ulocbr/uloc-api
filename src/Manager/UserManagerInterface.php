@@ -10,6 +10,8 @@ namespace Uloc\ApiBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -17,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 interface UserManagerInterface
 {
 
-    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder = null);
+    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null);
 
     /**
      * Create an new User
@@ -110,5 +112,12 @@ interface UserManagerInterface
      * @throws \Exception
      */
     public function generateToken(int $expiration);
+
+    /**
+     * @return array
+     */
+    public function getUserContent();
+
+    public function dispatch(Event $event, $eventName);
 
 }
