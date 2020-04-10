@@ -2,6 +2,7 @@
 
 namespace Uloc\ApiBundle\Test;
 
+use Uloc\ApiBundle\Entity\User\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Uloc\ApiBundle\Entity\User\User;
+use Uloc\Bundle\AppBundle\Test\FixturesData;
 
 class ApiTestCase extends KernelTestCase
 {
@@ -25,6 +26,8 @@ class ApiTestCase extends KernelTestCase
      * @var array
      */
     private static $history = array();
+
+    private static $isPurge = false;
 
     /**
      * @var Client
@@ -48,7 +51,7 @@ class ApiTestCase extends KernelTestCase
         $handler = HandlerStack::create();
 
         $handler->push(Middleware::history(self::$history));
-        $handler->push(Middleware::mapRequest(function(RequestInterface $request) {
+        $handler->push(Middleware::mapRequest(function (RequestInterface $request) {
             $path = $request->getUri()->getPath();
             if (strpos($path, '/app_test.php') !== 0) {
                 $path = '/app_test.php' . $path;
@@ -65,26 +68,35 @@ class ApiTestCase extends KernelTestCase
         self::$staticClient = new Client([
             'base_uri' => $baseUrl,
             'http_errors' => false,
-            'handler' => $handler,
-            'verify' => false
+            'handler' => $handler
         ]);
 
         self::bootKernel();
     }
 
-    protected function setUp(): void
+    protected function setUp($forcePurge = false, $basicData = true)
     {
         $this->client = self::$staticClient;
         // reset the history
         self::$history = array();
 
-        $this->purgeDatabase();
+        /**
+         * A condição abaixo, junto com a propriede estática $isPurge garante que o banco de dados seja limpo somente uma vez
+         * O carregamento dos dados básicos (createBasicData) pode ser impedido por meio do bool $basicData
+         */
+        if (!self::$isPurge || $forcePurge) {
+            $this->purgeDatabase();
+            if ($basicData) {
+                $this->createBasicData();
+            }
+            self::$isPurge = true;
+        }
     }
 
     /**
      * Clean up Kernel usage in this test.
      */
-    protected function tearDown(): void
+    protected function tearDown()
     {
         // purposefully not calling parent class, which shuts down the kernel
     }
@@ -93,7 +105,7 @@ class ApiTestCase extends KernelTestCase
     {
         if ($lastResponse = $this->getLastResponse()) {
             $this->printDebug('');
-            $this->printDebug('<error>Failure!</error> when making the following request:');
+            $this->printDebug('<error>O teste falhou!</error> ao fazer a seguinte requisição:');
             $this->printLastRequestUrl();
             $this->printDebug('');
 
@@ -122,7 +134,7 @@ class ApiTestCase extends KernelTestCase
         if ($lastRequest) {
             $this->printDebug(sprintf('<comment>%s</comment>: <info>%s</info>', $lastRequest->getMethod(), $lastRequest->getUri()));
         } else {
-            $this->printDebug('No request was made.');
+            $this->printDebug('Nenhuma requisição foi feita.');
         }
     }
 
@@ -131,7 +143,9 @@ class ApiTestCase extends KernelTestCase
         foreach ($response->getHeaders() as $name => $values) {
             $this->printDebug(sprintf('%s: %s', $name, implode(', ', $values)));
         }
-        $body = (string) $response->getBody();
+        $this->printDebug('HTTP Response: ' . $response->getStatusCode());
+
+        $body = (string)$response->getBody();
 
         $contentType = $response->getHeader('Content-Type');
         $contentType = $contentType[0];
@@ -156,10 +170,10 @@ class ApiTestCase extends KernelTestCase
                 $isError = $crawler->filter('#traces-0')->count() > 0
                     || strpos($body, 'looks like something went wrong') !== false;
                 if ($isError) {
-                    $this->printDebug('There was an Error!!!!');
+                    $this->printDebug('Houve um erro!!!!');
                     $this->printDebug('');
                 } else {
-                    $this->printDebug('HTML Summary (h1 and h2):');
+                    $this->printDebug('Resumo HTML (h1 e h2):');
                 }
 
                 // finds the h1 and h2 tags and prints them only
@@ -191,7 +205,7 @@ class ApiTestCase extends KernelTestCase
                  */
                 $profilerUrl = $response->getHeader('X-Debug-Token-Link');
                 if ($profilerUrl) {
-                    $fullProfilerUrl = $response->getHeader('Host')[0].$profilerUrl[0];
+                    $fullProfilerUrl = $response->getHeader('Host')[0] . $profilerUrl[0];
                     $this->printDebug('');
                     $this->printDebug(sprintf(
                         'Profiler URL: <comment>%s</comment>',
@@ -268,14 +282,20 @@ class ApiTestCase extends KernelTestCase
         return $last['response'];
     }
 
-    protected function createUser($username, $plainPassword = 'foo')
+    /**
+     * @param $username
+     * @param string $plainPassword
+     * @return User
+     */
+    protected function createUser($username, $plainPassword = 'teste1')
     {
         $user = new User();
         $user->setUsername($username);
-        $user->setEmail($username.'@uloc.dev');
+        $user->setEmail($username . '@tiagofelipe.com');
         $password = $this->getService('security.password_encoder')
             ->encodePassword($user, $plainPassword);
         $user->setPassword($password);
+        $user->setRoles(['ROLE_USER', 'ROLE_INTRANET']);
 
         $em = $this->getEntityManager();
         $em->persist($user);
@@ -284,12 +304,50 @@ class ApiTestCase extends KernelTestCase
         return $user;
     }
 
+    protected function createBasicData()
+    {
+        //Purge FixturesData
+        FixturesData::purge();
+        $em = $this->getEntityManager();
+        $fixtures = new FixturesData($em);
+
+        $user = $this->createUser('tiago');
+        FixturesData::addDefaultIds('user', $user->getUsername());
+
+        /* Endereço */
+        #$pais1 = $fixtures->createPais('Brasil', 'BR');
+        #$uf1 = $fixtures->createUf('Minas Gerais', 'MG');
+        #$uf2 = $fixtures->createUf('Brasília', 'DF');
+        #$municipio1 = $fixtures->createMunicipio("Montes Claros");
+        #$municipio2 = $fixtures->createMunicipio("Brasília", $uf2->getId());
+        #$bairro1 = $fixtures->createBairro("Edgar Pereira");
+        #$bairro2 = $fixtures->createBairro("Aguas Claras", $municipio2->getId());
+
+        #$pais2 = $fixtures->createPais('Estados Unidos', 'USA');
+
+        $tipoFinalidadeEndereco1 = $fixtures->createTipoFinalidadeEndereco('Residencial');
+        $tipoFinalidadeEndereco2 = $fixtures->createTipoFinalidadeEndereco('Comercial');
+
+        /* Pessoa */
+        $campoExtraPessoa1 = $fixtures->createCampoExtraPessoa('1', 'Cidadania');
+        $campoExtraPessoa2 = $fixtures->createCampoExtraPessoa('2', 'Profissão');
+        $tipoFinalidadeEmail1 = $fixtures->createTipoFinalidadeEmail('Pessoal');
+        $tipoFinalidadeEmail2 = $fixtures->createTipoFinalidadeEmail('Trabalho');
+        $tipoFinalidadeTelefone1 = $fixtures->createTipoFinalidadeTelefone('Pessoal');
+        $tipoFinalidadeTelefone2 = $fixtures->createTipoFinalidadeTelefone('Trabalho');
+
+        $origemCadastroPessoa = $fixtures->createOrigemCadastroPessoa('Interno');
+        $origemCadastroPessoa2 = $fixtures->createOrigemCadastroPessoa('Site');
+
+        return $this;
+    }
+
     protected function getAuthorizedHeaders($username, $headers = array())
     {
         $token = $this->getService('lexik_jwt_authentication.encoder')
             ->encode(['username' => $username]);
 
-        $headers['Authorization'] = 'Bearer '.$token;
+        $headers['Authorization'] = 'Bearer ' . $token;
 
         return $headers;
     }
@@ -324,7 +382,17 @@ class ApiTestCase extends KernelTestCase
      */
     protected function adjustUri($uri)
     {
-        return '/app_test.php'.$uri;
+        return '/app_test.php' . $uri;
+    }
+
+    protected function post($url, $data, $authorizedHeaders = true)
+    {
+        $content = array();
+        $content['body'] = \json_encode($data);
+        if ($authorizedHeaders) {
+            $content['headers'] = $this->getAuthorizedHeaders('tiago');
+        }
+        return $this->client->post($url, $content);
     }
 
 }

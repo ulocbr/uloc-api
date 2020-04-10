@@ -11,18 +11,15 @@
 namespace Uloc\ApiBundle\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Uloc\ApiBundle\Entity\FormEntity;
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Model\GroupableInterface;
 use Uloc\ApiBundle\Model\GroupInterface;
 use Uloc\ApiBundle\Model\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface as DefaultUserInterface;
 use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
-class User extends FormEntity implements UserInterface, GroupableInterface
+class User implements UserInterface, GroupableInterface
 {
     protected $id;
 

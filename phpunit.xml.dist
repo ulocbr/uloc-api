@@ -11,7 +11,7 @@
         <ini name="intl.default_locale" value="en" />
         <ini name="intl.error_level" value="0" />
         <ini name="memory_limit" value="-1" />
-        <env name="TEST_BASE_URL" value="http://127.0.0.1:8000" />
+        <env name="TEST_BASE_URL" value="https://127.0.0.1:8000" />
         <server name="KERNEL_DIR" value="src/" />
         <server name="KERNEL_CLASS" value="Kernel" />
         <server name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />

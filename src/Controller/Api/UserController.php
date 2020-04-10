@@ -20,13 +20,6 @@ use Uloc\ApiBundle\Serializer\ApiRepresentationMetadata;
 class UserController extends BaseController
 {
 
-    /**
-     * Lists all entities.
-     *
-     * @Route("/api/users/", name="api_users_index")
-     * @Route("/api/users")
-     * @Method("GET")
-     */
     public function index(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
