@@ -47,11 +47,18 @@
         </service>
 
         <!-- Logger -->
-        <service id="uloc_api.logger" class="Uloc\ApiBundle\Services\Log\SystemLog" public="true">
-            <argument type="service" id="uloc_api.native.logger"/>
+        <service id="uloc_api.logger.default" class="Uloc\ApiBundle\Services\Log\SystemLog" public="true">
+            <argument type="service" id="uloc_api.object_manager"/>
+            <argument type="service" id="uloc_api.logger.native"/>
+            <argument type="tagged" tag="uloc.logger" />
         </service>
-        <service id="Uloc\ApiBundle\Services\Log\SystemLog" alias="uloc_api.logger"/>
-        <service id="uloc_api.native.logger" class="Symfony\Component\HttpKernel\Log\Logger" public="false">
+        <service id="Uloc\ApiBundle\Services\Log\LogInterface" alias="uloc_api.logger"/>
+        <service id="uloc_api.logger.native" class="Symfony\Component\HttpKernel\Log\Logger" public="false">
         </service>
+
+        <service id="uloc_api.error_handler" class="Uloc\ApiBundle\Exception\ApplicationErrorHandler" public="true">
+            <argument type="service" id="uloc_api.logger"/>
+        </service>
+        <service id="Uloc\ApiBundle\Exception\ApplicationErrorHandlerInterface" alias="uloc_api.error_handler"/>
     </services>
 </container>

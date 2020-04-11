@@ -19,7 +19,7 @@ use Uloc\ApiBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as DefaultUserInterface;
 use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
-class User implements UserInterface, GroupableInterface
+class User extends FormEntity implements UserInterface, GroupableInterface
 {
     protected $id;
 

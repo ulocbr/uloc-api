@@ -8,7 +8,7 @@
 
 namespace Uloc\ApiBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -26,6 +26,7 @@ interface UserManagerInterface
      *
      * @param string $name
      * @param string $username
+     * @param string $email
      * @param string $password
      * @param bool $active
      * @param array $extras
@@ -34,7 +35,7 @@ interface UserManagerInterface
      *
      *
      */
-    public function create(string $name, string $username, string $pasword, bool $active = true, array $extras = null, array $options = null);
+    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null);
 
     /**
      * Find and return an User entity
@@ -79,10 +80,12 @@ interface UserManagerInterface
      *
      * @param int $limit
      * @param int $offset
-     * @param null $filter
+     * @param null|array $filters
+     * @param null|string $format
+     * @param null|boolean $hydrate
      * @return mixed
      */
-    public function list(int $limit, int $offset = 0, $filter = null);
+    public function list(int $limit, int $offset = 0, array $filters = null, $format = null, $hydrate = null);
 
     /**
      * Smart User search

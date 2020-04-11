@@ -15,12 +15,14 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Uloc\ApiBundle\Manager\UserManagerInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
+use Uloc\ApiBundle\Services\Log\LogInterface;
 
 class UlocApiExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        // $loader->load('storage-validation/orm.xml');
         $loader->load('services.xml');
         $loader->load('lcobucci.xml');
         $loader->load('key_loader.xml');
@@ -50,6 +52,11 @@ class UlocApiExtension extends Extension
             'uloc_api.key_loader',
             new Alias('uloc_api.key_loader.raw', true)
         );
+
+        $loggerConfig = $config['logger'];
+
+        $container->setAlias('uloc_api.logger', new Alias($loggerConfig['service'], true));
+        $container->setAlias(LogInterface::class, 'uloc_api.logger');
 
         $container->setAlias(UserManagerInterface::class, 'uloc_api.manager.user_manager');
 

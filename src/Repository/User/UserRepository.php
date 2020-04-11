@@ -3,12 +3,13 @@
 namespace Uloc\ApiBundle\Repository\User;
 
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityRepository;
+// use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Uloc\ApiBundle\Exception\UsernameNotFoundException;
 use Uloc\ApiBundle\Entity\User\User;
+use Uloc\ApiBundle\Repository\BaseEntityRepository;
 
-class UserRepository extends EntityRepository implements UserLoaderInterface
+class UserRepository extends BaseEntityRepository implements UserLoaderInterface
 {
     /**
      * @param $username
@@ -44,7 +45,7 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->getOneOrNullResult();
     }
 
-    public function loadUserByUsername($username, $exception=true)
+    public function loadUserByUsername($username, $exception = true)
     {
         $user = $this->findUserByUsername($username);
 
@@ -64,7 +65,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
      * @param $login
      * @return null|object|User
      */
-    public function findUserByLogin($login){
+    public function findUserByLogin($login)
+    {
 
         $usuario = $this->findOneBy(array('username' => $login));
 
@@ -79,7 +81,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
      * @param $id
      * @return mixed
      */
-    public function getUserPasswordById($id){
+    public function getUserPasswordById($id)
+    {
         $dql = 'SELECT u.password FROM UlocAppBundle:User u where u.id=:id';
         $query = $this->getEntityManager()->createQuery($dql)->setParameter('id', $id)->setMaxResults(1);
 
@@ -87,67 +90,59 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     }
 
 
-    public function findAllSimple($limit = 100, $offset = 0, $filtros = null)
+    public function findAllSimple($limit = 100, $offset = 0, $filters = null, $hydrate = null)
     {
 
         $query = $this->getEntityManager()->createQueryBuilder()
             //->select('partial l.{id}, c.name')
             ->select('u, p')
-            ->from("UlocAppBundle:User", "u")
-            ->leftJoin('u.pessoa', 'p')
-            ->where('u.roles LIKE :role and u.roles NOT LIKE :roleComitente')
-            ->setParameter('role', '%"ROLE_INTRANET"%')
-            ->setParameter('roleComitente', '%"ROLE_COMITENTE"%');
+            ->from(User::class, "u")
+            ->leftJoin('u.person', 'p')
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', '%"ROLE_TEAM_MEMBERS"%');
 
         $queryCount = $this->getEntityManager()->createQueryBuilder()
             ->select('COUNT(1) total')
-            ->from("UlocAppBundle:User", "u")
-            ->leftJoin('u.pessoa', 'p')
-            ->where('u.roles LIKE :role and u.roles NOT LIKE :roleComitente')
-            ->setParameter('role', '%"ROLE_INTRANET"%')
-            ->setParameter('roleComitente', '%"ROLE_COMITENTE"%');
+            ->from(User::class, "u")
+            ->leftJoin('u.person', 'p')
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', '%"ROLE_TEAM_MEMBERS"%');
 
-        //Busca
-        if (isset($filtros['busca'])) {
-            $busca = $filtros['busca'];
-            $filtroBuscaCriteria = Criteria::create()
+        //Search
+        if (isset($filters['search'])) {
+            $search = $filters['search'];
+            $filterSearchCriteria = Criteria::create()
                 ->where(Criteria::expr()->orX(
-                    Criteria::expr()->eq('u.id', $busca),
-                    Criteria::expr()->contains('p.pfCpf', $busca),
-                    Criteria::expr()->contains('p.pjCnpj', $busca),
-                    Criteria::expr()->contains("p.name", $busca),
-                    Criteria::expr()->contains("p.pjRazaoSocial", $busca)
+                    Criteria::expr()->eq('u.id', $search),
+                    // Criteria::expr()->contains('p.document', $search),
+                    Criteria::expr()->contains("p.name", $search)
                 ));
-            $query->addCriteria($filtroBuscaCriteria);
-            $queryCount->addCriteria($filtroBuscaCriteria);
+            $query->addCriteria($filterSearchCriteria);
+            $queryCount->addCriteria($filterSearchCriteria);
         }
 
-        //Tipo
-        if (isset($filtros['tipo'])) {
-            $tipo = $filtros['tipo'];
-            $filtroTipoCriteria = Criteria::create()
-                ->where(Criteria::expr()->eq('p.tipo', $tipo));
-            $query->addCriteria($filtroTipoCriteria);
-            $queryCount->addCriteria($filtroTipoCriteria);
+        //Type (Person/Company)
+        if (isset($filters['type'])) {
+            $type = $filters['type'];
+            $filterTypeCriteria = Criteria::create()
+                ->where(Criteria::expr()->eq('p.type', $type));
+            $query->addCriteria($filterTypeCriteria);
+            $queryCount->addCriteria($filterTypeCriteria);
         }
 
-        //Status
-        /*if (isset($filtros['status'])) {
-            $status = $filtros['status'];
-            $filtroStatusCriteria = Criteria::create()
-                ->where(Criteria::expr()->in('a.status', $status));
-            $query->addCriteria($filtroStatusCriteria);
-            $queryCount->addCriteria($filtroStatusCriteria);
-        }*/
+        //Active
+        if (isset($filters['active'])) {
+            $this->filterActive($query, $filters['active'], $queryCount);
+        }
 
         $query = $query->getQuery()
             ->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        //->getArrayResult();
-        //return $paginator = new Paginator($query, $fetchJoinCollection = true); //https://github.com/doctrine/doctrine2/issues/2596
+            ->setFirstResult($offset);
+
+        $result = $hydrate ? $query->getResult() : $query->setHydrationMode(\Doctrine\ORM\Query::HYDRATE_ARRAY)->getArrayResult();
+
         return [
-            'result' => $query->getArrayResult(), //getArrayResult
+            'result' => $result,
             'total' => $queryCount->getQuery()->getSingleScalarResult()
         ];
     }

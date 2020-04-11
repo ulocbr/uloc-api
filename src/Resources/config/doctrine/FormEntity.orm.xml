@@ -24,8 +24,6 @@
         <field name="checkedOutBy" type="integer" nullable="true"/>
         <field name="checkedOutByUser" type="string" nullable="true"/>
 
-        <field name="order" type="smallint" nullable="true"/>
-
     </mapped-superclass>
 
 </doctrine-mapping>

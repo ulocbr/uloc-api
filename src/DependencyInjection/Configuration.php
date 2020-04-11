@@ -48,6 +48,16 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+
+                ->arrayNode('logger')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('service')
+                            ->defaultValue('uloc_api.logger.default')
+                        ->end()
+                    ->end()
+                ->end()
+
                 ->scalarNode('user_identity_field')
                     ->defaultValue('username')
                     ->cannotBeEmpty()

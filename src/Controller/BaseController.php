@@ -20,11 +20,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ApiProblemException;
+use Uloc\ApiBundle\Exception\ApplicationErrorHandlerInterface;
 use Uloc\ApiBundle\Helpers\Utils;
 use Uloc\ApiBundle\Repository\User\UserRepository;
 use Uloc\ApiBundle\Model\UserInterface;
 use Uloc\ApiBundle\Serializer\ApiRepresentation;
 use Uloc\ApiBundle\Services\JWT\TokenExtractor\AuthorizationHeaderTokenExtractor;
+use Uloc\ApiBundle\Services\Log\LogInterface;
 
 abstract class BaseController extends AbstractController
 {
@@ -36,8 +38,18 @@ abstract class BaseController extends AbstractController
     const NAO_ENCONTRADO = "Objeto não encontrado";
     const METODO_NAO_DISPONIVEL = "Médodo não disponível para esta rota";
 
+    protected $logger;
+    protected $errorHandler;
+
+    public function __construct(LogInterface $logger, ApplicationErrorHandlerInterface $errorHandler)
+    {
+        $this->logger = $logger;
+        $this->errorHandler = $errorHandler;
+    }
+
     /**
      * O usuário atual está logado?
+     *
      *
      * @return boolean
      */
@@ -124,6 +136,11 @@ abstract class BaseController extends AbstractController
         ));
     }
 
+    /**
+     * @param $data
+     * @param int $code
+     * @return Response
+     */
     protected function createApiResponseEncodeArray($data, $code = 200)
     {
         return $this->createApiResponse($data, $code, null, null, true);
@@ -207,5 +224,9 @@ abstract class BaseController extends AbstractController
     }
 
     public static $IMAGE_TYPES = array('jpg', 'png', 'jpeg', 'gif');
+
+    public function log() {
+        // var_dump($this->logger);
+    }
 
 }

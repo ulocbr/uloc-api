@@ -50,9 +50,9 @@ class ApiTestCase extends KernelTestCase
         $handler->push(Middleware::history(self::$history));
         $handler->push(Middleware::mapRequest(function(RequestInterface $request) {
             $path = $request->getUri()->getPath();
-            if (strpos($path, '/app_test.php') !== 0) {
+            /*if (strpos($path, '/app_test.php') !== 0) {
                 $path = '/app_test.php' . $path;
-            }
+            }*/
             $uri = $request->getUri()->withPath($path);
 
             return $request->withUri($uri);
@@ -62,9 +62,16 @@ class ApiTestCase extends KernelTestCase
         if (!$baseUrl) {
             static::fail('No TEST_BASE_URL environmental variable set in phpunit.xml.');
         }
+
         self::$staticClient = new Client([
             'base_uri' => $baseUrl,
             'http_errors' => false,
+            'headers' => [
+                'HTTP_ENV' => 'test',
+                'ENV' => 'test',
+                'APP_ENV' => 'test',
+                'environment' => 'test'
+            ],
             'handler' => $handler,
             'verify' => false
         ]);
@@ -72,13 +79,18 @@ class ApiTestCase extends KernelTestCase
         self::bootKernel();
     }
 
+    static $purgued = false;
+
     protected function setUp(): void
     {
         $this->client = self::$staticClient;
         // reset the history
         self::$history = array();
 
-        $this->purgeDatabase();
+        if(!self::$purgued) {
+            $this->purgeDatabase();
+            self::$purgued = true;
+        }
     }
 
     /**
@@ -191,7 +203,8 @@ class ApiTestCase extends KernelTestCase
                  */
                 $profilerUrl = $response->getHeader('X-Debug-Token-Link');
                 if ($profilerUrl) {
-                    $fullProfilerUrl = $response->getHeader('Host')[0].$profilerUrl[0];
+                    #$fullProfilerUrl = $response->getHeader('Host')[0].$profilerUrl[0];
+                    $fullProfilerUrl = $profilerUrl[0];
                     $this->printDebug('');
                     $this->printDebug(sprintf(
                         'Profiler URL: <comment>%s</comment>',
@@ -276,6 +289,7 @@ class ApiTestCase extends KernelTestCase
         $password = $this->getService('security.password_encoder')
             ->encodePassword($user, $plainPassword);
         $user->setPassword($password);
+        $user->setRoles(['ROLE_API']);
 
         $em = $this->getEntityManager();
         $em->persist($user);
@@ -286,7 +300,7 @@ class ApiTestCase extends KernelTestCase
 
     protected function getAuthorizedHeaders($username, $headers = array())
     {
-        $token = $this->getService('lexik_jwt_authentication.encoder')
+        $token = $this->getService('uloc_api.encoder')
             ->encode(['username' => $username]);
 
         $headers['Authorization'] = 'Bearer '.$token;

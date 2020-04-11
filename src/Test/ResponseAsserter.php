@@ -1,6 +1,6 @@
 <?php
 
-namespace Uloc\Bundle\AppBundle\Test;
+namespace Uloc\ApiBundle\Test;
 
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;

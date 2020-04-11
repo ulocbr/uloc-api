@@ -10,14 +10,18 @@
 
 namespace Uloc\ApiBundle\Services\Log;
 
+use Doctrine\Persistence\ObjectManager;
+
 class SystemLog implements LogInterface
 {
 
-    private $logger;
+    private $om;
+    private $nativeLogger;
 
-    public function __construct($logger)
+    public function __construct(ObjectManager $om, $nativeLogger = null)
     {
-        $this->logger = $logger;
+        $this->om = $om;
+        $this->nativeLogger = $nativeLogger;
     }
 
     public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null)

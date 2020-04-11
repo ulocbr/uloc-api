@@ -2,7 +2,7 @@
 
 namespace Uloc\ApiBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -30,11 +30,15 @@ class UserManager extends CustomManager implements UserManagerInterface
     /* @var User */
     private $user;
 
-    public function create(string $name, string $username, string $password, bool $active = true, array $extras = null, array $options = null)
+    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null)
     {
         $user = new User();
         $user->setUsername($username);
+        $user->setEmail($email);
         $user->setPassword($password);
+        if ($this->passwordEncoder) {
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        }
         $user->setActive($active);
 
         // self-manager
@@ -68,7 +72,7 @@ class UserManager extends CustomManager implements UserManagerInterface
 
     public function find(int $id)
     {
-        // TODO: Implement find() method.
+        return $this->om->getRepository(User::class)->find($id);
     }
 
     /**
@@ -119,12 +123,14 @@ class UserManager extends CustomManager implements UserManagerInterface
      *
      * @param int $limit
      * @param int $offset
-     * @param null $filter
+     * @param null|array $filters
+     * @param null|string $format
+     * @param null|boolean $hydrate
      * @return mixed
      */
-    public function list(int $limit, int $offset = 0, $filter = null)
+    public function list(int $limit, int $offset = 0, array $filters = null, $format = null, $hydrate = null)
     {
-        // TODO: Implement list() method.
+        return $this->om->getRepository(User::class)->findAllSimple($limit, $offset, $filters, $hydrate);
     }
 
     /**
@@ -164,7 +170,8 @@ class UserManager extends CustomManager implements UserManagerInterface
         ]);
     }
 
-    public function getUserContent () {
+    public function getUserContent()
+    {
         $response = [
             "id" => $this->user->getId(),
             "email" => $this->user->getEmail(),
@@ -187,7 +194,7 @@ class UserManager extends CustomManager implements UserManagerInterface
     public function dispatch(Event $event, $eventName)
     {
         if ($this->eventDispatcher) {
-        $this->eventDispatcher->dispatch($event, $eventName);
+            $this->eventDispatcher->dispatch($event, $eventName);
         }
     }
 
