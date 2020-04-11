@@ -45,6 +45,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 
     protected $roles;
 
+    protected $acl;
+
     /**
      * @var \DateTime
      */
@@ -87,13 +89,14 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     private $person;
 
-    public function __construct($username = null, $password = null, $salt = null, array $roles = null, $status = 0)
+    public function __construct($username = null, $password = null, $salt = null, array $roles = null, $status = 0, array $acl = null)
     {
         $this->enabled = false;
         $this->username = $username;
         $this->password = $password;
         $this->salt = $salt;
         $this->roles = $roles;
+        $this->acl = $acl;
         $this->groups = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->status = $status;
@@ -345,7 +348,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     public function setEnabled($boolean)
     {
-        $this->enabled = (bool) $boolean;
+        $this->enabled = (bool)$boolean;
 
         return $this;
     }
@@ -487,6 +490,16 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         $this->person = $person;
     }
 
+    public function setAcl(array $acl)
+    {
+        $this->acl = $acl;
+    }
+
+    public function getAcl()
+    {
+        return $this->acl;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -498,6 +511,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             $this->email,
             $this->password,
             $this->salt,
+            $this->acl,
             $this->enabled,
             $this->createdAt,
         ));
@@ -517,6 +531,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             $this->email,
             $this->password,
             $this->salt,
+            $this->acl,
             $this->enabled,
             $this->createdAt,
             ) = $data;
@@ -527,7 +542,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     public function __toString()
     {
-        return (string) $this->getUsername();
+        return (string)$this->getUsername();
     }
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)

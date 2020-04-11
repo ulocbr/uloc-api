@@ -21,6 +21,8 @@
 
         <field name="roles" column="roles" type="array" />
 
+        <field name="acl" column="acl" type="array" />
+
         <field name="createdAt" type="datetime"/>
 
         <field name="lastLogin" column="last_login" type="datetime" nullable="true" />

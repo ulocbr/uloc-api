@@ -48,7 +48,7 @@ class ApiTestCase extends KernelTestCase
         $handler = HandlerStack::create();
 
         $handler->push(Middleware::history(self::$history));
-        $handler->push(Middleware::mapRequest(function(RequestInterface $request) {
+        $handler->push(Middleware::mapRequest(function (RequestInterface $request) {
             $path = $request->getUri()->getPath();
             /*if (strpos($path, '/app_test.php') !== 0) {
                 $path = '/app_test.php' . $path;
@@ -87,7 +87,7 @@ class ApiTestCase extends KernelTestCase
         // reset the history
         self::$history = array();
 
-        if(!self::$purgued) {
+        if (!self::$purgued) {
             $this->purgeDatabase();
             self::$purgued = true;
         }
@@ -143,7 +143,7 @@ class ApiTestCase extends KernelTestCase
         foreach ($response->getHeaders() as $name => $values) {
             $this->printDebug(sprintf('%s: %s', $name, implode(', ', $values)));
         }
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
 
         $contentType = $response->getHeader('Content-Type');
         $contentType = $contentType[0];
@@ -281,15 +281,22 @@ class ApiTestCase extends KernelTestCase
         return $last['response'];
     }
 
-    protected function createUser($username, $plainPassword = 'foo')
+    protected function createUser($username, $plainPassword = 'foo', array $acl = null)
     {
         $user = new User();
         $user->setUsername($username);
-        $user->setEmail($username.'@uloc.dev');
+        $user->setEmail($username . '@uloc.dev');
         $password = $this->getService('security.password_encoder')
             ->encodePassword($user, $plainPassword);
         $user->setPassword($password);
         $user->setRoles(['ROLE_API']);
+        if (null === $acl) {
+            $user->setAcl([
+                'uloc/user/create'
+            ]);
+        } else {
+            $user->setAcl($acl);
+        }
 
         $em = $this->getEntityManager();
         $em->persist($user);
@@ -303,7 +310,7 @@ class ApiTestCase extends KernelTestCase
         $token = $this->getService('uloc_api.encoder')
             ->encode(['username' => $username]);
 
-        $headers['Authorization'] = 'Bearer '.$token;
+        $headers['Authorization'] = 'Bearer ' . $token;
 
         return $headers;
     }
@@ -338,7 +345,7 @@ class ApiTestCase extends KernelTestCase
      */
     protected function adjustUri($uri)
     {
-        return '/app_test.php'.$uri;
+        return '/app_test.php' . $uri;
     }
 
 }

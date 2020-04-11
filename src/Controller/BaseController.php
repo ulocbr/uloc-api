@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ApiProblemException;
 use Uloc\ApiBundle\Exception\ApplicationErrorHandlerInterface;
@@ -25,6 +26,7 @@ use Uloc\ApiBundle\Helpers\Utils;
 use Uloc\ApiBundle\Repository\User\UserRepository;
 use Uloc\ApiBundle\Model\UserInterface;
 use Uloc\ApiBundle\Serializer\ApiRepresentation;
+use Uloc\ApiBundle\Services\ACL\AclPolicy;
 use Uloc\ApiBundle\Services\JWT\TokenExtractor\AuthorizationHeaderTokenExtractor;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
@@ -225,8 +227,31 @@ abstract class BaseController extends AbstractController
 
     public static $IMAGE_TYPES = array('jpg', 'png', 'jpeg', 'gif');
 
-    public function log() {
+    public function log()
+    {
         // var_dump($this->logger);
+    }
+
+    public function checkAcl($acl)
+    {
+        $user = $this->getUser();
+        $hasAdm = in_array('ROLE_ADMIN', $user->getRoles());
+        if ($hasAdm) {
+            return true;
+        }
+        return AclPolicy::checkAcl($acl, array_flip($user->getAcl()));
+    }
+
+    public function isGrantedAcl($acl)
+    {
+        if (!$this->checkAcl($acl)) {
+            throw new AccessDeniedException(
+                serialize([
+                    'error' => 'authorization',
+                    'errors' => 'Access Denied'
+                ])
+            );
+        }
     }
 
 }
