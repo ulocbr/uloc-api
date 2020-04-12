@@ -281,7 +281,7 @@ class ApiTestCase extends KernelTestCase
         return $last['response'];
     }
 
-    protected function createUser($username, $plainPassword = 'foo', array $acl = null)
+    protected function createUser($username, $plainPassword = 'foo', array $acl = null, array $roles = null)
     {
         $user = new User();
         $user->setUsername($username);
@@ -289,7 +289,11 @@ class ApiTestCase extends KernelTestCase
         $password = $this->getService('security.password_encoder')
             ->encodePassword($user, $plainPassword);
         $user->setPassword($password);
-        $user->setRoles(['ROLE_API', 'ROLE_TEAM_MEMBERS']);
+        if (null === $roles) {
+            $user->setRoles(['ROLE_API', 'ROLE_TEAM_MEMBERS']);
+        } else{
+            $user->setRoles($roles);
+        }
         if (null === $acl) {
             $user->setAcl([
                 'uloc/user/create',

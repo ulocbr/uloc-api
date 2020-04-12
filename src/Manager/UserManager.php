@@ -113,11 +113,13 @@ class UserManager extends CustomManager implements UserManagerInterface
      * Update a managed User managed
      * This method is best of ->persist and ->flush of ObjectManager because here call same events and features when
      * update an user
-     * @return User
+     * @return self
      */
     public function update()
     {
-        // TODO: Implement update() method.
+        $this->om->persist($this->user);
+        $this->om->flush();
+        return $this;
     }
 
     /**

@@ -86,15 +86,15 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     private $person;
 
-    public function __construct($username = null, $password = null, $salt = null, array $roles = null, $status = 0, array $acl = null)
+    public function __construct($username = null, $password = null, $salt = null, array $roles = [], $status = 0, array $acl = null)
     {
         parent::__construct();
         $this->enabled = false;
         $this->username = $username;
         $this->password = $password;
         $this->salt = $salt;
-        $this->roles = $roles;
-        $this->acl = $acl;
+        $this->roles = empty($roles) ? [] : $roles;
+        $this->acl = empty($acl) ? [] : $acl;;
         $this->groups = new ArrayCollection();
         $this->status = $status;
     }
@@ -178,6 +178,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     public function addRole($role)
     {
+        if(empty($role)) return $this;
+
         $role = strtoupper($role);
         if ($role === static::ROLE_DEFAULT) {
             return $this;
@@ -479,9 +481,35 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         $this->person = $person;
     }
 
+    public function addAcl($acl)
+    {
+        if(empty($acl)) return $this;
+        if (!in_array($acl, $this->acl, true)) {
+            $this->acl[] = $acl;
+        }
+
+        return $this;
+    }
+
+    public function removeAcl($acl)
+    {
+        if (false !== $key = array_search(strtoupper($acl), $this->acl, true)) {
+            unset($this->acl[$key]);
+            $this->acl = array_values($this->acl);
+        }
+
+        return $this;
+    }
+
     public function setAcl(array $acl)
     {
-        $this->acl = $acl;
+        $this->acl = array();
+
+        foreach ($acl as $_acl) {
+            $this->addAcl($_acl);
+        }
+
+        return $this;
     }
 
     public function getAcl()

@@ -4,6 +4,7 @@ namespace Uloc\ApiBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 // use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Uloc\ApiBundle\Entity\User\User;
@@ -17,6 +18,18 @@ class UserType extends AbstractType
             ->add('username')
             ->add('email')
             ->add('password')
+            ->add('roles', null, [
+                'required' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'allow_extra_fields' => true
+            ])
+            ->add('acl', CollectionType::class, [
+                'required' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'allow_extra_fields' => true
+            ])
         ;
     }
 
