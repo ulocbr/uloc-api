@@ -6,6 +6,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Event\UlocApiBundleEvents;
 use Uloc\ApiBundle\Event\UserNewTokenEvent;
@@ -17,12 +18,15 @@ class UserManager extends CustomManager implements UserManagerInterface
     private $encoder;
     private $passwordEncoder;
     private $eventDispatcher;
+    /* @var PersonManager */
+    private $personManager;
 
-    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, PersonManagerInterface $personManager, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->encoder = $encoder;
         $this->passwordEncoder = $passwordEncoder;
         $this->eventDispatcher = $eventDispatcher;
+        $this->personManager = $personManager;
         parent::__construct($om);
     }
 
@@ -30,7 +34,7 @@ class UserManager extends CustomManager implements UserManagerInterface
     /* @var User */
     private $user;
 
-    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null)
+    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null)
     {
         $user = new User();
         $user->setUsername($username);
@@ -63,6 +67,14 @@ class UserManager extends CustomManager implements UserManagerInterface
 
         if ($enablePersist) {
             $this->enablePersist();
+        }
+
+        if (null !== $person && $person instanceof Person) {
+            $user->setPerson($person);
+        } elseif ($createPerson) {
+            $person = $this->personManager->disablePersist()->create($name);
+            $user->setPerson($person);
+            $this->persist($person);
         }
         $this->persist($user);
         $this->flush();

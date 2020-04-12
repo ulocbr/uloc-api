@@ -12,6 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -19,23 +20,21 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 interface UserManagerInterface
 {
 
-    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null);
+    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, PersonManagerInterface $personManager, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null);
 
     /**
-     * Create an new User
-     *
      * @param string $name
      * @param string $username
      * @param string $email
      * @param string $password
      * @param bool $active
-     * @param array $extras
-     * @param array $options
-     * @return User
-     *
-     *
+     * @param array|null $extras
+     * @param array|null $options
+     * @param bool $createPerson
+     * @param Person|null $person
+     * @return mixed
      */
-    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null);
+    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null);
 
     /**
      * Find and return an User entity

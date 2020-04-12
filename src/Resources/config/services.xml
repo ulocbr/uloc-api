@@ -33,6 +33,7 @@
         <service class="Uloc\ApiBundle\Manager\UserManager" id="uloc_api.manager.user_manager" public="true">
             <argument type="service" id="uloc_api.object_manager"/>
             <argument type="service" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>
+            <argument type="service" id="uloc_api.manager.person_manager"/>
             <argument type="service" id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface" on-invalid="null"/>
             <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface" on-invalid="null"/>
             <argument type="tagged" tag="uloc.user" />

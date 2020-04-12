@@ -23,6 +23,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 {
     protected $id;
 
+    protected $name; // For Person
+
     protected $username;
 
     protected $email;
@@ -499,6 +501,25 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     {
         return $this->acl;
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return self
+     */
+    public function setName($name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
 
     /**
      * {@inheritdoc}
