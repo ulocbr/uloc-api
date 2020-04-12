@@ -12,6 +12,7 @@ namespace Uloc\ApiBundle\Entity;
 
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Helpers\Sluggable;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * FormEntity
@@ -36,7 +37,7 @@ abstract class FormEntity extends CommonEntity
     /**
      * @var null|\DateTime
      */
-    private $dateAdded = null;
+    private $createdAt = null;
 
     /**
      * @var null|int
@@ -88,39 +89,44 @@ abstract class FormEntity extends CommonEntity
      */
     protected $new = false;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     /**
      * Clear dates on clone.
      */
     public function __clone()
     {
-        $this->dateAdded = null;
+        $this->createdAt = null;
         $this->dateModified = null;
         $this->checkedOut = null;
         $this->active = false;
     }
 
     /**
-     * Set dateAdded.
+     * Set createdAt.
      *
-     * @param \DateTime $dateAdded
+     * @param \DateTime $createdAt
      *
      * @return $this
      */
-    public function setDateAdded($dateAdded)
+    public function setCreatedAt($createdAt)
     {
-        $this->dateAdded = $dateAdded;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get dateAdded.
+     * Get createdAt.
      *
      * @return \DateTime
      */
-    public function getDateAdded()
+    public function getCreatedAt()
     {
-        return $this->dateAdded;
+        return $this->createdAt;
     }
 
     /**
@@ -398,6 +404,28 @@ abstract class FormEntity extends CommonEntity
     public function setSlugAuto($stringToSlug)
     {
         $this->slug = Sluggable::slugify($stringToSlug);
+    }
+
+    static $serializeApi = [
+        'slug',
+        'active',
+        'createdAt',
+        'createdBy',
+        'createdByUser',
+        'dateModified',
+        'modifiedBy',
+        'modifiedByUser',
+        'checkedOut',
+        'checkedOutBy',
+        'checkedOutByUser',
+        'order'
+    ];
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        $representation
+            ->setGroup('all')
+            ->addProperties(self::$serializeApi);
     }
 
 }

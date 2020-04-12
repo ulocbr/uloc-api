@@ -97,9 +97,7 @@ class UserRepository extends BaseEntityRepository implements UserLoaderInterface
             //->select('partial l.{id}, c.name')
             ->select('u, p')
             ->from(User::class, "u")
-            ->leftJoin('u.person', 'p')
-            ->where('u.roles LIKE :role')
-            ->setParameter('role', '%"ROLE_TEAM_MEMBERS"%');
+            ->leftJoin('u.person', 'p');
 
         $queryCount = $this->getEntityManager()->createQueryBuilder()
             ->select('COUNT(1) total')
@@ -107,6 +105,19 @@ class UserRepository extends BaseEntityRepository implements UserLoaderInterface
             ->leftJoin('u.person', 'p')
             ->where('u.roles LIKE :role')
             ->setParameter('role', '%"ROLE_TEAM_MEMBERS"%');
+
+        if(isset($filters['role'])){
+            /*$query
+                ->andWhere('u.roles LIKE :role')
+                ->setParameter('role', '%"ROLE_TEAM_MEMBERS"%');*/
+            $role = $filters['role'];
+            $roleCriteria = Criteria::create()
+                ->where(
+                    Criteria::expr()->contains("u.roles", $role)
+                );
+            $query->addCriteria($roleCriteria);
+            $queryCount->addCriteria($roleCriteria);
+        }
 
         //Search
         if (isset($filters['search'])) {

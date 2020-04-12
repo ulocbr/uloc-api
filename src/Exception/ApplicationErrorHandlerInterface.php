@@ -15,9 +15,9 @@ interface ApplicationErrorHandlerInterface
     public function __construct(LogInterface $logger);
 
     /**
-     * @param array $error
+     * @param mixed $error
      * @param string $responseFormat
      * @return mixed
      */
-    public function handlerError(array $error, $responseFormat = 'json');
+    public function handlerError($error, $responseFormat = 'json');
 }

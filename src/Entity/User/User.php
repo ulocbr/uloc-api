@@ -50,11 +50,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     protected $acl;
 
     /**
-     * @var \DateTime
-     */
-    protected $createdAt;
-
-    /**
      * @var \DateTime|null
      */
     protected $lastLogin;
@@ -93,6 +88,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 
     public function __construct($username = null, $password = null, $salt = null, array $roles = null, $status = 0, array $acl = null)
     {
+        parent::__construct();
         $this->enabled = false;
         $this->username = $username;
         $this->password = $password;
@@ -100,7 +96,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         $this->roles = $roles;
         $this->acl = $acl;
         $this->groups = new ArrayCollection();
-        $this->createdAt = new \DateTime();
         $this->status = $status;
     }
 
@@ -445,22 +440,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
      * @return int
      */
     public function getStatus(): int
@@ -534,7 +513,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             $this->salt,
             $this->acl,
             $this->enabled,
-            $this->createdAt,
         ));
     }
 
@@ -554,7 +532,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             $this->salt,
             $this->acl,
             $this->enabled,
-            $this->createdAt,
             ) = $data;
     }
 
@@ -568,7 +545,35 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
-        // TODO: Implement loadApiRepresentation() method.
+        parent::loadApiRepresentation($representation);
+        $public = [
+            'id',
+            'username',
+            'email',
+            'roles',
+            'acl',
+            'person' => ['id', 'name'],
+            'status'
+        ];
+
+        $admin = [
+            'id',
+            'username',
+            'email',
+            'roles',
+            'acl',
+            'person' => ['id', 'name'],
+            'status'
+        ];
+        $representation
+            ->setGroup('public')
+            ->addProperties(
+                $public
+            )
+            ->setGroup('admin')
+            ->addProperties(
+                array_merge($public, $admin)
+            )->build();
     }
 
 

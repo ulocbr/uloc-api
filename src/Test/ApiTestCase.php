@@ -289,10 +289,11 @@ class ApiTestCase extends KernelTestCase
         $password = $this->getService('security.password_encoder')
             ->encodePassword($user, $plainPassword);
         $user->setPassword($password);
-        $user->setRoles(['ROLE_API']);
+        $user->setRoles(['ROLE_API', 'ROLE_TEAM_MEMBERS']);
         if (null === $acl) {
             $user->setAcl([
-                'uloc/user/create'
+                'uloc/user/create',
+                'uloc/user/list',
             ]);
         } else {
             $user->setAcl($acl);

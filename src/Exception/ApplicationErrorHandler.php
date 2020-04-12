@@ -22,12 +22,19 @@ class ApplicationErrorHandler implements ApplicationErrorHandlerInterface
     }
 
 
-    public function handlerError(array $error, $responseFormat = 'json', $httpCode = 400)
+    public function handlerError($error, $responseFormat = 'json', $httpCode = 400)
     {
         /**
          * TODO: Trata erros e armazena-os caso necessário.
          * Permitir ao $responseFormat além de json, um callback para customizar o response.
          */
+
+        $unserialized = @unserialize($error);
+        if ($unserialized === false){
+            $error = ['error' => 'exception', 'errors' => $error];
+        } else{
+            $error = $unserialized;
+        }
 
         if (gettype($responseFormat) === 'object' && is_callable($responseFormat)) {
             return $responseFormat($error);

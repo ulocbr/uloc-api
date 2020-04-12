@@ -54,6 +54,12 @@ class ApiRepresentationMetadata implements ApiRepresentationMetadataInterface
     public function getProperties($group = null)
     {
         if (null !== $group) {
+            if ($group === 'all') {
+                if (isset($this->properties[$group])) {
+                    return $this->properties[$group];
+                }
+                return null;
+            }
             return isset($this->properties[$group])
                 ? $this->properties[$group]
                 : $this->properties;

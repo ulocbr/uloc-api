@@ -10,7 +10,7 @@
 
         <field name="active" type="boolean" nullable="true"/>
 
-        <field name="dateAdded" type="datetime" nullable="true"/>
+        <field name="createdAt" type="datetime" nullable="true"/>
 
         <field name="createdBy" type="integer" nullable="true"/>
         <field name="createdByUser" type="string" nullable="true"/>
@@ -23,6 +23,8 @@
         <field name="checkedOut" type="datetime" nullable="true"/>
         <field name="checkedOutBy" type="integer" nullable="true"/>
         <field name="checkedOutByUser" type="string" nullable="true"/>
+
+        <field name="order" column="ordering" type="smallint" nullable="true"/>
 
     </mapped-superclass>
 

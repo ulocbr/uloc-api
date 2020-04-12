@@ -122,7 +122,10 @@ class ApiRepresentation
          */
 
         $properties = $this->metadata->getProperties($group);
-        
+        if (!empty($this->metadata->getProperties('all'))) {
+            $properties = array_merge_recursive($properties, $this->metadata->getProperties('all'));
+        }
+
         $result = $this->navigator->map($data, $properties);
 
         return $this->getEncoder($format)->encode($result);
@@ -154,8 +157,7 @@ class ApiRepresentation
             case "json":
                 return new JsonEncoder();
             default:
-                return new class
-                {
+                return new class {
                     public function encode($data)
                     {
                         return $data;
