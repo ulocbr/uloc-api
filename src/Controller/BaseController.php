@@ -232,9 +232,14 @@ abstract class BaseController extends AbstractController
         // var_dump($this->logger);
     }
 
-    public function checkAcl($acl)
+    public function checkAcl($acl, $ownerId = null)
     {
         $user = $this->getUser();
+        if (isset($ownerId)) {
+            if ($user->getId() === $ownerId) {
+                return true;
+            }
+        }
         $hasAdm = in_array('ROLE_ADMIN', $user->getRoles());
         if ($hasAdm) {
             return true;
@@ -242,13 +247,13 @@ abstract class BaseController extends AbstractController
         return AclPolicy::checkAcl($acl, array_flip($user->getAcl()));
     }
 
-    public function isGrantedAcl($acl)
+    public function isGrantedAcl($acl, $ownerId = null)
     {
-        if (!$this->checkAcl($acl)) {
+        if (!$this->checkAcl($acl, $ownerId)) {
             throw new AccessDeniedException(
                 serialize([
                     'error' => 'authorization',
-                    'errors' => 'Access Denied'
+                    'message' => 'Access Denied'
                 ])
             );
         }

@@ -30,9 +30,14 @@ class ApplicationErrorHandler implements ApplicationErrorHandlerInterface
          */
 
         $unserialized = @unserialize($error);
-        if ($unserialized === false){
-            $error = ['error' => 'exception', 'errors' => $error];
-        } else{
+        if ($unserialized === false) {
+            if ($error === 'Not Found') {
+                $error = ['error' => '404', 'message' => $error];
+                $httpCode = 404;
+            } else {
+                $error = ['error' => 'exception', 'message' => $error];
+            }
+        } else {
             $error = $unserialized;
         }
 

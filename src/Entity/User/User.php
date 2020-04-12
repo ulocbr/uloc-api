@@ -408,6 +408,14 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     }
 
     /**
+     * @return \DateTime|null
+     */
+    public function getLastLogin(): ?\DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isAccountNonExpired()
@@ -562,6 +570,9 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'email',
             'roles',
             'acl',
+            'lastLogin',
+            'enabled',
+            'groups',
             'person' => ['id', 'name'],
             'status'
         ];
