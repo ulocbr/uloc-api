@@ -547,7 +547,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             $this->email,
             $this->password,
             $this->salt,
-            $this->acl,
             $this->enabled,
         ));
     }
@@ -566,7 +565,6 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             $this->email,
             $this->password,
             $this->salt,
-            $this->acl,
             $this->enabled,
             ) = $data;
     }
