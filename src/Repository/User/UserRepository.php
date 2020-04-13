@@ -102,9 +102,7 @@ class UserRepository extends BaseEntityRepository implements UserLoaderInterface
         $queryCount = $this->getEntityManager()->createQueryBuilder()
             ->select('COUNT(1) total')
             ->from(User::class, "u")
-            ->leftJoin('u.person', 'p')
-            ->where('u.roles LIKE :role')
-            ->setParameter('role', '%"ROLE_TEAM_MEMBERS"%');
+            ->leftJoin('u.person', 'p');
 
         if(isset($filters['role'])){
             /*$query
