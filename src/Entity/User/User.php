@@ -86,15 +86,15 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     private $person;
 
-    public function __construct($username = null, $password = null, $salt = null, array $roles = [], $status = 0, array $acl = null)
+    public function __construct($username = null, $password = null, $salt = null, array $roles = [], $status = 0, array $acl = [])
     {
         parent::__construct();
         $this->enabled = false;
         $this->username = $username;
         $this->password = $password;
         $this->salt = $salt;
-        $this->roles = empty($roles) || !is_array($roles) ? [] : $roles;
-        $this->acl = empty($acl) || !is_array($acl) ? [] : $acl;
+        $this->roles = (empty($roles) || !is_array($roles)) ? [] : $roles;
+        $this->acl = (empty($acl) || !is_array($acl)) ? [] : $acl;
         $this->groups = new ArrayCollection();
         $this->status = $status;
     }
