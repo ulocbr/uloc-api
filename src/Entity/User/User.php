@@ -93,8 +93,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         $this->username = $username;
         $this->password = $password;
         $this->salt = $salt;
-        $this->roles = empty($roles) ? [] : $roles;
-        $this->acl = empty($acl) ? [] : $acl;;
+        $this->roles = empty($roles) || !is_array($roles) ? [] : $roles;
+        $this->acl = empty($acl) || !is_array($acl) ? [] : $acl;;
         $this->groups = new ArrayCollection();
         $this->status = $status;
     }
