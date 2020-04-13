@@ -244,7 +244,7 @@ abstract class BaseController extends AbstractController
         if ($hasAdm) {
             return true;
         }
-        return AclPolicy::checkAcl($acl, array_flip($user->getAcl()));
+        return AclPolicy::checkAcl($acl, $user->getAcl());
     }
 
     public function isGrantedAcl($acl, $ownerId = null)

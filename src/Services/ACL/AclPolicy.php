@@ -33,6 +33,8 @@ class AclPolicy
             return false;
         }
 
+        $aclList = array_flip($aclList);
+
         $namespace = explode('/', $acl);
 
         $levelHistory = '';

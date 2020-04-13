@@ -514,7 +514,16 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 
     public function getAcl()
     {
-        return $this->acl;
+        $acl = $this->acl;
+        return array_unique($acl);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAcl($acl)
+    {
+        return in_array(strtoupper($acl), $this->getAcl(), true);
     }
 
     /**
