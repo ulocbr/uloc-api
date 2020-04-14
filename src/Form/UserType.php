@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Uloc\ApiBundle\Entity\User\User;
 
+// TODO: Validate username, email and password fields. Create test with invalid data
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

@@ -34,14 +34,20 @@ class UserManager extends CustomManager implements UserManagerInterface
     /* @var User */
     private $user;
 
-    public function create($name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null)
+    public function create($name, string $username, string $email, $password = null, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null)
     {
         $user = new User();
         $user->setUsername($username);
         $user->setEmail($email);
-        $user->setPassword($password);
+        if (empty($password)) {
+            $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+            $password = substr(str_shuffle($data), 0, 6);
+        }
+        $user->setPlainPassword($password);
         if ($this->passwordEncoder) {
             $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        } else {
+            $user->setPassword($user->getPlainPassword());
         }
         $user->setActive($active);
 
