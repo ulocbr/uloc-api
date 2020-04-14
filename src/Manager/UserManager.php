@@ -61,10 +61,16 @@ class UserManager extends CustomManager implements UserManagerInterface
 
         /**
          * Set Extra Data
-         * Possibilites: Address, Emails, Phones, ContactExtra
+         * Possibilites: Roles, ACL, Address, Emails, Phones, ContactExtra
          */
         if (is_array($extras)) {
+            if (isset($extras['roles'])) {
+                $user->setRoles($extras['roles']);
+            }
 
+            if (isset($extras['acl'])) {
+                $user->setRoles($extras['acl']);
+            }
         }
 
         /**
