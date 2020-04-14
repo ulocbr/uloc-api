@@ -69,7 +69,7 @@ class UserManager extends CustomManager implements UserManagerInterface
             }
 
             if (isset($extras['acl'])) {
-                $user->setRoles($extras['acl']);
+                $user->setAcl($extras['acl']);
             }
         }
 
