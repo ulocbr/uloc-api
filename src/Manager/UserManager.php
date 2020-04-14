@@ -34,7 +34,7 @@ class UserManager extends CustomManager implements UserManagerInterface
     /* @var User */
     private $user;
 
-    public function create(string $name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null)
+    public function create($name, string $username, string $email, string $password, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null)
     {
         $user = new User();
         $user->setUsername($username);
