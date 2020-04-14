@@ -13,5 +13,26 @@
                 <value>Default</value>
             </option>
         </constraint>
+
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">uloc_user.name.not_blank</option>
+            </constraint>
+        </property>
+
+        <property name="username">
+            <constraint name="NotBlank">
+                <option name="message">uloc_user.username.not_blank</option>
+            </constraint>
+        </property>
+
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">uloc_user.email.not_blank</option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">uloc_user.email.invalid</option>
+            </constraint>
+        </property>
     </class>
 </constraint-mapping>

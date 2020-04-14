@@ -34,7 +34,7 @@ interface UserManagerInterface
      * @param Person|null $person
      * @return mixed
      */
-    public function create($name, string $username, string $email, $password = null, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null);
+    public function create(string $name, string $username, string $email, $password = null, bool $active = true, array $extras = null, array $options = null, $createPerson = true, Person $person = null);
 
     /**
      * Find and return an User entity
