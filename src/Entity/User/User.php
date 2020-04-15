@@ -493,7 +493,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 
     public function removeAcl($acl)
     {
-        if (false !== $key = array_search(strtoupper($acl), $this->acl, true)) {
+        if (false !== $key = array_search(strtolower($acl), $this->acl, true)) {
             unset($this->acl[$key]);
             $this->acl = array_values($this->acl);
         }
@@ -523,7 +523,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      */
     public function hasAcl($acl)
     {
-        return in_array(strtoupper($acl), $this->getAcl(), true);
+        return in_array(strtolower($acl), $this->getAcl(), true);
     }
 
     /**
