@@ -40,8 +40,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         $user->setUsername($username);
         $user->setEmail($email);
         if (empty($password)) {
-            $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
-            $password = substr(str_shuffle($data), 0, 6);
+            $this->generetePassword();
         }
         $user->setPlainPassword($password);
         if ($this->passwordEncoder) {
@@ -112,7 +111,7 @@ class UserManager extends CustomManager implements UserManagerInterface
     }
 
     /**
-     * Check if is managing a User
+     * Check if is managing a User (TODO: Create exception for this)
      *
      * @return boolean
      */
@@ -223,5 +222,21 @@ class UserManager extends CustomManager implements UserManagerInterface
             $this->eventDispatcher->dispatch($event, $eventName);
         }
     }
+
+    public function generatePassword(){
+        $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+        return $password = substr(str_shuffle($data), 0, 6);
+    }
+
+    public function redefinePassword()
+    {
+        $password = $this->generatePassword();
+        $user = $this->user;
+        $user->setPassword($password);
+        $this->persist($user);
+        $this->flush();
+        return $password;
+    }
+
 
 }
