@@ -85,6 +85,11 @@ abstract class FormEntity extends CommonEntity
     private $order = 0;
 
     /**
+     * @var null|boolean
+     */
+    private $deleted = false;
+
+    /**
      * @var bool
      */
     protected $new = false;
@@ -103,6 +108,7 @@ abstract class FormEntity extends CommonEntity
         $this->dateModified = null;
         $this->checkedOut = null;
         $this->active = false;
+        $this->deleted = false;
     }
 
     /**
@@ -406,6 +412,22 @@ abstract class FormEntity extends CommonEntity
         $this->slug = Sluggable::slugify($stringToSlug);
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool|null $deleted
+     */
+    public function setDeleted(?bool $deleted): void
+    {
+        $this->deleted = $deleted;
+    }
+
     static $serializeApi = [
         'slug',
         'active',
@@ -418,7 +440,8 @@ abstract class FormEntity extends CommonEntity
         'checkedOut',
         'checkedOutBy',
         'checkedOutByUser',
-        'order'
+        'order',
+        'deleted'
     ];
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)

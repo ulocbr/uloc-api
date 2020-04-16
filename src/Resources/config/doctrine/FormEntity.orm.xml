@@ -25,6 +25,7 @@
         <field name="checkedOutByUser" type="string" nullable="true"/>
 
         <field name="order" column="ordering" type="smallint" nullable="true"/>
+        <field name="deleted" column="deleted" type="boolean" nullable="true"/>
 
     </mapped-superclass>
 
