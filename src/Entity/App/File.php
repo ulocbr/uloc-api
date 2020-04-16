@@ -10,6 +10,7 @@
 
 namespace Uloc\ApiBundle\Entity\App;
 
+use Uloc\ApiBundle\Entity\FormEntity;
 
 /**
  * Classe abstrata para fornecer os métodos e requisitos para armazenar um file no sistema
@@ -18,7 +19,7 @@ namespace Uloc\ApiBundle\Entity\App;
  * @version 0.0.1
  *
  */
-abstract class File
+abstract class File extends FormEntity
 {
 
     protected $file;
