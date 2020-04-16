@@ -60,9 +60,10 @@ class ApiRepresentationMetadata implements ApiRepresentationMetadataInterface
                 }
                 return null;
             }
-            return isset($this->properties[$group])
-                ? $this->properties[$group]
-                : $this->properties;
+            if (!isset($this->properties[$group])) {
+                throw new \LogicException(sprintf('Serialization group %s not exists', $group));
+            }
+            return $this->properties[$group];
         }
         return $this->properties;
     }
