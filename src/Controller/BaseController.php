@@ -259,4 +259,17 @@ abstract class BaseController extends AbstractController
         }
     }
 
+    public function bindFormEntityFilters(Request $request = null, array &$filters = null)
+    {
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $filters['search'] = $search;
+        }
+
+        $active = $request->get('active');
+        if (!empty($active)) {
+            $filters['active'] = $active;
+        }
+    }
+
 }
