@@ -17,6 +17,7 @@ class PersonManagerTest extends AbstractFuncionalTest
         $person = $personManager
             ->disablePersist()
             ->create('Tiago', 1, true, [
+                'document' => '123456',
                 'address' => [
                     [
                         'address' => 'Rua Dr Antonio Augusto Veloso',
@@ -78,6 +79,7 @@ class PersonManagerTest extends AbstractFuncionalTest
 
         $this->assertInstanceOf(Person::class, $person);
         $this->assertEquals('Tiago', $person->getName());
+        $this->assertEquals('123456', $person->getDocument());
 
         /* @var \Uloc\ApiBundle\Entity\Person\Address $address */
         $address = $person->getAddresses()[0];

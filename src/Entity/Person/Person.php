@@ -51,6 +51,11 @@ class Person extends FormEntity
     protected $photo;
 
     /**
+     * @var string
+     */
+    protected $document;
+
+    /**
      * @var int
      *
      * 0 = Person
@@ -333,6 +338,22 @@ class Person extends FormEntity
     public function getPhoto()
     {
         return $this->photo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param string $document
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
     }
 
     /**

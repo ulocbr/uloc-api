@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Tests;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Uloc\ApiBundle\UlocApiBundle;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -34,6 +35,7 @@ class UlocApiTestingKernel extends Kernel
         return [
             new DoctrineBundle(),
             new UlocApiBundle(),
+            new FrameworkBundle()
         ];
     }
 

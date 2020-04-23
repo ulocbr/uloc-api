@@ -47,6 +47,14 @@ class PersonManager extends CustomManager implements PersonManagerInterface
          * Possibilites: Address, Emails, Phones, ContactExtra
          */
         if (is_array($extras)) {
+
+            /**
+             * Primary Document
+             */
+            if (isset($extras['document'])) {
+                $person->setDocument($extras['document']);
+            }
+
             /**
              * Addresses
              * Need parse 'address' key to $extras with array contains one or more address
