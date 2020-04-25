@@ -399,29 +399,38 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         // TODO: Implement listAddresses() method.
     }
 
-    public function createTypeAddressPurpose($name)
+    public function createTypeAddressPurpose($name, $active = true)
     {
-        // TODO: Implement createTypeAddressPurpose() method.
+        $entity = new TypeAddressPurpose();
+        $entity->setName($name);
+        $entity->setActive($active);
+        $this->persist($entity);
+        $this->flush();
+        return $entity;
     }
 
     public function findTypeAddressPurpose(int $id)
     {
-        // TODO: Implement findTypeAddressPurpose() method.
+        return $this->om->getRepository(TypeAddressPurpose::class)->find($id);
     }
 
     public function updateTypeAddressPurpose(TypeAddressPurpose $type)
     {
-        // TODO: Implement updateTypeAddressPurpose() method.
+        $this->persist($type);
+        $this->flush();
+        return $type;
     }
 
     public function removeTypeAddressPurpose(TypeAddressPurpose $type)
     {
-        // TODO: Implement removeTypeAddressPurpose() method.
+        $this->om->remove($type);
+        $this->flush();
+        return $this;
     }
 
     public function listTypeAddressPurposes(int $limit = null, int $offset = 0, $filter = null)
     {
-        // TODO: Implement listTypeAddressPurposes() method.
+        return $this->om->getRepository(TypeAddressPurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
     public function addPaper(Person $person, $type, \DateTime $start = null, \DateTime $end = null)

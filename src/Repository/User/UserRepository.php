@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Uloc\ApiBundle\Exception\UsernameNotFoundException;
 use Uloc\ApiBundle\Entity\User\User;
-use Uloc\ApiBundle\Repository\BaseEntityRepository;
+use Uloc\ApiBundle\Repository\BaseRepository;
 
-class UserRepository extends BaseEntityRepository implements UserLoaderInterface
+class UserRepository extends BaseRepository implements UserLoaderInterface
 {
     /**
      * @param $username
