@@ -2,23 +2,23 @@
 
 namespace Uloc\ApiBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class BaseRepository
- * @package UlocApoBundle\Repository
+ * @package UlocApiBundle\Repository
  */
-class BaseRepository extends ServiceEntityRepository
+class BaseRepository extends EntityRepository
 {
 
-    public function __construct(ManagerRegistry $registry, $entity = null)
+    /*public function __construct(ManagerRegistry $registry, $entity = null)
     {
         parent::__construct($registry, $entity);
-    }
+    }*/
 
     public function filterActive(QueryBuilder $query, $active, $queryCount = null)
     {
