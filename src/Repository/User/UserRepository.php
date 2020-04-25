@@ -90,7 +90,7 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
     }
 
 
-    public function findAllSimple($limit = 100, $offset = 0, $filters = null, $hydrate = null)
+    public function findAllUserSimple($limit = 100, $offset = 0, $filters = null, $hydrate = null)
     {
 
         $query = $this->getEntityManager()->createQueryBuilder()

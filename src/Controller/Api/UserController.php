@@ -38,7 +38,7 @@ class UserController extends BaseController
             $filtros['tipo'] = $tipo;
         }
 
-        $data = $em->getRepository('UlocAppBundle:User')->findAllSimple($limit, $offset, $filtros);
+        $data = $em->getRepository('UlocAppBundle:User')->findAllUserSimple($limit, $offset, $filtros);
         $total = $data['total'];
 
         $response = array(

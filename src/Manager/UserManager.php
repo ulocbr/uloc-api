@@ -155,7 +155,7 @@ class UserManager extends CustomManager implements UserManagerInterface
      */
     public function list(int $limit, int $offset = 0, array $filters = null, $format = null, $hydrate = null)
     {
-        return $this->om->getRepository(User::class)->findAllSimple($limit, $offset, $filters, $hydrate);
+        return $this->om->getRepository(User::class)->findAllUserSimple($limit, $offset, $filters, $hydrate);
     }
 
     /**
