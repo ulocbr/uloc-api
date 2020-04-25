@@ -4,6 +4,7 @@ namespace Uloc\ApiBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
 
 /**
  * Class BaseRepositoryService
