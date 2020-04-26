@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Entity\Person;
 
 use Uloc\ApiBundle\Entity\FormEntity;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * TypePurpose
@@ -31,6 +32,20 @@ abstract class TypePurpose extends FormEntity
     public function setCode($code)
     {
         $this->code = $code;
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+
+        $public = [
+            'id',
+            'name'
+        ];
+
+        $representation
+            ->setGroup('public')->addProperties($public)
+            ->setGroup('admin')->addProperties($public)->build();
     }
 
 }
