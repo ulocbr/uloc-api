@@ -20,6 +20,8 @@ class BaseRepository extends EntityRepository
         parent::__construct($registry, $entity);
     }*/
 
+    static $defaultSearch = 'name';
+
     public function filterActive(QueryBuilder $query, $active, $queryCount = null)
     {
         if (gettype($active) === 'boolean') {
@@ -128,7 +130,7 @@ class BaseRepository extends EntityRepository
         if (isset($filters['search'])) {
             if (empty($searchCriteria)) {
                 $searchCriteria = Criteria::create()->where(
-                    Criteria::expr()->contains($defaultAlias . '.nome', $filters['search'])
+                    Criteria::expr()->contains($defaultAlias . '.' . self::$defaultSearch, $filters['search'])
                 );
             }
             $query->addCriteria($searchCriteria);
@@ -148,7 +150,6 @@ class BaseRepository extends EntityRepository
         $sortByPossibles = [
             'id' => 'a.id',
             'active' => 'a.active',
-            'nome' => 'a.nome',
         ];
         return $this->findAllSimpleBasic(
             self::getClassName(),
