@@ -11,6 +11,7 @@ use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
  */
 class PersonDocument extends FormEntity
 {
+
     /**
      * @var int
      *
@@ -38,6 +39,12 @@ class PersonDocument extends FormEntity
      * Muitos Documents tem Um Person.
      */
     private $person;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setActive(true);
+    }
 
     /**
      * @return mixed
