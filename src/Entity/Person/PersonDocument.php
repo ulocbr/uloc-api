@@ -2,11 +2,14 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Entity\FormEntity;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
+
 /**
  * PersonDocument
  *
  */
-class PersonDocument
+class PersonDocument extends FormEntity
 {
     /**
      * @var int
@@ -124,5 +127,21 @@ class PersonDocument
     public function getAgentDispatcher()
     {
         return $this->agentDispatcher;
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+
+        $public = [
+            'id',
+            'identifier',
+            'agentDispatcher',
+            'type' => ['id', 'name', 'code']
+        ];
+
+        $representation
+            ->setGroup('public')->addProperties($public)
+            ->setGroup('admin')->addProperties($public)->build();
     }
 }
