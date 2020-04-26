@@ -99,6 +99,15 @@ class TypePhonePurpose extends TypePurpose
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
-        // TODO: Implement loadApiRepresentation() method.
+        parent::loadApiRepresentation($representation);
+
+        $public = [
+            'id',
+            'name'
+        ];
+
+        $representation
+            ->setGroup('public')->addProperties($public)
+            ->setGroup('admin')->addProperties($public)->build();
     }
 }
