@@ -27,7 +27,7 @@ class BaseRepository extends EntityRepository
     ];
 
     protected $fieldSearch = null;
-    protected $additionalSortByPossibles = [];
+    protected $additionalSortByPossibles = ['name' => 'a.name'];
 
     public function setFieldSearch($field)
     {
