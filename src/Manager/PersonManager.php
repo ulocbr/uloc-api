@@ -317,29 +317,38 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         // TODO: Implement listDocuments() method.
     }
 
-    public function createTypePersonDocument($name)
+    public function createTypePersonDocument($name, $active = true)
     {
-        // TODO: Implement createTypePersonDocument() method.
+        $entity = new TypePersonDocument();
+        $entity->setName($name);
+        $entity->setActive($active);
+        $this->persist($entity);
+        $this->flush();
+        return $entity;
     }
 
     public function findTypePersonDocument(int $id)
     {
-        // TODO: Implement findTypePersonDocument() method.
+        return $this->om->getRepository(TypePersonDocument::class)->find($id);
     }
 
     public function updateTypePersonDocument(TypePersonDocument $type)
     {
-        // TODO: Implement updateTypePersonDocument() method.
+        $this->persist($type);
+        $this->flush();
+        return $type;
     }
 
     public function removeTypePersonDocument(TypePersonDocument $type)
     {
-        // TODO: Implement removeTypePersonDocument() method.
+        $this->om->remove($type);
+        $this->flush();
+        return $this;
     }
 
     public function listTypePersonDocuments(int $limit = null, int $offset = 0, $filter = null)
     {
-        // TODO: Implement listTypePersonDocuments() method.
+        return $this->om->getRepository(TypePersonDocument::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
     public function addAddress($address, $complement = null, $number = null, $district = null, $districtId = null, $zip = null, $city = null, $cityId = null, $state = null, $stateId = null, $otherPurpose = null, $default = false, $latitude = null, $longitude = null, $type = null)
