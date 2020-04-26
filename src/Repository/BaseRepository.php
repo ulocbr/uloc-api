@@ -26,6 +26,13 @@ class BaseRepository extends EntityRepository
         'active' => 'a.active',
     ];
 
+    protected $fieldSearch = null;
+
+    public function setFieldSearch($field)
+    {
+        $this->fieldSearch = $field;
+    }
+
     public function filterActive(QueryBuilder $query, $active, $queryCount = null)
     {
         if (gettype($active) === 'boolean') {
@@ -133,8 +140,9 @@ class BaseRepository extends EntityRepository
 
         if (isset($filters['search'])) {
             if (empty($searchCriteria)) {
+                $fieldSearch = !empty($this->fieldSearch) ? $this->fieldSearch : self::$defaultSearch;
                 $searchCriteria = Criteria::create()->where(
-                    Criteria::expr()->contains($defaultAlias . '.' . self::$defaultSearch, $filters['search'])
+                    Criteria::expr()->contains($defaultAlias . '.' . $fieldSearch, $filters['search'])
                 );
             }
             $query->addCriteria($searchCriteria);
