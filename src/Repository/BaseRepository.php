@@ -21,6 +21,10 @@ class BaseRepository extends EntityRepository
     }*/
 
     static $defaultSearch = 'name';
+    static $defaultSort = [
+        'id' => 'a.id',
+        'active' => 'a.active',
+    ];
 
     public function filterActive(QueryBuilder $query, $active, $queryCount = null)
     {
@@ -147,10 +151,7 @@ class BaseRepository extends EntityRepository
 
     public function findAllSimple(int $limit = 100, int $offset = 0, $sortBy = null, $sortDesc = null, array $filters = null, $onlyActive = false, $hideDeleted = true)
     {
-        $sortByPossibles = [
-            'id' => 'a.id',
-            'active' => 'a.active',
-        ];
+        $sortByPossibles = self::$defaultSort;
         return $this->findAllSimpleBasic(
             self::getClassName(),
             $sortByPossibles,
