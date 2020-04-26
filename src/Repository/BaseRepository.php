@@ -27,10 +27,16 @@ class BaseRepository extends EntityRepository
     ];
 
     protected $fieldSearch = null;
+    protected $additionalSortByPossibles = [];
 
     public function setFieldSearch($field)
     {
         $this->fieldSearch = $field;
+    }
+
+    public function setAdditionalSortByPossibles(array $fields)
+    {
+        $this->additionalSortByPossibles = $fields;
     }
 
     public function filterActive(QueryBuilder $query, $active, $queryCount = null)
@@ -159,7 +165,7 @@ class BaseRepository extends EntityRepository
 
     public function findAllSimple(int $limit = 100, int $offset = 0, $sortBy = null, $sortDesc = null, array $filters = null, $onlyActive = false, $hideDeleted = true)
     {
-        $sortByPossibles = self::$defaultSort;
+        $sortByPossibles = array_merge(self::$defaultSort, $this->additionalSortByPossibles);
         return $this->findAllSimpleBasic(
             self::getClassName(),
             $sortByPossibles,
