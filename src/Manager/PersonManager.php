@@ -562,29 +562,38 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         // TODO: Implement listPhones() method.
     }
 
-    public function createTypePhonePurpose($name)
+    public function createTypePhonePurpose($name, $active = true)
     {
-        // TODO: Implement createTypePhonePurpose() method.
+        $entity = new TypePhonePurpose();
+        $entity->setName($name);
+        $entity->setActive($active);
+        $this->persist($entity);
+        $this->flush();
+        return $entity;
     }
 
     public function findTypePhonePurpose(int $id)
     {
-        // TODO: Implement findTypePhonePurpose() method.
+        return $this->om->getRepository(TypePhonePurpose::class)->find($id);
     }
 
     public function updateTypePhonePurpose(TypePhonePurpose $type)
     {
-        // TODO: Implement updateTypePhonePurpose() method.
+        $this->persist($type);
+        $this->flush();
+        return $type;
     }
 
     public function removeTypePhonePurpose(TypePhonePurpose $type)
     {
-        // TODO: Implement removeTypePhonePurpose() method.
+        $this->om->remove($type);
+        $this->flush();
+        return $this;
     }
 
     public function listTypePhonePurposes(int $limit = null, int $offset = 0, $filter = null)
     {
-        // TODO: Implement listTypePhonePurposes() method.
+        return $this->om->getRepository(TypePhonePurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
     public function addEmail($email, $valid = true, $default = false, $otherPurpose = null, $type = null)
@@ -634,29 +643,38 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         // TODO: Implement listEmails() method.
     }
 
-    public function createTypeEmailPurpose($name)
+    public function createTypeEmailPurpose($name, $active = true)
     {
-        // TODO: Implement createTypeEmailPurpose() method.
+        $entity = new TypeEmailPurpose();
+        $entity->setName($name);
+        $entity->setActive($active);
+        $this->persist($entity);
+        $this->flush();
+        return $entity;
     }
 
     public function findTypeEmailPurpose(int $id)
     {
-        // TODO: Implement findTypeEmailPurpose() method.
+        return $this->om->getRepository(TypeEmailPurpose::class)->find($id);
     }
 
     public function updateTypeEmailPurpose(TypeEmailPurpose $type)
     {
-        // TODO: Implement updateTypeEmailPurpose() method.
+        $this->persist($type);
+        $this->flush();
+        return $type;
     }
 
     public function removeTypeEmailPurpose(TypeEmailPurpose $type)
     {
-        // TODO: Implement removeTypeEmailPurpose() method.
+        $this->om->remove($type);
+        $this->flush();
+        return $this;
     }
 
     public function listTypeEmailPurposes(int $limit = null, int $offset = 0, $filter = null)
     {
-        // TODO: Implement listTypeEmailPurposes() method.
+        return $this->om->getRepository(TypeEmailPurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
     public function addContactExtra($name, $tag, $value, $label = null, $type = null)
@@ -706,29 +724,38 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         // TODO: Implement listContactExtras() method.
     }
 
-    public function createTypeContactExtraPurpose($name)
+    public function createTypeContactExtraPurpose($name, $active = true)
     {
-        // TODO: Implement createTypeContactExtraPurpose() method.
+        $entity = new TypeContactExtraPurpose();
+        $entity->setName($name);
+        $entity->setActive($active);
+        $this->persist($entity);
+        $this->flush();
+        return $entity;
     }
 
     public function findTypeContactExtraPurpose(int $id)
     {
-        // TODO: Implement findTypeContactExtraPurpose() method.
+        return $this->om->getRepository(TypeContactExtraPurpose::class)->find($id);
     }
 
     public function updateTypeContactExtraPurpose(TypeContactExtraPurpose $type)
     {
-        // TODO: Implement updateTypeContactExtraPurpose() method.
+        $this->persist($type);
+        $this->flush();
+        return $type;
     }
 
     public function removeTypeContactExtraPurpose(TypeContactExtraPurpose $type)
     {
-        // TODO: Implement removeTypeContactExtraPurpose() method.
+        $this->om->remove($type);
+        $this->flush();
+        return $this;
     }
 
     public function listTypeContactExtraPurposes(int $limit = null, int $offset = 0, $filter = null)
     {
-        // TODO: Implement listTypeContactExtraPurposes() method.
+        return $this->om->getRepository(TypeContactExtraPurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
     public function addExtraField($name, $code = null, $description = null, $required = true)
