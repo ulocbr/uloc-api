@@ -6,7 +6,7 @@
 
     <mapped-superclass name="Uloc\ApiBundle\Entity\Person\TypePurpose">
 
-        <field name="code" type="string" length="100" unique="true" />
+        <field name="code" type="string" length="100" nullable="true" />
 
     </mapped-superclass>
 </doctrine-mapping>
