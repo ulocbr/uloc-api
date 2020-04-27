@@ -292,29 +292,59 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         // TODO: Implement listRegistrationOrigins() method.
     }
 
+    /**
+     * @param $identifier
+     * @param $agentDispatcher
+     * @param null $type
+     * @return PersonDocument
+     * @throws \Exception
+     */
     public function addDocument($identifier, $agentDispatcher, $type = null)
     {
-        // TODO: Implement addDocument() method.
+        $entity = new PersonDocument();
+        $entity->setIdentifier($identifier);
+        $entity->setAgentDispatcher($agentDispatcher);
+        if ($type instanceof TypePersonDocument) {
+            $entity->setType($type);
+        } elseif (!empty($type)) {
+            $typeId = intval($type);
+            $typeEntity = $this->findTypePersonDocument($typeId);
+            if (!$typeEntity) {
+                throw new \Exception('TypePersonDocument with id ' . $typeId . ' not found');
+            }
+        }
+
+        if ($this->isManaging()) {
+            $this->person->addDocument($entity);
+            $entity->setPerson($this->person);
+            $this->persist($entity);
+        }
+
+        return $entity;
     }
 
     public function findDocument(int $id)
     {
-        // TODO: Implement findDocument() method.
+        return $this->om->getRepository(PersonDocument::class)->find($id);
     }
 
     public function updateDocument(PersonDocument $document)
     {
-        // TODO: Implement updateDocument() method.
+        $this->persist($document);
+        $this->flush();
+        return $document;
     }
 
     public function removeDocument(PersonDocument $document)
     {
-        // TODO: Implement removeDocument() method.
+        $this->om->remove($document);
+        $this->flush();
+        return $this;
     }
 
-    public function listDocuments(int $limit = null, int $offset = 0, $filter = null)
+    public function listDocuments(int $limit = null, int $offset = 0, $filter = null, $person = null)
     {
-        // TODO: Implement listDocuments() method.
+        return $this->om->getRepository(PersonDocument::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true, $person);
     }
 
     public function createTypePersonDocument($name, $active = true)

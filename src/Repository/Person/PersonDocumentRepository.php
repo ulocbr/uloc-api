@@ -2,6 +2,8 @@
 
 namespace Uloc\ApiBundle\Repository\Person;
 
+use Doctrine\ORM\QueryBuilder;
+use Uloc\ApiBundle\Entity\Person\PersonDocument;
 use Uloc\ApiBundle\Repository\BaseRepository;
 
 /**
@@ -12,4 +14,34 @@ use Uloc\ApiBundle\Repository\BaseRepository;
  */
 class PersonDocumentRepository extends BaseRepository
 {
+    public function findAllSimple(int $limit = 100, int $offset = 0, $sortBy = null, $sortDesc = null, array $filters = null, $active = true, $hideDeleted = true, $person = null)
+    {
+        $sortByPossibles = [
+            'id' => 'a.id',
+            'active' => 'a.active',
+            'nome' => 'p.name'
+        ];
+        if(null !== $person) {
+            $criteria = function (QueryBuilder $query) use ($person) {
+                $query->andWhere('a.pessoa', $person);
+            };
+        } else{
+            $criteria = null;
+        }
+        return $this->findAllSimpleBasic(
+            PersonDocument::class,
+            $sortByPossibles,
+            $limit,
+            $offset,
+            $sortBy,
+            $sortDesc,
+            $filters,
+            $active,
+            $hideDeleted,
+            null,
+            \Doctrine\ORM\Query::HYDRATE_ARRAY,
+            'a, p',
+            $criteria
+        );
+    }
 }
