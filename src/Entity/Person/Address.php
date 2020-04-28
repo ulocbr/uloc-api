@@ -2,11 +2,14 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Entity\FormEntity;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
+
 /**
  * Address
  *
  */
-class Address
+class Address extends FormEntity
 {
     /**
      * @var int
@@ -447,5 +450,20 @@ class Address
     public function setStateId($stateId)
     {
         $this->stateId = $stateId;
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+
+        $public = [
+            'id',
+            'name',
+            'code'
+        ];
+
+        $representation
+            ->setGroup('public')->addProperties($public)
+            ->setGroup('admin')->addProperties($public)->build();
     }
 }
