@@ -183,7 +183,7 @@ class ContactEmail extends FormEntity
     /**
      * @return string
      */
-    public function getOtherPurpose(): string
+    public function getOtherPurpose(): ?string
     {
         return $this->otherPurpose;
     }
