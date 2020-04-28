@@ -32,7 +32,7 @@
 
         <field name="otherPurpose" type="string" nullable="true"/>
 
-        <field name="default" type="boolean"/>
+        <field name="isDefault" type="boolean"/>
 
         <field name="latitude" type="string" nullable="true"/>
 
