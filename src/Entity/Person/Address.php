@@ -105,6 +105,13 @@ class Address extends FormEntity
      */
     private $person;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setActive(true);
+    }
+
+
     /**
      * Get id
      *
@@ -459,7 +466,8 @@ class Address extends FormEntity
         $public = [
             'id',
             'name',
-            'code'
+            'code',
+            'purpose' => ['id', 'code', 'name'],
         ];
 
         $representation

@@ -18,7 +18,7 @@
 
         <field name="cellphone" type="boolean" nullable="true"/>
 
-        <field name="default" type="boolean" nullable="true"/>
+        <field name="default" type="boolean" column="isDefault" nullable="true"/>
 
         <field name="im" type="object" nullable="true"/>
 

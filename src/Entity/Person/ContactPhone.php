@@ -2,12 +2,15 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Entity\FormEntity;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
+
 /**
  * ContactPhone
  *
  * #CustomAssert\PhoneNumber(groups={"Default"})
  */
-class ContactPhone
+class ContactPhone extends FormEntity
 {
     /**
      * @var int
@@ -64,6 +67,8 @@ class ContactPhone
 
     public function __construct()
     {
+        parent::__construct();
+        $this->setActive(true);
         $this->areaCode = '55'; //Brasil defaults
     }
 
@@ -114,7 +119,7 @@ class ContactPhone
      *
      * @param string $otherPurpose
      *
-     * @return ContatoPhoneNumber
+     * @return self
      */
     public function setOtherPurpose($otherPurpose)
     {
@@ -138,7 +143,7 @@ class ContactPhone
      *
      * @param string $areaCode
      *
-     * @return ContatoPhoneNumber
+     * @return self
      */
     public function setAreaCode($areaCode)
     {
@@ -162,7 +167,7 @@ class ContactPhone
      *
      * @param string $phoneNumber
      *
-     * @return ContatoPhoneNumber
+     * @return self
      */
     public function setPhoneNumber($phoneNumber)
     {
@@ -186,7 +191,7 @@ class ContactPhone
      *
      * @param boolean $cellphone
      *
-     * @return ContatoPhoneNumber
+     * @return self
      */
     public function setCellphone($cellphone)
     {
@@ -210,7 +215,7 @@ class ContactPhone
      *
      * @param boolean $default
      *
-     * @return ContatoPhoneNumber
+     * @return self
      */
     public function setDefault($default)
     {
@@ -234,7 +239,7 @@ class ContactPhone
      *
      * @param \stdClass $im
      *
-     * @return ContatoPhoneNumber
+     * @return self
      */
     public function setIm($im)
     {
@@ -259,5 +264,25 @@ class ContactPhone
         $ddd = substr($phoneNumber, 0, 2);
         $phoneNumber = substr($phoneNumber, 2, strlen($phoneNumber) - 2);
         return array($ddd, $phoneNumber);
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+
+        $public = [
+            'id',
+            'otherPurpose',
+            'areaCode',
+            'phoneNumber',
+            'cellphone',
+            'default',
+            'im',
+            'purpose' => ['id', 'code', 'name'],
+        ];
+
+        $representation
+            ->setGroup('public')->addProperties($public)
+            ->setGroup('admin')->addProperties($public)->build();
     }
 }

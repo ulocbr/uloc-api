@@ -2,11 +2,14 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Entity\FormEntity;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
+
 /**
  * ContactExtra
  *
  */
-class ContactExtra
+class ContactExtra extends FormEntity
 {
     /**
      * @var int
@@ -41,6 +44,12 @@ class ContactExtra
      * Muitos ContatosExtras tem Um Person.
      */
     private $person;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setActive(true);
+    }
 
     /**
      * @return mixed
@@ -186,5 +195,22 @@ class ContactExtra
     public function setPurpose(TypeContactExtraPurpose $purpose)
     {
         $this->purpose = $purpose;
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+
+        $public = [
+            'id',
+            'name',
+            'tag',
+            'value',
+            'purpose' => ['id', 'code', 'name'],
+        ];
+
+        $representation
+            ->setGroup('public')->addProperties($public)
+            ->setGroup('admin')->addProperties($public)->build();
     }
 }

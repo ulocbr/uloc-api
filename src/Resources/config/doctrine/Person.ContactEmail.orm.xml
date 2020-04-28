@@ -16,7 +16,7 @@
 
         <field name="valid" type="boolean" nullable="true"/>
 
-        <field name="default" type="boolean" nullable="false"/>
+        <field name="default" type="boolean" column="isDefault" nullable="false"/>
 
         <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="emails">
             <join-column name="person_id" referenced-column-name="id"/>
