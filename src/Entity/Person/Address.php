@@ -82,7 +82,7 @@ class Address extends FormEntity
      * @var bool
      *
      */
-    private $default;
+    private $default = false;
 
     /**
      * @var string
