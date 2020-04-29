@@ -40,7 +40,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         $user->setUsername($username);
         $user->setEmail($email);
         if (empty($password)) {
-            $this->generetePassword();
+            $this->generatePassword();
         }
         $user->setPlainPassword($password);
         if ($this->passwordEncoder) {
