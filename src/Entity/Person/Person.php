@@ -595,6 +595,10 @@ class Person extends FormEntity
         $this->phoneNumbers[] = $phone;
         return $this;
     }
+    public function addPhoneNumber(ContactPhone $phone)
+    {
+        return $this->addPhone($phone);
+    }
 
     /**
      * @param ContactPhone $phone
@@ -604,6 +608,10 @@ class Person extends FormEntity
     {
         $this->phoneNumbers->removeElement($phone);
         return $this;
+    }
+    public function removePhoneNumber(ContactPhone $phone)
+    {
+        return $this->removePhone($phone);
     }
 
     /**
