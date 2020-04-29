@@ -60,7 +60,7 @@ class UserManager extends CustomManager implements UserManagerInterface
 
         /**
          * Set Extra Data
-         * Possibilites: Roles, ACL, Address, Emails, Phones, ContactExtra
+         * Possibilites: Roles, ACL, Address, Emails, Phones, Contacts
          */
         if (is_array($extras)) {
             if (isset($extras['roles'])) {

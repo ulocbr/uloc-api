@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity table="person_contact_extra" name="Uloc\ApiBundle\Entity\Person\ContactExtra" repository-class="Uloc\ApiBundle\Repository\Person\ContactExtraRepository">
+    <entity table="person_contact_extra" name="Uloc\ApiBundle\Entity\Person\Contact" repository-class="Uloc\ApiBundle\Repository\Person\ContactRepository">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -16,11 +16,11 @@
 
         <field name="value" type="text"/>
 
-        <many-to-one field="purpose" target-entity="Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose" inversed-by="contacts">
+        <many-to-one field="purpose" target-entity="Uloc\ApiBundle\Entity\Person\TypeContactPurpose" inversed-by="contacts">
             <join-column name="type_purpose_id" referenced-column-name="id"/>
         </many-to-one>
 
-        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="contactExtra">
+        <many-to-one field="person" target-entity="Uloc\ApiBundle\Entity\Person\Person" inversed-by="contacts">
             <join-column name="person_id" referenced-column-name="id"/>
         </many-to-one>
 

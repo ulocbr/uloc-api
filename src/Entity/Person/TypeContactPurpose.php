@@ -9,7 +9,7 @@ use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
  * @api
  *
  */
-class TypeContactExtraPurpose extends TypePurpose
+class TypeContactPurpose extends TypePurpose
 {
 
     /**
@@ -25,7 +25,7 @@ class TypeContactExtraPurpose extends TypePurpose
     private $name;
 
     /**
-     * One TypeContactExtraPurpose have many ContactExtra entities
+     * One TypeContactPurpose have many  entities
      */
     private $contacts;
 
@@ -77,9 +77,9 @@ class TypeContactExtraPurpose extends TypePurpose
     }
 
     /**
-     * @param ContactContact $contact
+     * @param Contact $contact
      */
-    public function addContact(ContactExtra $contact)
+    public function addContact(Contact $contact)
     {
         $this->contacts[] = $contact;
     }
@@ -87,9 +87,9 @@ class TypeContactExtraPurpose extends TypePurpose
     /**
      * Remove contact
      *
-     * @param ContactContact $contact
+     * @param Contact $contact
      */
-    public function removeContact(ContactExtra $contact)
+    public function removeContact(Contact $contact)
     {
         $this->contacts->removeElement($contact);
     }

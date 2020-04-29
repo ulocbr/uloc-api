@@ -6,10 +6,10 @@ use Uloc\ApiBundle\Entity\FormEntity;
 use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
- * ContactExtra
+ * Contact
  *
  */
-class ContactExtra extends FormEntity
+class Contact extends FormEntity
 {
     /**
      * @var int
@@ -36,7 +36,7 @@ class ContactExtra extends FormEntity
     private $value;
 
     /**
-     * @var TypeContactExtraPurpose
+     * @var TypeContactPurpose
      */
     private $purpose;
 
@@ -190,9 +190,9 @@ class ContactExtra extends FormEntity
     }
 
     /**
-     * @param TypeContactExtraPurpose $purpose
+     * @param TypeContactPurpose $purpose
      */
-    public function setPurpose(TypeContactExtraPurpose $purpose)
+    public function setPurpose(TypeContactPurpose $purpose)
     {
         $this->purpose = $purpose;
     }

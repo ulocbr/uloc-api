@@ -10,7 +10,7 @@ namespace Uloc\ApiBundle\Manager;
 
 use Uloc\ApiBundle\Entity\Person\Address;
 use Uloc\ApiBundle\Entity\Person\ContactEmail;
-use Uloc\ApiBundle\Entity\Person\ContactExtra;
+use Uloc\ApiBundle\Entity\Person\Contact;
 use Uloc\ApiBundle\Entity\Person\ContactPhone;
 use Uloc\ApiBundle\Entity\Person\ExtraField;
 use Uloc\ApiBundle\Entity\Person\Note;
@@ -21,7 +21,7 @@ use Uloc\ApiBundle\Entity\Person\PersonExtraField;
 use Uloc\ApiBundle\Entity\Person\RegistrationOrigin;
 use Uloc\ApiBundle\Entity\Person\Tag;
 use Uloc\ApiBundle\Entity\Person\TypeAddressPurpose;
-use Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose;
+use Uloc\ApiBundle\Entity\Person\TypeContactPurpose;
 use Uloc\ApiBundle\Entity\Person\TypeEmailPurpose;
 use Uloc\ApiBundle\Entity\Person\TypePaper;
 use Uloc\ApiBundle\Entity\Person\TypePersonDocument;
@@ -181,17 +181,17 @@ interface PersonManagerInterface
     public function removeTypeEmailPurpose(TypeEmailPurpose $type);
     public function listTypeEmailPurposes(int $limit = null, int $offset = 0, $filter = null);
 
-    public function addContactExtra($name, $tag, $value, $label = null, $type = null);
-    public function findContactExtra(int $id);
-    public function updateContactExtra(ContactExtra $contact);
-    public function removeContactExtra(ContactExtra $contact);
-    public function listContactExtras(int $limit = null, int $offset = 0, $filter = null);
+    public function addContact($name, $tag, $value, $label = null, $type = null);
+    public function findContact(int $id);
+    public function updateContact(Contact $contact);
+    public function removeContact(Contact $contact);
+    public function listContacts(int $limit = null, int $offset = 0, $filter = null);
 
-    public function createTypeContactExtraPurpose($name);
-    public function findTypeContactExtraPurpose(int $id);
-    public function updateTypeContactExtraPurpose(TypeContactExtraPurpose $type);
-    public function removeTypeContactExtraPurpose(TypeContactExtraPurpose $type);
-    public function listTypeContactExtraPurposes(int $limit = null, int $offset = 0, $filter = null);
+    public function createTypeContactPurpose($name);
+    public function findTypeContactPurpose(int $id);
+    public function updateTypeContactPurpose(TypeContactPurpose $type);
+    public function removeTypeContactPurpose(TypeContactPurpose $type);
+    public function listTypeContactPurposes(int $limit = null, int $offset = 0, $filter = null);
 
     public function addExtraField($name, $code = null, $description = null, $required = true);
     public function findExtraField(int $id);

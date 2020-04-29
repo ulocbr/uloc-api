@@ -4,7 +4,7 @@ namespace Uloc\ApiBundle\Tests;
 
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\Person\TypeAddressPurpose;
-use Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose;
+use Uloc\ApiBundle\Entity\Person\TypeContactPurpose;
 use Uloc\ApiBundle\Entity\Person\TypeEmailPurpose;
 use Uloc\ApiBundle\Entity\Person\TypePhonePurpose;
 
@@ -57,12 +57,12 @@ class PersonManagerTest extends AbstractFuncionalTest
                         'type' => (new TypePhonePurpose())->setName('Type Phone 1')
                     ]
                 ],
-                'contactExtra' => [
+                'contacts' => [
                     [
                         'name' => 'facebook',
                         'tag' => 'facebook',
                         'value' => 'facebook.com/tiagofelipeamorim',
-                        'type' => (new TypeContactExtraPurpose())->setName('Type ContactExtra 1')
+                        'type' => (new TypeContactPurpose())->setName('Type Contacts 1')
                     ]
                 ],
 
@@ -116,12 +116,12 @@ class PersonManagerTest extends AbstractFuncionalTest
         $this->assertEquals('Other', $phone->getOtherPurpose());
         $this->assertEquals('Type Phone 1', $phone->getPurpose()->getName());
 
-        /* @var \Uloc\ApiBundle\Entity\Person\ContactExtra $contact */
-        $contact = $person->getContactExtra()[0];
+        /* @var \Uloc\ApiBundle\Entity\Person\Contacts $contact */
+        $contact = $person->getContacts()[0];
         $this->assertEquals('facebook', $contact->getName());
         $this->assertEquals('facebook', $contact->getTag());
         $this->assertEquals('facebook.com/tiagofelipeamorim', $contact->getValue());
-        $this->assertEquals('Type ContactExtra 1', $contact->getPurpose()->getName());
+        $this->assertEquals('Type Contacts 1', $contact->getPurpose()->getName());
 
         /* Other Extra Data */
         $this->assertEquals($classification, $person->getClassification());

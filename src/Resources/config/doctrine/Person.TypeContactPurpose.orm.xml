@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity table="person_type_contact_extra_purpose" name="Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose" repository-class="Uloc\ApiBundle\Repository\Person\TypeContactExtraPurposeRepository">
+    <entity table="person_type_contact_extra_purpose" name="Uloc\ApiBundle\Entity\Person\TypeContactPurpose" repository-class="Uloc\ApiBundle\Repository\Person\TypeContactPurposeRepository">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -12,7 +12,7 @@
 
         <field name="name" type="string" length="100"/>
 
-        <one-to-many field="contacts" target-entity="Uloc\ApiBundle\Entity\Person\ContactExtra" mapped-by="purpose" fetch="EXTRA_LAZY"/>
+        <one-to-many field="contacts" target-entity="Uloc\ApiBundle\Entity\Person\Contact" mapped-by="purpose" fetch="EXTRA_LAZY"/>
 
     </entity>
 

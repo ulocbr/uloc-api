@@ -181,10 +181,10 @@ class Person extends FormEntity
 
     /**
      * R
-     * Um Person tem Muitos ContactExtra
+     * Um Person tem Muitos Contacts
      * !!Assert\Valid
      */
-    protected $contactExtra;
+    protected $contacts;
 
     /**
      * R
@@ -239,7 +239,7 @@ class Person extends FormEntity
         $this->extraFields = new ArrayCollection();
         $this->emails = new ArrayCollection();
         $this->phoneNumbers = new ArrayCollection();
-        $this->contactExtra = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->tagsCreated = new ArrayCollection();
@@ -552,28 +552,28 @@ class Person extends FormEntity
     /**
      * @return mixed
      */
-    public function getContactExtra()
+    public function getContacts()
     {
-        return $this->contactExtra;
+        return $this->contacts;
     }
 
     /**
-     * @param ContactExtra $contactExtra
+     * @param Contact $contact
      * @return static
      */
-    public function addContactExtra(ContactExtra $contactExtra)
+    public function addContact(Contact $contact)
     {
-        $this->contactExtra[] = $contactExtra;
+        $this->contacts[] = $contact;
         return $this;
     }
 
     /**
-     * @param ContactExtra $contactExtra
+     * @param Contact $contact
      * @return static
      */
-    public function removeContactExtra(ContactExtra $contactExtra)
+    public function removeContact(Contact $contact)
     {
-        $this->contactExtra->removeElement($contactExtra);
+        $this->contacts->removeElement($contact);
         return $this;
     }
 

@@ -77,7 +77,7 @@
             </cascade>
         </one-to-many>
 
-        <one-to-many field="contactExtra" target-entity="Uloc\ApiBundle\Entity\Person\ContactExtra" mapped-by="person">
+        <one-to-many field="contacts" target-entity="Uloc\ApiBundle\Entity\Person\Contact" mapped-by="person">
             <cascade>
                 <cascade-all/>
             </cascade>

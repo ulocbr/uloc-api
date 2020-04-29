@@ -4,7 +4,7 @@ namespace Uloc\ApiBundle\Manager;
 
 use Uloc\ApiBundle\Entity\Person\Address;
 use Uloc\ApiBundle\Entity\Person\ContactEmail;
-use Uloc\ApiBundle\Entity\Person\ContactExtra;
+use Uloc\ApiBundle\Entity\Person\Contact;
 use Uloc\ApiBundle\Entity\Person\ContactPhone;
 use Uloc\ApiBundle\Entity\Person\ExtraField;
 use Uloc\ApiBundle\Entity\Person\Note;
@@ -15,7 +15,7 @@ use Uloc\ApiBundle\Entity\Person\PersonExtraField;
 use Uloc\ApiBundle\Entity\Person\RegistrationOrigin;
 use Uloc\ApiBundle\Entity\Person\Tag;
 use Uloc\ApiBundle\Entity\Person\TypeAddressPurpose;
-use Uloc\ApiBundle\Entity\Person\TypeContactExtraPurpose;
+use Uloc\ApiBundle\Entity\Person\TypeContactPurpose;
 use Uloc\ApiBundle\Entity\Person\TypeEmailPurpose;
 use Uloc\ApiBundle\Entity\Person\TypePaper;
 use Uloc\ApiBundle\Entity\Person\TypePersonDocument;
@@ -44,7 +44,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
         /**
          * Set Extra Data
-         * Possibilites: Address, Emails, Phones, ContactExtra
+         * Possibilites: Address, Emails, Phones, Contacts
          */
         if (is_array($extras)) {
 
@@ -116,12 +116,12 @@ class PersonManager extends CustomManager implements PersonManagerInterface
             }
 
             /**
-             * ContactExtras
-             * Need parse 'contactExtra' key to $extras with array contains one or more contactExtras
+             * Contact
+             * Need parse 'contacts' key to $extras with array contains one or more contactss
              */
-            if (isset($extras['contactExtra'])) {
-                foreach ($extras['contactExtra'] as $contact) {
-                    $this->addContactExtra(
+            if (isset($extras['contacts'])) {
+                foreach ($extras['contacts'] as $contact) {
+                    $this->addContact(
                         $contact['name'],
                         $contact['tag'],
                         $contact['value'],
@@ -716,26 +716,26 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         return $this->om->getRepository(TypeEmailPurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
-    public function addContactExtra($name, $tag, $value, $label = null, $type = null)
+    public function addContact($name, $tag, $value, $label = null, $type = null)
     {
-        $entity = new ContactExtra();
+        $entity = new Contact();
         $entity->setName($name);
         $entity->setTag($tag);
         $entity->setValue($value);
         #$entity->setLabel($label); // TODO: ?
 
-        if ($type instanceof TypeContactExtraPurpose) {
+        if ($type instanceof TypeContactPurpose) {
             $entity->setPurpose($type);
         } elseif (!empty($type)) {
             $typeId = intval($type);
-            $typeEntity = $this->om->getRepository(TypeContactExtraPurpose::class)->find($typeId);
+            $typeEntity = $this->om->getRepository(TypeContactPurpose::class)->find($typeId);
             if (!$typeEntity) {
-                throw new \Exception('TypeContactExtraPurpose with id ' . $typeId . ' not found');
+                throw new \Exception('TypeContactPurpose with id ' . $typeId . ' not found');
             }
         }
 
         if ($this->isManaging()) {
-            $this->person->addContactExtra($entity);
+            $this->person->addContact($entity);
             $entity->setPerson($this->person);
             $this->persist($entity);
         }
@@ -743,29 +743,29 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         return $entity;
     }
 
-    public function findContactExtra(int $id)
+    public function findContact(int $id)
     {
-        // TODO: Implement findContactExtra() method.
+        // TODO: Implement findContacts() method.
     }
 
-    public function updateContactExtra(ContactExtra $contact)
+    public function updateContact(Contact $contact)
     {
-        // TODO: Implement updateContactExtra() method.
+        // TODO: Implement updateContacts() method.
     }
 
-    public function removeContactExtra(ContactExtra $contact)
+    public function removeContact(Contact $contact)
     {
-        // TODO: Implement removeContactExtra() method.
+        // TODO: Implement removeContacts() method.
     }
 
-    public function listContactExtras(int $limit = null, int $offset = 0, $filter = null)
+    public function listContacts(int $limit = null, int $offset = 0, $filter = null)
     {
-        // TODO: Implement listContactExtras() method.
+        // TODO: Implement listContacts() method.
     }
 
-    public function createTypeContactExtraPurpose($name, $active = true)
+    public function createTypeContactPurpose($name, $active = true)
     {
-        $entity = new TypeContactExtraPurpose();
+        $entity = new TypeContactPurpose();
         $entity->setName($name);
         $entity->setActive($active);
         $this->persist($entity);
@@ -773,28 +773,28 @@ class PersonManager extends CustomManager implements PersonManagerInterface
         return $entity;
     }
 
-    public function findTypeContactExtraPurpose(int $id)
+    public function findTypeContactPurpose(int $id)
     {
-        return $this->om->getRepository(TypeContactExtraPurpose::class)->find($id);
+        return $this->om->getRepository(TypeContactPurpose::class)->find($id);
     }
 
-    public function updateTypeContactExtraPurpose(TypeContactExtraPurpose $type)
+    public function updateTypeContactPurpose(TypeContactPurpose $type)
     {
         $this->persist($type);
         $this->flush();
         return $type;
     }
 
-    public function removeTypeContactExtraPurpose(TypeContactExtraPurpose $type)
+    public function removeTypeContactPurpose(TypeContactPurpose $type)
     {
         $this->om->remove($type);
         $this->flush();
         return $this;
     }
 
-    public function listTypeContactExtraPurposes(int $limit = null, int $offset = 0, $filter = null)
+    public function listTypeContactPurposes(int $limit = null, int $offset = 0, $filter = null)
     {
-        return $this->om->getRepository(TypeContactExtraPurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
+        return $this->om->getRepository(TypeContactPurpose::class)->findAllSimple($limit, $offset, @$filter['sortBy'], @$filter['sortDest'], $filter, isset($filter['onlyActive']) ? $filter['active'] : true);
     }
 
     public function addExtraField($name, $code = null, $description = null, $required = true)
