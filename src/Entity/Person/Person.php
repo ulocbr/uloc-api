@@ -915,7 +915,7 @@ class Person extends FormEntity
     /**
      * @param int $gender
      */
-    public function setGender(int $gender)
+    public function setGender(?int $gender)
     {
         $this->gender = $gender;
     }
