@@ -191,7 +191,7 @@ class ContactEmail extends FormEntity
     /**
      * @param string $otherPurpose
      */
-    public function setOtherPurpose(string $otherPurpose): void
+    public function setOtherPurpose($otherPurpose): void
     {
         $this->otherPurpose = $otherPurpose;
     }
