@@ -145,7 +145,7 @@ class PersonDocument extends FormEntity
     /**
      * @return string
      */
-    public function getExpedition(): string
+    public function getExpedition(): ?string
     {
         return $this->expedition;
     }
