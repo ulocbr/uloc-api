@@ -295,15 +295,17 @@ class PersonManager extends CustomManager implements PersonManagerInterface
     /**
      * @param $identifier
      * @param $agentDispatcher
+     * @param $expedition
      * @param null $type
      * @return PersonDocument
      * @throws \Exception
      */
-    public function addDocument($identifier, $agentDispatcher, $type = null)
+    public function addDocument($identifier, $agentDispatcher, $expedition, $type = null)
     {
         $entity = new PersonDocument();
         $entity->setIdentifier($identifier);
         $entity->setAgentDispatcher($agentDispatcher);
+        $entity->setExpedition($expedition);
         if ($type instanceof TypePersonDocument) {
             $entity->setType($type);
         } elseif (!empty($type)) {

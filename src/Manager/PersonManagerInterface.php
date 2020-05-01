@@ -114,7 +114,7 @@ interface PersonManagerInterface
     public function removeRegistrationOrigin(RegistrationOrigin $registrationOrigin);
     public function listRegistrationOrigins(int $limit = null, int $offset = 0, $filter = null);
 
-    public function addDocument($identifier, $agentDispatcher, $type = null);
+    public function addDocument($identifier, $agentDispatcher, $expedition, $type = null);
     public function findDocument(int $id);
     public function updateDocument(PersonDocument $document);
     public function removeDocument(PersonDocument $document);
