@@ -98,7 +98,7 @@ class Person extends FormEntity
     protected $ipRegistration;
 
     /**
-     * @var int
+     * @var string
      * #Assert\NotBlank(message="É necessário informar a nationality", groups={"PersonFisica"})
      */
     protected $nationality;
@@ -953,7 +953,7 @@ class Person extends FormEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getNationality()
     {
@@ -961,7 +961,7 @@ class Person extends FormEntity
     }
 
     /**
-     * @param int $nationality
+     * @param string $nationality
      */
     public function setNationality($nationality)
     {

@@ -30,7 +30,7 @@
 
         <field name="ipRegistration" type="string" nullable="true"/>
 
-        <field name="nationality" type="smallint" nullable="true"/>
+        <field name="nationality" type="string" nullable="true"/>
 
         <field name="description" type="text" nullable="true"/>
 
