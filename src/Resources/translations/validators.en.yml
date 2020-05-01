@@ -7,3 +7,10 @@ uloc_user:
   email:
     not_blank: 'Nome do usuário não pode ser em branco.'
     invalid: 'E-mail  informado é inválido. "{{ value }}"'
+
+uloc_person:
+  contact:
+    name:
+      not_blank: 'Informe o nome do contato'
+    value:
+      not_blank: 'Informe o valor/informação do contato'

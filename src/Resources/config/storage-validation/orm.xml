@@ -35,4 +35,18 @@
             </constraint>
         </property>
     </class>
+
+    <class name="Uloc\ApiBundle\Entity\Person\Contact">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.contact.name.not_blank</option>
+            </constraint>
+        </property>
+
+        <property name="value">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.contact.value.not_blank</option>
+            </constraint>
+        </property>
+    </class>
 </constraint-mapping>
