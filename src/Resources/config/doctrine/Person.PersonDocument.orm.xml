@@ -14,6 +14,8 @@
 
         <field name="agentDispatcher" type="string" nullable="true" length="50"/>
 
+        <field name="expedition" type="string" nullable="true" length="50"/>
+
         <many-to-one field="type" target-entity="Uloc\ApiBundle\Entity\Person\TypePersonDocument" inversed-by="identifiers">
             <join-column name="type_id" referenced-column-name="id"/>
         </many-to-one>

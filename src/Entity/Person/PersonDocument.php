@@ -31,6 +31,12 @@ class PersonDocument extends FormEntity
     private $agentDispatcher;
 
     /**
+     * @var string
+     *
+     */
+    private $expedition;
+
+    /**
      * Muitos Identifieres tem Um TypePersonDocument.
      */
     private $type;
@@ -136,6 +142,22 @@ class PersonDocument extends FormEntity
         return $this->agentDispatcher;
     }
 
+    /**
+     * @return string
+     */
+    public function getExpedition(): string
+    {
+        return $this->expedition;
+    }
+
+    /**
+     * @param string $expedition
+     */
+    public function setExpedition($expedition): void
+    {
+        $this->expedition = $expedition;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
@@ -144,6 +166,7 @@ class PersonDocument extends FormEntity
             'id',
             'identifier',
             'agentDispatcher',
+            'expedition',
             'type' => ['id', 'name', 'code']
         ];
 
