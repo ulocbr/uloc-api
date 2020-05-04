@@ -13,6 +13,12 @@ uloc_person:
     not_blank: 'Informe um nome válido'
   document:
     not_blank: 'Informe um documento válido para a pessoa'
+    identifier:
+      not_blank: 'Informe o endereço corretamente'
+    agentDispatcher:
+      not_blank: 'Informe o órgão emissor para o documento a ser cadastrado'
+    expedition:
+      not_blank: 'Informe a data de expedição para o documento a ser cadastrado'
   type:
     not_blank: 'Tipo de pessoa inválido. 1 = Pessoa Física, 2 = Empresa'
   email:
@@ -33,17 +39,10 @@ uloc_person:
       not_blank: 'Latitude inválida'
     longitude:
       not_blank: 'Longitude inválida'
-    document:
-      identifier:
-        not_blank: 'Informe o endereço corretamente'
-      agentDispatcher:
-        not_blank: 'Informe o órgão emissor para o documento a ser cadastrado'
-      expedition:
-        not_blank: 'Informe a data de expedição para o documento a ser cadastrado'
-    phone:
-      not_blank: 'Informe um telefone válido'
-      areaCode:
-       not_blank: 'Informe o código de área do telefone'
+  phone:
+    not_blank: 'Informe um telefone válido'
+    areaCode:
+     not_blank: 'Informe o código de área do telefone'
   contact:
     name:
       not_blank: 'Informe o nome do contato'
