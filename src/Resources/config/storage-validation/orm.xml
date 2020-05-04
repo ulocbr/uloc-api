@@ -36,6 +36,183 @@
         </property>
     </class>
 
+    <class name="Uloc\ApiBundle\Entity\Person\Person">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.contact.name.not_blank</option>
+                <option name="groups">
+                    <value>personBasic</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="document">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.contact.document.not_blank</option>
+                <option name="groups">
+                    <value>personBasic</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="type">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.contact.type.not_blank</option>
+                <option name="groups">
+                    <value>personBasic</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\Person\ContactEmail">
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.email.invalid</option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">uloc_person.email.invalid</option>
+            </constraint>
+        </property>
+
+        <property name="value">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.contact.value.not_blank</option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\Person\Address">
+        <property name="address">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.not_blank</option>
+            </constraint>
+        </property>
+
+        <property name="number">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.number.not_blank</option>
+                <option name="groups">
+                    <value>full</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="zip">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.zip.not_blank</option>
+                <option name="groups">
+                    <value>full</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="district">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.district.not_blank</option>
+                <option name="groups">
+                    <value>inputedAddress</value>
+                    <value>inputedDistrict</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="districtId">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.district.not_blank</option>
+                <option name="groups">
+                    <value>relactedAddress</value>
+                    <value>inputedDistrictId</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="city">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.city.not_blank</option>
+                <option name="groups">
+                    <value>inputedAddress</value>
+                    <value>inputedCity</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="cityId">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.city.not_blank</option>
+                <option name="groups">
+                    <value>relactedAddress</value>
+                    <value>inputedCityId</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="state">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.state.not_blank</option>
+                <option name="groups">
+                    <value>inputedAddress</value>
+                    <value>inputedState</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="stateId">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.state.not_blank</option>
+                <option name="groups">
+                    <value>relactedAddress</value>
+                    <value>inputedStateId</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="latitude">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.latitude.not_blank</option>
+                <option name="groups">
+                    <value>latLng</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="longitude">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.address.longitude.not_blank</option>
+                <option name="groups">
+                    <value>latLng</value>
+                </option>
+            </constraint>
+        </property>
+
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\Person\PersonDocument">
+        <property name="identifier">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.document.identifier.not_blank</option>
+            </constraint>
+        </property>
+
+        <property name="agentDispatcher">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.document.agentDispatcher.not_blank</option>
+                <option name="groups">
+                    <value>full</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="expedition">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.document.expedition.not_blank</option>
+                <option name="groups">
+                    <value>full</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
     <class name="Uloc\ApiBundle\Entity\Person\Contact">
         <property name="name">
             <constraint name="NotBlank">

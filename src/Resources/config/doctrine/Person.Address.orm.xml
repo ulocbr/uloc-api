@@ -12,7 +12,7 @@
 
         <field name="address" type="string"/>
 
-        <field name="complement" type="string"/>
+        <field name="complement" type="string" nullable="true"/>
 
         <field name="number" type="string" nullable="true"/>
 

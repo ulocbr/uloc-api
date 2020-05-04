@@ -9,6 +9,37 @@ uloc_user:
     invalid: 'E-mail  informado é inválido. "{{ value }}"'
 
 uloc_person:
+  name:
+    not_blank: 'Informe um nome válido'
+  document:
+    not_blank: 'Informe um documento válido para a pessoa'
+  type:
+    not_blank: 'Tipo de pessoa inválido. 1 = Pessoa Física, 2 = Empresa'
+  email:
+    invalid: 'Informe um e-mail válido'
+  address:
+    not_blank: 'Informe o endereço corretamente'
+    number:
+      not_blank: 'Informe o número para o endereço'
+    zip:
+      not_blank: 'Informe o número para o endereço'
+    district:
+      not_blank: 'Informe bairro'
+    city:
+      not_blank: 'Informe a cidade'
+    state:
+      not_blank: 'Informe a UF'
+    latitude:
+      not_blank: 'Latitude inválida'
+    longitude:
+      not_blank: 'Longitude inválida'
+    document:
+      identifier:
+        not_blank: 'Informe o endereço corretamente'
+      agentDispatcher:
+        not_blank: 'Informe o órgão emissor para o documento a ser cadastrado'
+      expedition:
+        not_blank: 'Informe a data de expedição para o documento a ser cadastrado'
   contact:
     name:
       not_blank: 'Informe o nome do contato'
