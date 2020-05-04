@@ -40,6 +40,10 @@ uloc_person:
         not_blank: 'Informe o órgão emissor para o documento a ser cadastrado'
       expedition:
         not_blank: 'Informe a data de expedição para o documento a ser cadastrado'
+     phone:
+       not_blank: 'Informe um telefone válido'
+       areaCode:
+         not_blank: 'Informe o código de área do telefone'
   contact:
     name:
       not_blank: 'Informe o nome do contato'

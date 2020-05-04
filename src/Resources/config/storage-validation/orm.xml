@@ -76,6 +76,19 @@
         </property>
     </class>
 
+    <class name="Uloc\ApiBundle\Entity\Person\ContactPhone">
+        <property name="areaCode">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.phone.areaCode.not_blank</option>
+            </constraint>
+        </property>
+        <property name="phoneNumber">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.phone.not_blank</option>
+            </constraint>
+        </property>
+    </class>
+
     <class name="Uloc\ApiBundle\Entity\Person\Address">
         <property name="address">
             <constraint name="NotBlank">
