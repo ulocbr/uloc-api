@@ -74,12 +74,6 @@
                 <option name="message">uloc_person.email.invalid</option>
             </constraint>
         </property>
-
-        <property name="value">
-            <constraint name="NotBlank">
-                <option name="message">uloc_person.contact.value.not_blank</option>
-            </constraint>
-        </property>
     </class>
 
     <class name="Uloc\ApiBundle\Entity\Person\Address">
