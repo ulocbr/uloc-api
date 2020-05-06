@@ -6,6 +6,9 @@
 
     <mapped-superclass name="Uloc\ApiBundle\Entity\FormEntity">
 
+        <indexes>
+            <index columns="deleted" name="deleted"></index>
+        </indexes>
         <field name="slug" type="string" length="255" nullable="true" />
 
         <field name="active" type="boolean" nullable="true"/>
