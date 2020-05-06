@@ -42,60 +42,33 @@
         </many-to-one>
 
         <one-to-many field="papers" target-entity="Uloc\ApiBundle\Entity\Person\Paper" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="superPapers" target-entity="Uloc\ApiBundle\Entity\Person\Paper" mapped-by="superPerson">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="notes" target-entity="Uloc\ApiBundle\Entity\Person\Note" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="extraFields" target-entity="Uloc\ApiBundle\Entity\Person\PersonExtraField" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="emails" target-entity="Uloc\ApiBundle\Entity\Person\ContactEmail" mapped-by="person">
         </one-to-many>
 
         <one-to-many field="phoneNumbers" target-entity="Uloc\ApiBundle\Entity\Person\ContactPhone" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="contacts" target-entity="Uloc\ApiBundle\Entity\Person\Contact" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="documents" target-entity="Uloc\ApiBundle\Entity\Person\PersonDocument" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="addresses" target-entity="Uloc\ApiBundle\Entity\Person\Address" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <many-to-many field="tags" target-entity="Uloc\ApiBundle\Entity\Person\Tag" inversed-by="persons">
-            <cascade>
-                <cascade-all/>
-            </cascade>
             <join-table name="person_tagperson">
                 <join-columns>
                     <join-column name="person_id" referenced-column-name="id"/>
