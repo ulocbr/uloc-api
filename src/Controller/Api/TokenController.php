@@ -64,6 +64,8 @@ class TokenController extends BaseController
             $userContent['person'] = $user->getPerson()->getId();
         }
 
+        $user->setLastLogin(new \DateTime());
+        $userManager->update();
 
         return new JsonResponse([
             'token' => $token,
