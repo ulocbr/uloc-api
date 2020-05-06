@@ -186,7 +186,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function find(int $id)
     {
-        // TODO: Implement find() method.
+        return $this->om->getRepository(PersonDocument::class)->find($id);
     }
 
     /**
