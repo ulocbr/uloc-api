@@ -215,11 +215,17 @@ class PersonManager extends CustomManager implements PersonManagerInterface
      * Update a managed Person managed
      * This method is best of ->persist and ->flush of ObjectManager because here call same events and features when
      * update an person
-     * @return Person
+     * @return Person`
      */
     public function update()
     {
-        // TODO: Implement update() method.
+        if (!$this->isManaging()) {
+            throw new \LogicException('Person is not managing');
+        }
+
+        $this->om->persist($this->person);
+        $this->flush();
+        return $this->person;
     }
 
     /**
@@ -427,7 +433,9 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function updateAddress(Address $address)
     {
-        // TODO: Implement updateAddress() method.
+        $this->om->persist($address);
+        $this->flush();
+        return $address;
     }
 
     public function removeAddress(Address $address)
@@ -590,7 +598,9 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function updatePhone(ContactPhone $phone)
     {
-        // TODO: Implement updatePhone() method.
+        $this->om->persist($phone);
+        $this->flush();
+        return $phone;
     }
 
     public function removePhone(ContactPhone $phone)
@@ -671,7 +681,9 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function updateEmail(ContactEmail $email)
     {
-        // TODO: Implement updateEmail() method.
+        $this->om->persist($email);
+        $this->flush();
+        return $email;
     }
 
     public function removeEmail(ContactEmail $email)
@@ -752,7 +764,9 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function updateContact(Contact $contact)
     {
-        // TODO: Implement updateContacts() method.
+        $this->om->persist($contact);
+        $this->flush();
+        return $contact;
     }
 
     public function removeContact(Contact $contact)
