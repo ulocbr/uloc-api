@@ -428,7 +428,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function findAddress(int $id)
     {
-        // TODO: Implement findAddress() method.
+        return $this->om->getRepository(Address::class)->find($id);
     }
 
     public function updateAddress(Address $address)
@@ -593,7 +593,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function findPhone(int $id)
     {
-        // TODO: Implement findPhone() method.
+        return $this->om->getRepository(ContactPhone::class)->find($id);
     }
 
     public function updatePhone(ContactPhone $phone)
