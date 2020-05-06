@@ -66,9 +66,6 @@
         </one-to-many>
 
         <one-to-many field="emails" target-entity="Uloc\ApiBundle\Entity\Person\ContactEmail" mapped-by="person">
-            <cascade>
-                <cascade-all/>
-            </cascade>
         </one-to-many>
 
         <one-to-many field="phoneNumbers" target-entity="Uloc\ApiBundle\Entity\Person\ContactPhone" mapped-by="person">
