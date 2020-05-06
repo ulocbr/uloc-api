@@ -759,7 +759,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function findContact(int $id)
     {
-        // TODO: Implement findContacts() method.
+        return $this->om->getRepository(Contact::class)->find($id);
     }
 
     public function updateContact(Contact $contact)
