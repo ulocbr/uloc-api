@@ -127,13 +127,14 @@ class BaseRepository extends EntityRepository
 
         $query->from($class, $defaultAlias);
 
-        if (null !== $joins && is_callable($joins)) {
-            $joins($query);
-        }
-
         $queryCount = $this->getEntityManager()->createQueryBuilder()
             ->select('COUNT(1) total')
             ->from($class, $defaultAlias);
+
+        if (null !== $joins && is_callable($joins)) {
+            $joins($query);
+            $joins($queryCount);
+        }
 
         if (empty($sortByPossibles)) {
             $sortByPossibles = [
