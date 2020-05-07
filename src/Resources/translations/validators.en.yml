@@ -14,7 +14,7 @@ uloc_person:
   document:
     not_blank: 'Informe um documento válido para a pessoa'
     identifier:
-      not_blank: 'Informe o endereço corretamente'
+      not_blank: 'Informe o documento (indentificador)'
     agentDispatcher:
       not_blank: 'Informe o órgão emissor para o documento a ser cadastrado'
     expedition:
