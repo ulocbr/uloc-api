@@ -24,7 +24,7 @@ class ResponseListener {
         $request = $event->getRequest();
         $responseHeaders = $response->headers;
 
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization');
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, cache-control');
         $responseHeaders->set('Access-Control-Allow-Origin', '*');
         $responseHeaders->set('Access-Control-Max-Age', '1000');
         $responseHeaders->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
