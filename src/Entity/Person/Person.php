@@ -271,7 +271,8 @@ class Person extends FormEntity
      */
     public function setName($name)
     {
-        $this->name = ucwords(mb_strtolower(trim($name), 'UTF-8'));
+        // $this->name = ucwords(mb_strtolower(trim($name), 'UTF-8'));
+        $this->name = trim($name);
 
         return $this;
     }
