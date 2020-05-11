@@ -158,6 +158,11 @@ class BaseRepository extends EntityRepository
             }
             $query->addCriteria($searchCriteria);
             $queryCount->addCriteria($searchCriteria);
+        } else {
+            if (!empty($searchCriteria)) {
+                $query->addCriteria($searchCriteria);
+                $queryCount->addCriteria($searchCriteria);
+            }
         }
 
         $query = $query->getQuery()
