@@ -112,7 +112,8 @@ class BaseRepository extends EntityRepository
         $searchCriteria = null,
         $hydrationMode = \Doctrine\ORM\Query::HYDRATE_ARRAY,
         $defaultSelect = null,
-        $joins = null
+        $joins = null,
+        $joinsQueryCount = null
     )
     {
         $defaultAlias = 'a';
@@ -133,7 +134,10 @@ class BaseRepository extends EntityRepository
 
         if (null !== $joins && is_callable($joins)) {
             $joins($query);
-            $joins($queryCount);
+            // $joins($queryCount); BUG COUNT
+        }
+        if (null !== $joinsQueryCount && is_callable($joinsQueryCount)) {
+            $joinsQueryCount($queryCount);
         }
 
         if (empty($sortByPossibles)) {
