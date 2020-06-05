@@ -30,12 +30,6 @@ abstract class Variable extends FormEntity
 	protected $callback;
 
     /**
-     * If variable is enabled
-     * @var boolean
-     */
-	protected $enabled;
-
-    /**
      * @return mixed
      */
     public function getName()
@@ -82,22 +76,5 @@ abstract class Variable extends FormEntity
     {
         $this->callback = $callback;
     }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @param bool $enabled
-     */
-    public function setEnabled(bool $enabled): void
-    {
-        $this->enabled = $enabled;
-    }
-
 
 }
