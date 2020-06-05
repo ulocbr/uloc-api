@@ -12,8 +12,6 @@
 
         <field name="callback" type="object" nullable="true"/>
 
-        <field name="enabled" type="boolean"/>
-
     </mapped-superclass>
 
 </doctrine-mapping>
