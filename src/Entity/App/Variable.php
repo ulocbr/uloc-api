@@ -10,13 +10,14 @@
 
 namespace Uloc\ApiBundle\Entity\App;
 
+use Uloc\ApiBundle\Entity\FormEntity;
 
 /**
  * @author Tiago Felipe
  * @version 0.0.1
  *
  */
-abstract class Variable
+abstract class Variable extends FormEntity
 {
 
 	protected $name;
