@@ -24,6 +24,8 @@ abstract class Variable extends FormEntity
 
     protected $value;
 
+    protected $description;
+
 	/**
 	 * Parametros para chamar alguma funcao especifica para tratamento da variavel.
 	 */
@@ -75,6 +77,22 @@ abstract class Variable extends FormEntity
     public function setCallback($callback): void
     {
         $this->callback = $callback;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 
 }

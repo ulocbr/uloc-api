@@ -10,6 +10,8 @@
 
         <field name="value" type="text" />
 
+        <field name="description" type="string" nullable="true" />
+
         <field name="callback" type="object" nullable="true"/>
 
     </mapped-superclass>
