@@ -238,7 +238,6 @@ class UserManager extends CustomManager implements UserManagerInterface
         } else {
             $user->setPassword($user->getPlainPassword());
         }
-        $user->setPassword($password);
         $this->persist($user);
         $this->flush();
         return $password;
