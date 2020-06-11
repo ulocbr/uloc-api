@@ -65,5 +65,6 @@
         <service class="Uloc\ApiBundle\Services\Config\ConfigService" id="uloc_api.services_config.config_service" public="true">
             <argument type="service" id="uloc_api.object_manager"/>
         </service>
+        <service id="Uloc\ApiBundle\Services\Config\ConfigService" alias="uloc_api.services_config.config_service"/>
     </services>
 </container>
