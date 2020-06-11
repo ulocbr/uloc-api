@@ -10,7 +10,6 @@ class ConfigService
 {
 
     private $om;
-    private $nativeLogger;
 
     public function __construct(ObjectManager $om)
     {
