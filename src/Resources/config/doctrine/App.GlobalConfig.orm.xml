@@ -12,7 +12,7 @@
 
         <field name="value" type="string"/>
 
-        <field name="extra" type="object" nullable="true"/>
+        <field name="extra" type="json" nullable="true"/>
 
     </entity>
 
