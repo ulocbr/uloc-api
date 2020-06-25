@@ -18,11 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class GlobalConfig
 {
-    /**
-     * @var int
-     *
-     */
-    private $id;
 
     /**
      * @var string
@@ -56,7 +51,7 @@ class GlobalConfig
      */
     public function getId()
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**

@@ -6,13 +6,9 @@
 
     <entity table="app_global_config" name="Uloc\ApiBundle\Entity\App\GlobalConfig" repository-class="Uloc\ApiBundle\Repository\App\GlobalConfigRepository">
 
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
-        </id>
-
         <field name="description" type="string" />
 
-        <field name="name" type="string" unique="true"/>
+        <id name="name" type="string" />
 
         <field name="value" type="string"/>
 

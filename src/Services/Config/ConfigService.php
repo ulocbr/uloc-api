@@ -18,7 +18,7 @@ class ConfigService
 
     public function getAppConfig($name, $namespace = 'global', $register = null, $expires = 86400)
     {
-        $cache = new FilesystemAdapter($namespace);
+        $cache = new FilesystemAdapter($namespace); // TODO: Mudar tipo de cache para mais performático
         return $cache->get($name, function (ItemInterface $item) use ($name, $register, $expires) {
             $item->expiresAfter($expires);
 
