@@ -32,7 +32,7 @@ abstract class FormEntity extends CommonEntity
     /**
      * @var bool
      */
-    private $active = false;
+    private $active = true;
 
     /**
      * @var null|\DateTime
