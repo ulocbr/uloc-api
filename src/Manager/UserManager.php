@@ -200,6 +200,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         $response = [
             "id" => $this->user->getId(),
             "email" => $this->user->getEmail(),
+            "username" => $this->user->getUsername(),
             "name" => $this->user->getPerson() ? $this->user->getPerson()->getName() : $this->user->getUsername(),
             "image" => 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))),
 
