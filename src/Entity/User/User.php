@@ -466,7 +466,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     }
 
     /**
-     * @return mixed
+     * @return Person
      */
     public function getPerson()
     {
