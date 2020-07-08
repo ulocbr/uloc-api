@@ -17,15 +17,19 @@ namespace Uloc\ApiBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
-class ResponseListener {
+class ResponseListener
+{
 
-    public function onKernelResponse(ResponseEvent $event) { // TODO: Changed from FilterResponseEvent
+    public function onKernelResponse(ResponseEvent $event)
+    { // TODO: Changed from FilterResponseEvent
         $response = $event->getResponse();
         $request = $event->getRequest();
         $responseHeaders = $response->headers;
 
         $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, cache-control');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        if (empty($responseHeaders->get('Access-Control-Allow-Origin'))) {
+            $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        }
         $responseHeaders->set('Access-Control-Max-Age', '1000');
         $responseHeaders->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
 
@@ -34,7 +38,7 @@ class ResponseListener {
             $response->setContent(null);
             return;
         }
-        
+
         return $response;
     }
 
