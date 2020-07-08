@@ -80,7 +80,7 @@ class TokenController extends BaseController
         // ->withDomain('.suporteleiloes.com')
         // ->withSecure(true);
         $response->headers->setCookie($cookie);
-        $refer = $request->server->get('HTTP_REFERER');
+        $refer = $request->headers->get('referer');
         if (!empty($refer)) {
             $response->headers->set('Access-Control-Allow-Origin', parse_url($refer, PHP_URL_HOST));
         }
