@@ -74,7 +74,10 @@ class TokenController extends BaseController
         ]);
         $cookie = Cookie::create('sl_session')
             ->withValue($token)
-            ->withExpires(time() + 86400);
+            ->withExpires(time() + 86400)
+            ->withSecure(true)
+            ->withSameSite('None')
+        ;
             // ->withDomain('.suporteleiloes.com')
             // ->withSecure(true);
         $response->headers->setCookie($cookie);
