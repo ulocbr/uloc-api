@@ -76,11 +76,14 @@ class TokenController extends BaseController
             ->withValue($token)
             ->withExpires(time() + 86400)
             ->withSecure(true)
-            ->withSameSite('None')
-        ;
-            // ->withDomain('.suporteleiloes.com')
-            // ->withSecure(true);
+            ->withSameSite('None');
+        // ->withDomain('.suporteleiloes.com')
+        // ->withSecure(true);
         $response->headers->setCookie($cookie);
+        $refer = $request->server->get('HTTP_REFER');
+        if (!empty($refer)) {
+            $response->headers->set('Access-Control-Allow-Origin', parse_url($refer, PHP_URL_HOST));
+        }
         $response->headers->set('Access-Control-Allow-Credentials', true);
 
         return $response;
@@ -97,10 +100,10 @@ class TokenController extends BaseController
         ];
 
         if ($user->getPerson()) {
-           $response = array_merge($response, ["person" => [
-               "id" => $user->getPerson()->getId(),
-               "name" => $user->getPerson()->getName()
-           ]]);
+            $response = array_merge($response, ["person" => [
+                "id" => $user->getPerson()->getId(),
+                "name" => $user->getPerson()->getName()
+            ]]);
         }
 
         return $this->createApiResponseEncodeArray($response);
