@@ -80,11 +80,11 @@ class TokenController extends BaseController
         // ->withDomain('.suporteleiloes.com')
         // ->withSecure(true);
         $response->headers->setCookie($cookie);
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
-        $refer = $request->headers->get('origin');
-        if (!empty($refer)) {
-            $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
-        }
+        #$response->headers->set('Access-Control-Allow-Credentials', 'true');
+        #$refer = $request->headers->get('origin');
+        #if (!empty($refer)) {
+        #    $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
+        #}
 
         return $response;
     }
