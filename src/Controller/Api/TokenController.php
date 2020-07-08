@@ -81,6 +81,7 @@ class TokenController extends BaseController
             // ->withDomain('.suporteleiloes.com')
             // ->withSecure(true);
         $response->headers->setCookie($cookie);
+        $response->headers->set('Access-Control-Allow-Credentials', true);
 
         return $response;
     }
