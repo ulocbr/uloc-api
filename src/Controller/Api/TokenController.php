@@ -82,7 +82,7 @@ class TokenController extends BaseController
         $response->headers->setCookie($cookie);
         $refer = $request->headers->get('referer');
         if (!empty($refer)) {
-            $response->headers->set('Access-Control-Allow-Origin', parse_url($refer, PHP_URL_HOST));
+            $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
         }
         $response->headers->set('Access-Control-Allow-Credentials', true);
 
