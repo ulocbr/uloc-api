@@ -72,7 +72,7 @@ class TokenController extends BaseController
             'token' => $token,
             'user' => $userContent
         ]);
-        $cookie = Cookie::create('sl.session')
+        $cookie = Cookie::create('sl_session')
             ->withValue($token)
             ->withExpires(time() + 86400)
             // ->withDomain('.suporteleiloes.com')
