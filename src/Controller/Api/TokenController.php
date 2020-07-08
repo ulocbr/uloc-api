@@ -2,6 +2,7 @@
 
 namespace Uloc\ApiBundle\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Uloc\ApiBundle\Manager\UserManagerInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
@@ -67,10 +68,18 @@ class TokenController extends BaseController
         $user->setLastLogin(new \DateTime());
         $userManager->update();
 
-        return new JsonResponse([
+        $response = new JsonResponse([
             'token' => $token,
             'user' => $userContent
         ]);
+        $cookie = Cookie::create('sl.session')
+            ->withValue($token)
+            ->withExpires(time() + 86400)
+            // ->withDomain('.suporteleiloes.com')
+            ->withSecure(true);
+        $response->headers->setCookie($cookie);
+
+        return $response;
     }
 
     public function userCredentials(Request $request)
