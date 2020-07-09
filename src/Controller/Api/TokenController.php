@@ -72,10 +72,11 @@ class TokenController extends BaseController
         $user->setLastLogin(new \DateTime());
         $userManager->update();
 
-        $response = new JsonResponse([
+        $data = [
             'token' => $token,
             'user' => $userContent
-        ]);
+        ];
+        $response = new JsonResponse($data);
         /*$cookie = Cookie::create('sl_session')
             ->withValue($token)
             ->withExpires(time() + 86400)
@@ -84,13 +85,13 @@ class TokenController extends BaseController
         // ->withDomain('.suporteleiloes.com')
         // ->withSecure(true);
         if (count(self::$AuthHeaders)) {
-            foreach (self::$AuthHeaders as $key => $value) {
-                $response->headers->set($key, $value);
+            foreach (self::$AuthHeaders as $header) {
+                $response->headers->set($header['key'], is_callable($header['value']) ? $header['value']($data) : $header['value']);
             }
         }
         if (count(self::$AuthCookies)) {
             foreach (self::$AuthCookies as $cookie) {
-                $response->headers->setCookie($cookie);
+                $response->headers->setCookie($cookie($data));
             }
         }
         #$response->headers->setCookie($cookie);
