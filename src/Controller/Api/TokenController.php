@@ -84,16 +84,18 @@ class TokenController extends BaseController
             ->withSameSite('None');*/
         // ->withDomain('.suporteleiloes.com')
         // ->withSecure(true);
-        if (count(self::$AuthHeaders)) {
-            foreach (self::$AuthHeaders as $header) {
-                $response->headers->set($header['key'], is_callable($header['value']) ? $header['value']($data) : $header['value']);
-            }
-        }
         if (count(self::$AuthCookies)) {
             foreach (self::$AuthCookies as $cookie) {
                 $response->headers->setCookie($cookie($data));
             }
         }
+
+        if (count(self::$AuthHeaders)) {
+            foreach (self::$AuthHeaders as $header) {
+                $response->headers->set($header['key'], is_callable($header['value']) ? $header['value']($data) : $header['value']);
+            }
+        }
+
         #$response->headers->setCookie($cookie);
         #$response->headers->set('Access-Control-Allow-Credentials', 'true');
         $refer = $request->headers->get('origin');
