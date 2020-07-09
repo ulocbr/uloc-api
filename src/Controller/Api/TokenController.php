@@ -14,6 +14,10 @@ use Uloc\ApiBundle\Api\Exception\BadCredentialsException;
 
 class TokenController extends BaseController
 {
+
+    public static $AuthHeaders = [];
+    public static $AuthCookies = [];
+
     /**
      * TODO: DOC! Doc use this or rewrite
      * @param Request $request
@@ -72,15 +76,25 @@ class TokenController extends BaseController
             'token' => $token,
             'user' => $userContent
         ]);
-        $cookie = Cookie::create('sl_session')
+        /*$cookie = Cookie::create('sl_session')
             ->withValue($token)
             ->withExpires(time() + 86400)
             ->withSecure(true)
-            ->withSameSite('None');
+            ->withSameSite('None');*/
         // ->withDomain('.suporteleiloes.com')
         // ->withSecure(true);
-        $response->headers->setCookie($cookie);
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        if (count(self::$AuthHeaders)) {
+            foreach (self::$AuthHeaders as $key => $value) {
+                $response->headers->set($key, $value);
+            }
+        }
+        if (count(self::$AuthCookies)) {
+            foreach (self::$AuthCookies as $cookie) {
+                $response->headers->setCookie($cookie);
+            }
+        }
+        #$response->headers->setCookie($cookie);
+        #$response->headers->set('Access-Control-Allow-Credentials', 'true');
         $refer = $request->headers->get('origin');
         if (!empty($refer)) {
             $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
