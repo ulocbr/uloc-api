@@ -232,9 +232,9 @@ class UserManager extends CustomManager implements UserManagerInterface
         return $password = substr(str_shuffle($data), 0, 6);
     }
 
-    public function redefinePassword()
+    public function redefinePassword($password = null)
     {
-        $password = $this->generatePassword();
+        $password = null === $password ? $this->generatePassword() : $password;
         $user = $this->user;
         $user->setPlainPassword($password);
         if ($this->passwordEncoder) {
