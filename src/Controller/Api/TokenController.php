@@ -27,83 +27,96 @@ class TokenController extends BaseController
      */
     public function newToken(Request $request, UserManagerInterface $userManager)
     {
-        $userGET = $request->request->get('user');
-        if (strlen($userGET) < 2) {
-            throw new BadCredentialsException('Usuário inválido');
-        }
-        $passGET = $request->request->get('pass');
-        if (strlen($passGET) < 3) {
-            throw new BadCredentialsException('Senha inválida');
-        }
-
-        /** @var User $user */
-        $user = $userManager->findByUsername($userGET);
-
-        if (!$user) {
-            throw $this->createNotFoundException("Credenciais não encontrada");
-        }
-
-        $userManager->manager($user);
-        $roles = $user->getRoles();
-        if (!is_array($roles)) {
-            return new JsonResponse(['error' => 'Usuário sem permissão'], JsonResponse::HTTP_NOT_FOUND);
-        }
-
-        $channel = $request->get('channel');
-
-        if (!in_array('ROLE_API', $roles) && !in_array('ROLE_ROOT', $roles) && $channel !== 'client') {
-            throw new BadCredentialsException('Usuário sem permissão de acesso à api');
-        }
-
-        $isValid = $userManager->isPasswordValid($passGET);
-
-        if (!$isValid) {
-            throw new BadCredentialsException('Credenciais inválidas');
-        }
-
-        $token = $userManager->generateToken();
-
-        $userContent = $userManager->getUserContent();
-
-        if ($user->getPerson()) {
-            $userContent['person'] = $user->getPerson()->getId();
-        }
-
-        $user->setLastLogin(new \DateTime());
-        $userManager->update();
-
-        $data = [
-            'token' => $token,
-            'user' => $userContent
-        ];
-        $response = new JsonResponse($data);
-        /*$cookie = Cookie::create('sl_session')
-            ->withValue($token)
-            ->withExpires(time() + 86400)
-            ->withSecure(true)
-            ->withSameSite('None');*/
-        // ->withDomain('.suporteleiloes.com')
-        // ->withSecure(true);
-        if (count(self::$AuthCookies)) {
-            foreach (self::$AuthCookies as $cookie) {
-                $response->headers->setCookie($cookie($data));
+        try {
+            $userGET = $request->request->get('user');
+            if (strlen($userGET) < 2) {
+                throw new BadCredentialsException('Usuário inválido');
             }
-        }
-
-        if (count(self::$AuthHeaders)) {
-            foreach (self::$AuthHeaders as $header) {
-                $response->headers->set($header['key'], is_callable($header['value']) ? $header['value']($data) : $header['value']);
+            $passGET = $request->request->get('pass');
+            if (strlen($passGET) < 3) {
+                throw new BadCredentialsException('Senha inválida');
             }
+
+            /** @var User $user */
+            $user = $userManager->findByUsername($userGET);
+
+            if (!$user) {
+                throw $this->createNotFoundException("Credenciais não encontrada");
+            }
+
+            $userManager->manager($user);
+            $roles = $user->getRoles();
+            if (!is_array($roles)) {
+                // return new JsonResponse(['error' => 'Usuário sem permissão'], JsonResponse::HTTP_NOT_FOUND);
+                throw new BadCredentialsException('Usuário sem permissão');
+            }
+
+            $channel = $request->get('channel');
+
+            if (!in_array('ROLE_API', $roles) && !in_array('ROLE_ROOT', $roles) && $channel !== 'client') {
+                throw new BadCredentialsException('Usuário sem permissão de acesso à api');
+            }
+
+            $isValid = $userManager->isPasswordValid($passGET);
+
+            if (!$isValid) {
+                throw new BadCredentialsException('Credenciais inválidas');
+            }
+
+            $token = $userManager->generateToken();
+
+            $userContent = $userManager->getUserContent();
+
+            if ($user->getPerson()) {
+                $userContent['person'] = $user->getPerson()->getId();
+            }
+
+            $user->setLastLogin(new \DateTime());
+            $userManager->update();
+
+            $data = [
+                'token' => $token,
+                'user' => $userContent
+            ];
+            $response = new JsonResponse($data);
+            /*$cookie = Cookie::create('sl_session')
+                ->withValue($token)
+                ->withExpires(time() + 86400)
+                ->withSecure(true)
+                ->withSameSite('None');*/
+            // ->withDomain('.suporteleiloes.com')
+            // ->withSecure(true);
+            if (count(self::$AuthCookies)) {
+                foreach (self::$AuthCookies as $cookie) {
+                    $response->headers->setCookie($cookie($data));
+                }
+            }
+
+            if (count(self::$AuthHeaders)) {
+                foreach (self::$AuthHeaders as $header) {
+                    $response->headers->set($header['key'], is_callable($header['value']) ? $header['value']($data) : $header['value']);
+                }
+            }
+
+            #$response->headers->setCookie($cookie);
+            $response->headers->set('Access-Control-Allow-Credentials', 'true');
+            $refer = $request->headers->get('origin');
+            if (!empty($refer)) {
+                $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
+            }
+
+            return $response;
+        } catch (\Exception | \RuntimeException $e) {
+            $response = new JsonResponse($e->getMessage(), 401);
+            $response->headers->set('Access-Control-Allow-Credentials', 'true');
+            $refer = $request->headers->get('origin');
+            if (!empty($refer)) {
+                $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
+            }
+
+            return $response;
         }
 
-        #$response->headers->setCookie($cookie);
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
-        $refer = $request->headers->get('origin');
-        if (!empty($refer)) {
-            $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
-        }
-
-        return $response;
     }
 
     public function userCredentials(Request $request)
