@@ -48,19 +48,19 @@ class TokenController extends BaseController
             $roles = $user->getRoles();
             if (!is_array($roles)) {
                 // return new JsonResponse(['error' => 'Usuário sem permissão'], JsonResponse::HTTP_NOT_FOUND);
-                throw new BadCredentialsException('Usuário sem permissão');
+                throw new \Exception('Usuário sem permissão');
             }
 
             $channel = $request->get('channel');
 
             if (!in_array('ROLE_API', $roles) && !in_array('ROLE_ROOT', $roles) && $channel !== 'client') {
-                throw new BadCredentialsException('Usuário sem permissão de acesso à api');
+                throw new \Exception('Usuário sem permissão de acesso à api');
             }
 
             $isValid = $userManager->isPasswordValid($passGET);
 
             if (!$isValid) {
-                throw new BadCredentialsException('Credenciais inválidas');
+                throw new \Exception('Credenciais inválidas');
             }
 
             $token = $userManager->generateToken();
@@ -106,7 +106,7 @@ class TokenController extends BaseController
             }
 
             return $response;
-        } catch (\Exception | BadCredentialsException $e) {
+        } catch (\Exception $e) {
             $response = new JsonResponse((string)$e, 401);
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
             $refer = $request->headers->get('origin');
