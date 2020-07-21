@@ -107,7 +107,12 @@ class TokenController extends BaseController
 
             return $response;
         } catch (\Exception $e) {
-            $response = new JsonResponse($e->getMessage(), 401);
+            $response = new JsonResponse([
+                'detail' => $e->getMessage(),
+                'status' => 401,
+                'title' => 'Unauthorized',
+                'type' => 'authentication'
+            ], 401);
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
             $refer = $request->headers->get('origin');
             if (!empty($refer)) {
