@@ -106,8 +106,8 @@ class TokenController extends BaseController
             }
 
             return $response;
-        } catch (\Exception | \RuntimeException $e) {
-            $response = new JsonResponse($e->getMessage(), 401);
+        } catch (\Exception | BadCredentialsException $e) {
+            $response = new JsonResponse((string)$e, 401);
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
             $refer = $request->headers->get('origin');
             if (!empty($refer)) {
