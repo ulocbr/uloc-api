@@ -123,8 +123,9 @@ interface UserManagerInterface
     public function dispatch(Event $event, $eventName);
 
     /**
+     * @param null $password
      * @return String - password
      */
-    public function redefinePassword();
+    public function redefinePassword($password = null);
 
 }
