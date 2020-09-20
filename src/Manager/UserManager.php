@@ -190,7 +190,9 @@ class UserManager extends CustomManager implements UserManagerInterface
             throw new \Exception('Encoder is not avaliable in UserManager');
         }
         return $this->encoder->encode([
+            'id' => $this->user->getId(),
             'username' => $this->user->getUsername(),
+            'client' => @$_SERVER['SL_CLIENT'],
             'exp' => time() + $expiration // 1 day expiration
         ]);
     }
