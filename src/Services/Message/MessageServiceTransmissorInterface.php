@@ -25,9 +25,9 @@ namespace Uloc\ApiBundle\Services\Message;
  */
 interface MessageServiceTransmissorInterface
 {
-    /*
-     * TODO: Criar doc dos métodos
-     */
+    public function getName();
+    public function setMessage(MessageServiceInterface $message);
+    public function getMessage();
     public function transmit();
 
 }

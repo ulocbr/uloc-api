@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Uloc\ApiBundle\Manager\UserManagerInterface;
+use Uloc\ApiBundle\Services\Config\ConfigServiceInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
@@ -57,6 +58,11 @@ class UlocApiExtension extends Extension
 
         $container->setAlias('uloc_api.logger', new Alias($loggerConfig['service'], true));
         $container->setAlias(LogInterface::class, 'uloc_api.logger');
+
+        $configService = $config['config_service_default'];
+
+        $container->setAlias('uloc_api.config_service', new Alias($configService['service'], true));
+        $container->setAlias(ConfigServiceInterface::class, 'uloc_api.config_service');
 
         $container->setAlias(UserManagerInterface::class, 'uloc_api.manager.user_manager');
 

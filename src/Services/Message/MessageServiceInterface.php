@@ -18,6 +18,13 @@ namespace Uloc\ApiBundle\Services\Message;
  */
 interface MessageServiceInterface
 {
+
+    const STATUS_CREATED = 0;
+    const STATUS_SENDED = 1;
+    const STATUS_RECEIVED = 2;
+    const STATUS_READED = 3;
+    const STATUS_ERROR = 99;
+
     /*
      * TODO: Criar doc dos métodos
      */
@@ -27,7 +34,14 @@ interface MessageServiceInterface
     public function getSender();
     public function getRecipientName();
     public function getRecipient();
+    public function getCcs();
+    public function getBccs();
+    public function getReplyTo();
+    public function getPriority();
+    public function getSubject();
     public function getMessage();
+    public function getMessageText();
+    public function getConfig(): ?array;
     public function getId();
 
 }

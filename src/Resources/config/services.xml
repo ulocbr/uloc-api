@@ -62,9 +62,36 @@
         </service>
         <service id="Uloc\ApiBundle\Exception\ApplicationErrorHandlerInterface" alias="uloc_api.error_handler"/>
 
-        <service class="Uloc\ApiBundle\Services\Config\ConfigService" id="uloc_api.services_config.config_service" public="true">
+        <service id="uloc_api.config_service.default" class="Uloc\ApiBundle\Services\Config\ConfigService" public="true">
             <argument type="service" id="uloc_api.object_manager"/>
         </service>
-        <service id="Uloc\ApiBundle\Services\Config\ConfigService" alias="uloc_api.services_config.config_service"/>
+        <service id="Uloc\ApiBundle\Services\Config\ConfigServiceInterface" alias="uloc_api.config_service"/>
+
+        <!-- Message -->
+        <service id="uloc_api.messenger.default" class="Uloc\ApiBundle\Services\Message\MessageServiceFactory" public="true">
+            <argument type="service" id="uloc_api.object_manager"/>
+            <argument type="service" id="uloc_api.logger" />
+            <argument type="service" id="Uloc\ApiBundle\Services\Message\MessageTransmissor" />
+            <argument type="service" id="Symfony\Component\Messenger\MessageBusInterface" />
+            <argument type="tagged" tag="uloc.messenger" />
+        </service>
+        <service id="Uloc\ApiBundle\Services\Message\MessageServiceFactory" alias="uloc_api.messenger.default"/>
+
+        <service id="Uloc\ApiBundle\Services\Message\MessageTransmissor">
+            <argument type="service" id="uloc_api.config_service"/>
+            <argument type="service" id="uloc_api.logger"/>
+            <argument type="tagged" tag="uloc.messenger_transmissor"/>
+        </service>
+
+        <service id="Uloc\ApiBundle\Services\Message\EmailTransmissor" public="true" autoconfigure="true" autowire="true">
+            <tag name="uloc.messenger_transmissor" alias="email"/>
+        </service>
+
+        <service id="Uloc\ApiBundle\Messenger\Handler\Command\MessageAsyncHandler" autoconfigure="true">
+            <argument type="service" id="uloc_api.object_manager"/>
+            <argument type="service" id="uloc_api.logger" />
+            <argument type="service" id="uloc_api.messenger.default" />
+            <tag name="messenger.message_handler"/>
+        </service>
     </services>
 </container>

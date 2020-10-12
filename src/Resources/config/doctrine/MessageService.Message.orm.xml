@@ -10,10 +10,18 @@
             <generator strategy="AUTO"/>
         </id>
 
+        <indexes>
+            <index columns="type" name="type"></index>
+            <index columns="status" name="status"></index>
+            <index columns="schedule_for" name="scheduleFor"></index>
+        </indexes>
+
         <field name="dateRegistry" type="datetime" nullable="false" />
         <field name="dateSend" type="datetime" nullable="true" />
         <field name="dateReceiver" type="datetime" nullable="true" />
         <field name="dateReaded" type="datetime" nullable="true" />
+
+        <field name="scheduleFor" type="datetime" nullable="true" />
         
         <field name="senderName" type="string" length="80" nullable="true"/>
 
@@ -23,13 +31,22 @@
 
         <field name="recipient" type="string" length="100"/>
 
+        <field name="ccs" type="array" nullable="true"/>
+        <field name="bccs" type="array" nullable="true"/>
+        <field name="replyTo" type="string" length="100" nullable="true"/>
+        <field name="priority" type="smallint" nullable="true" />
+
         <field name="status" type="smallint"/>
 
+        <field name="subject" type="string" length="255" nullable="true"/>
         <field name="message" type="text" nullable="true"/>
+        <field name="messageText" type="text" nullable="true"/>
 
-        <many-to-one field="type" target-entity="Uloc\ApiBundle\Entity\MessageService\MessageType" inversed-by="messages">
-            <join-column name="type_id" referenced-column-name="id"/>
-        </many-to-one>
+        <field name="type" type="string" nullable="false"/>
+
+        <field name="config" type="array" nullable="true"/>
+
+        <field name="attempts" type="integer" />
 
         <one-to-many field="attachments" target-entity="Uloc\ApiBundle\Entity\MessageService\MessageAttachment"
                      mapped-by="message"/>

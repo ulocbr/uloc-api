@@ -65,6 +65,11 @@ class Message implements MessageServiceInterface
      */
     private $recipient;
 
+    private $ccs;
+    private $bccs;
+    private $replyTo;
+    private $priority;
+
     /**
      * 0=Criado
      * 1=Enviado
@@ -81,12 +86,41 @@ class Message implements MessageServiceInterface
      * @var string
      *
      */
+    private $subject;
+
+    /**
+     * @var string
+     *
+     */
     private $message;
 
     /**
-     * Muitos Message tem Um MessageType.
+     * @var string
+     *
+     */
+    private $messageText;
+
+    /**
+     * @var \DateTime
+     *
+     */
+    private $scheduleFor;
+
+    /**
+     * @var string
      */
     private $type;
+
+    /**
+     * @var array
+     */
+    private $config = [];
+
+    /**
+     * @var integer
+     *
+     */
+    private $attempts = 0;
 
     /**
      * Um Message tem Muitos Attachments
@@ -120,6 +154,10 @@ class Message implements MessageServiceInterface
         $this->logs[] = $log;
     }
 
+    public function clearLogs() {
+        $this->logs = new ArrayCollection();
+    }
+
     /**
      * @return mixed
      */
@@ -136,6 +174,10 @@ class Message implements MessageServiceInterface
         $this->attachments[] = $attachment;
     }
 
+    public function clearAttachments() {
+        $this->attachments = new ArrayCollection();
+    }
+
     /**
      * @return mixed
      */
@@ -145,9 +187,9 @@ class Message implements MessageServiceInterface
     }
 
     /**
-     * @param MessageType $type
+     * @param string $type
      */
-    public function setType(MessageType $type)
+    public function setType($type)
     {
         $this->type = $type;
     }
@@ -379,6 +421,24 @@ class Message implements MessageServiceInterface
     }
 
     /**
+     * @return string
+     */
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject(?string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+
+
+    /**
      * Set message
      *
      * @param string $message
@@ -400,6 +460,22 @@ class Message implements MessageServiceInterface
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getScheduleFor()
+    {
+        return $this->scheduleFor;
+    }
+
+    /**
+     * @param \DateTime $scheduleFor
+     */
+    public function setScheduleFor(?\DateTime $scheduleFor)
+    {
+        $this->scheduleFor = $scheduleFor;
     }
 
     public function setTransmissor()
@@ -432,4 +508,124 @@ class Message implements MessageServiceInterface
     {
         $this->logs->removeElement($log);
     }
+
+    /**
+     * @return array
+     */
+    public function getConfig(): ?array
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param array $config
+     */
+    public function setConfig(?array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessageText()
+    {
+        return $this->messageText;
+    }
+
+    /**
+     * @param string $messageText
+     */
+    public function setMessageText($messageText)
+    {
+        $this->messageText = $messageText;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttempts(): int
+    {
+        return $this->attempts;
+    }
+
+    /**
+     * @param int $attempts
+     */
+    public function setAttempts(int $attempts): void
+    {
+        $this->attempts = $attempts;
+    }
+
+    /**
+     */
+    public function addAttempt()
+    {
+        $this->attempts++;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCcs()
+    {
+        return $this->ccs;
+    }
+
+    /**
+     * @param mixed $ccs
+     */
+    public function setCcs($ccs): void
+    {
+        $this->ccs = $ccs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBccs()
+    {
+        return $this->bccs;
+    }
+
+    /**
+     * @param mixed $bccs
+     */
+    public function setBccs($bccs): void
+    {
+        $this->bccs = $bccs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReplyTo()
+    {
+        return $this->replyTo;
+    }
+
+    /**
+     * @param mixed $replyTo
+     */
+    public function setReplyTo($replyTo): void
+    {
+        $this->replyTo = $replyTo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param mixed $priority
+     */
+    public function setPriority($priority): void
+    {
+        $this->priority = $priority;
+    }
+
 }

@@ -15,6 +15,7 @@ class CommunicationHistory
 {
 
     /**
+     * TODO: Funciona? Analisar
      * Método facilitador para construir um histórico de comunicação baseado no Serviço de Mensagem da aplicação
      * @param Person $person
      * @param MessageServiceInterface $message
