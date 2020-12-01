@@ -192,7 +192,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         return $this->encoder->encode([
             'id' => $this->user->getId(),
             'username' => $this->user->getUsername(),
-            'client' => @$_SERVER['SL_CLIENT'],
+            'client' => @$_SERVER['SL_CLIENT'], // TODO: Isso não deve ficar aqui.
             'exp' => time() + $expiration // 1 day expiration
         ]);
     }
