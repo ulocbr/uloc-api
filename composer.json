@@ -14,7 +14,7 @@
     "symfony/config": "^5.1",
     "symfony/dependency-injection": "^5.1",
     "symfony/http-kernel": "^5.1",
-    "lcobucci/jwt": "^3.2",
+    "lcobucci/jwt": "3.3.*",
     "namshi/jose": "^7.2",
     "symfony/security-bundle": "^5.1",
     "doctrine/doctrine-bundle": "^2.0",
