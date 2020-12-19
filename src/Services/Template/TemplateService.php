@@ -48,11 +48,10 @@ class TemplateService
     /**
      * @param $template
      * @param array $dataToParse
-     * @param array $customVars
      * @param string[] $oderPriority
      * @throws \Exception
      */
-    public function proccessTemplate($template, array $dataToParse, array $customVars = [], $oderPriority = ['custom', 'internal'])
+    public function proccessTemplate($template, array $dataToParse = [], $oderPriority = ['custom', 'internal'])
     {
 
         if (!($template instanceof Template)) {
@@ -83,7 +82,7 @@ class TemplateService
                     }
                 }
 
-                //@TODO: Callback value bind? (An database value, an sistem callback...)
+                //@TODO: Callback value bind? (An database value, an system callback...)
                 $value = $value ? $value->getValue() : null;
 
                 $allVars[$key] = [
@@ -95,8 +94,8 @@ class TemplateService
         }
 
         // Proccess custom vars
-        if (count($customVars)) {
-            foreach ($customVars as $var => $value) {
+        if (count($dataToParse)) {
+            foreach ($dataToParse as $var => $value) {
                 if ($value) {
                     $document = str_ireplace('{' . $var . '}', $value, $document);
                     $puretext = str_ireplace('{' . $var . '}', $value, $puretext);
@@ -112,11 +111,6 @@ class TemplateService
                     $puretext = str_ireplace('{' . $var['name'] . '}', $var['value'], $puretext);
                 }
             }
-        }
-
-
-        if (count($dataToParse)) {
-
         }
 
         $template->setTemplate($document);
