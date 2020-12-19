@@ -6,8 +6,12 @@
 
     <mapped-superclass name="Uloc\ApiBundle\Entity\App\File">
 
-        <field name="file" type="string" nullable="true" />
-
+        <field name="filename" type="string" nullable="true" />
+        <field name="fileUrl" type="string" nullable="true" />
+        <field name="fileVersions" type="json" nullable="true" />
+        <field name="fileOriginalFilename" type="string" nullable="true" />
+        <field name="fileMimeType" type="string" nullable="true" />
+        <field name="fileResolution" type="string" nullable="true" />
         <field name="fileSize" type="string" nullable="true" />
 
     </mapped-superclass>

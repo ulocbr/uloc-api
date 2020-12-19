@@ -93,5 +93,13 @@
             <argument type="service" id="uloc_api.messenger.default" />
             <tag name="messenger.message_handler"/>
         </service>
+
+        <service id="uloc_api.template.default" class="Uloc\ApiBundle\Services\Template\TemplateService" public="true" autoconfigure="true">
+            <argument type="service" id="uloc_api.object_manager"/>
+            <argument type="service" id="uloc_api.logger" />
+            <argument type="service" id="uloc_api.config_service" />
+        </service>
+        <service id="Uloc\ApiBundle\Services\Template\TemplateService" alias="uloc_api.template.default"/>
+
     </services>
 </container>

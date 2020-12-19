@@ -13,7 +13,7 @@ namespace Uloc\ApiBundle\Entity\App;
 use Uloc\ApiBundle\Entity\FormEntity;
 use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
-class Template extends FormEntity
+class Template extends File
 {
 
     protected $id;
@@ -29,6 +29,8 @@ class Template extends FormEntity
     protected $template;
 
     protected $pureText;
+
+    protected $internal;
 
     /**
      * @var array
@@ -155,6 +157,22 @@ class Template extends FormEntity
         $this->versions = $versions;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getInternal(): ?bool
+    {
+        return $this->internal;
+    }
+
+    /**
+     * @param mixed $internal
+     */
+    public function setInternal(?bool $internal): void
+    {
+        $this->internal = $internal;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
@@ -166,7 +184,8 @@ class Template extends FormEntity
             'category' => ['id', 'name', 'type'],
             'template',
             'pureText',
-            'versions'
+            'versions',
+            'internal',
         ];
         $representation
             ->setGroup('public')

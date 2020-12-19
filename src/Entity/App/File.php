@@ -24,6 +24,18 @@ abstract class File extends FormEntity
 
     protected $file;
 
+    private $filename;
+
+    private $fileUrl;
+
+    private $fileVersions;
+
+    private $fileOriginalFilename;
+
+    private $fileMimeType;
+
+    private $fileResolution;
+
     private $fileSize;
 
     function __construct()
@@ -77,5 +89,103 @@ abstract class File extends FormEntity
     {
         $this->fileSize = $fileSize;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param mixed $filename
+     */
+    public function setFilename($filename): void
+    {
+        $this->filename = $filename;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileUrl()
+    {
+        return $this->fileUrl;
+    }
+
+    /**
+     * @param mixed $fileUrl
+     */
+    public function setFileUrl($fileUrl): void
+    {
+        $this->fileUrl = $fileUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileVersions()
+    {
+        return $this->fileVersions;
+    }
+
+    /**
+     * @param mixed $fileVersions
+     */
+    public function setFileVersions($fileVersions): void
+    {
+        $this->fileVersions = $fileVersions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileOriginalFilename()
+    {
+        return $this->fileOriginalFilename;
+    }
+
+    /**
+     * @param mixed $fileOriginalFilename
+     */
+    public function setFileOriginalFilename($fileOriginalFilename): void
+    {
+        $this->fileOriginalFilename = $fileOriginalFilename;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileMimeType()
+    {
+        return $this->fileMimeType;
+    }
+
+    /**
+     * @param mixed $fileMimeType
+     */
+    public function setFileMimeType($fileMimeType): void
+    {
+        $this->fileMimeType = $fileMimeType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileResolution()
+    {
+        return $this->fileResolution;
+    }
+
+    /**
+     * @param mixed $fileResolution
+     */
+    public function setFileResolution($fileResolution): void
+    {
+        $this->fileResolution = $fileResolution;
+    }
+
+
 
 }

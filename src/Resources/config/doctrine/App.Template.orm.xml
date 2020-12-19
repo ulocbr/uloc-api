@@ -21,6 +21,8 @@
 
         <field name="versions" type="array" nullable="true"/>
 
+        <field name="internal" type="boolean"/>
+
         <many-to-one field="category" target-entity="Uloc\ApiBundle\Entity\App\TemplateCategory" inversed-by="templates">
             <join-column name="category_id" referenced-column-name="id"/>
         </many-to-one>

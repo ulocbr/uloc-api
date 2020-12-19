@@ -11,20 +11,25 @@
 namespace Uloc\ApiBundle\Entity\App;
 
 use Uloc\ApiBundle\Entity\FormEntity;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * @author Tiago Felipe
  * @version 0.0.1
  *
  */
-abstract class Variable extends FormEntity
+class Variable extends FormEntity
 {
+
+	protected $id;
 
 	protected $name;
 
     protected $value;
 
     protected $description;
+
+    protected $internal;
 
 	/**
 	 * Parametros para chamar alguma funcao especifica para tratamento da variavel.
@@ -93,6 +98,43 @@ abstract class Variable extends FormEntity
     public function setDescription($description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInternal(): ?bool
+    {
+        return $this->internal;
+    }
+
+    /**
+     * @param mixed $internal
+     */
+    public function setInternal(?bool $internal): void
+    {
+        $this->internal = $internal;
+    }
+
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+        $public = [
+            'id',
+            'name',
+            'name',
+            'description',
+            'category' => ['id', 'name', 'type'],
+            'template',
+            'pureText',
+            'versions',
+            'internal',
+        ];
+        $representation
+            ->setGroup('public')
+            ->addProperties(
+                $public
+            )->build();
     }
 
 }
