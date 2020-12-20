@@ -10,6 +10,10 @@
 
 namespace Uloc\ApiBundle\Services\Template;
 
+/**
+ * Interface VariableConversorInterface
+ * @package Uloc\ApiBundle\Services\Template
+ */
 
 interface VariableConversorInterface
 {
