@@ -29,6 +29,8 @@ class TemplateCategory extends FormEntity
 
     protected $templates;
 
+    protected $internal;
+
     /**
      * TemplateCategory constructor.
      */
@@ -126,6 +128,22 @@ class TemplateCategory extends FormEntity
         $this->templates[] = $template;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getInternal()
+    {
+        return $this->internal;
+    }
+
+    /**
+     * @param mixed $internal
+     */
+    public function setInternal($internal): void
+    {
+        $this->internal = $internal;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
@@ -134,7 +152,8 @@ class TemplateCategory extends FormEntity
             'code',
             'name',
             'description',
-            'type'
+            'type',
+            'internal'
         ];
         $representation
             ->setGroup('public')

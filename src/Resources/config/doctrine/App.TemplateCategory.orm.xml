@@ -17,6 +17,8 @@
 
         <field name="description" type="string" nullable="true" />
 
+        <field name="internal" type="boolean"/>
+
         <one-to-many field="templates" target-entity="Uloc\ApiBundle\Entity\App\Template" mapped-by="category"/>
 
     </entity>
