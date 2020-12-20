@@ -46,12 +46,14 @@ class TemplateService
     }
 
     /**
+     * @TODO: IF CASE or IMPLEMENT TWIG?
      * @param $template
      * @param array $dataToParse
+     * @param array $converters - Array of classess implements VariableConversorInterface or callback of converters
      * @param string[] $oderPriority
      * @throws \Exception
      */
-    public function proccessTemplate($template, array $dataToParse = [], $oderPriority = ['custom', 'internal'])
+    public function proccessTemplate($template, array $dataToParse = [], array $converters = [], $oderPriority = ['custom', 'internal'])
     {
 
         if (!($template instanceof Template)) {
@@ -84,8 +86,35 @@ class TemplateService
                     }
                 }
 
-                //@TODO: Callback value bind? (An database value, an system callback...)
-                $value = $value ? $value->getValue() : null;
+                $convertedValue = null;
+                if ($value) {
+                    $convertedValue = $value->getValue();
+                    if ($value->getCallback()) {
+                        $converter = $value->getCallback();
+                        if (class_exists($converter)) {
+                            $converter = new $converter;
+                            if ($converter instanceof VariableConversorInterface) {
+                                $entityToConverter = $converter::getClass();
+                                if (count($converters)) {
+                                    foreach ($converters as $dataToConverter) {
+                                        if (is_a($dataToConverter, $entityToConverter)) {
+                                            // Class can converter variable
+                                            $converter->setData($dataToConverter);
+                                            $converteVars = $converter->getVariables();
+                                            if (isset($converteVars[$var])) {
+                                                $method = $converteVars[$var];
+                                                $convertedValue = call_user_func([$converter, $method]);
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    // @TODO: Auto search for converter?
+                                }
+                            }
+                        }
+                    }
+                }
+                $value = $convertedValue;
 
                 $allVars[$key] = [
                     'name' => $var,
