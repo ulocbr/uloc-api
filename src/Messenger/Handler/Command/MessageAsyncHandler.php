@@ -37,7 +37,7 @@ class MessageAsyncHandler implements MessageHandlerInterface
             return;
         }
         if ($transmissor->transmit()) {
-            $message->setStatus(MessageServiceInterface::STATUS_SENDED);
+            $this->messageServiceFactory->setSended($message);
             $this->om->persist($message);
             $this->om->flush();
         }

@@ -110,7 +110,7 @@ class MessageServiceFactory
 
             if ($this->senderType === self::SENDER_INSTANTLY) {
                 if ($transmissor->transmit()) {
-                    $message->setStatus(MessageServiceInterface::STATUS_SENDED);
+                    $this->setSended($message);
                     $this->om->persist($message);
                     $this->om->flush();
                 }
@@ -147,6 +147,12 @@ class MessageServiceFactory
         $transmissor->setMessage($message);
 
         return $transmissor;
+    }
+
+    public function setSended(Message $message)
+    {
+        $message->setStatus(MessageServiceInterface::STATUS_SENDED);
+        $message->setDateSend(new \DateTime());
     }
 
 }
