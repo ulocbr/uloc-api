@@ -22,6 +22,8 @@ class Template extends File
 
     protected $name;
 
+    protected $subject;
+
     protected $description;
 
     protected $category;
@@ -173,6 +175,22 @@ class Template extends File
         $this->internal = $internal;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param mixed $subject
+     */
+    public function setSubject($subject): void
+    {
+        $this->subject = $subject;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
@@ -180,6 +198,7 @@ class Template extends File
             'id',
             'code',
             'name',
+            'subject',
             'description',
             'category' => ['id', 'name', 'type'],
             'template',

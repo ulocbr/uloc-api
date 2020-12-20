@@ -13,6 +13,7 @@
         <field name="code" type="string" unique="true"/>
 
         <field name="name" type="string"/>
+        <field name="subject" type="string"/>
 
         <field name="description" type="string" nullable="true"/>
 

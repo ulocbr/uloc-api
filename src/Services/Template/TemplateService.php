@@ -61,13 +61,15 @@ class TemplateService
             }
         }
 
+        $subject = $template->getSubject();
         $document = $template->getTemplate();
         $puretext = $template->getPureText();
 
         // Extract all vars from template
+        $subjectVars = self::extractTemplateVars($subject);
         $documentVars = self::extractTemplateVars($document);
         $pureTextVars = self::extractTemplateVars($puretext);
-        $allVars = array_values(array_unique(array_merge($documentVars, $pureTextVars)));
+        $allVars = array_values(array_unique(array_merge($documentVars, $pureTextVars, $subjectVars)));
 
         // Check if exists custom vars in database
         if (count($allVars)) {
@@ -97,6 +99,7 @@ class TemplateService
         if (count($dataToParse)) {
             foreach ($dataToParse as $var => $value) {
                 if ($value) {
+                    $subject = str_ireplace('{' . $var . '}', $value, $subject);
                     $document = str_ireplace('{' . $var . '}', $value, $document);
                     $puretext = str_ireplace('{' . $var . '}', $value, $puretext);
                 }
@@ -107,12 +110,14 @@ class TemplateService
         if (count($allVars)) {
             foreach ($allVars as $var) {
                 if ($var['value']) {
+                    $subject = str_ireplace('{' . $var['name'] . '}', $var['value'], $subject);
                     $document = str_ireplace('{' . $var['name'] . '}', $var['value'], $document);
                     $puretext = str_ireplace('{' . $var['name'] . '}', $var['value'], $puretext);
                 }
             }
         }
 
+        $template->setSubject($subject);
         $template->setTemplate($document);
         $template->setPureText($puretext);
 

@@ -272,8 +272,4 @@ abstract class BaseController extends AbstractController
         }
     }
 
-    public function getMessageService () {
-        return $this->container->get('messageService.default');
-    }
-
 }
