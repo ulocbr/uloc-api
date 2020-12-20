@@ -24,4 +24,6 @@ interface VariableConversorInterface
 
     public static function getClass(): string;
 
+    public function setOm($om): self;
+
 }

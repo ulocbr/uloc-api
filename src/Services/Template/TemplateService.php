@@ -28,6 +28,7 @@ class TemplateService
     private $om;
     private $logger;
     private $configService;
+    public static $convertersCache = [];
 
     public function __construct(ObjectManager $om, LogInterface $logger, ConfigServiceInterface $configService)
     {
@@ -92,7 +93,16 @@ class TemplateService
                     if ($value->getCallback()) {
                         $converter = $value->getCallback();
                         if (class_exists($converter)) {
-                            $converter = new $converter;
+
+                            // Perform cache
+                            if (!array_key_exists($converter, self::$convertersCache)) {
+                                self::$convertersCache[$converter] = new $converter;
+                                if (is_callable([self::$convertersCache[$converter], 'setOm'])) {
+                                    self::$convertersCache[$converter]->setOm($this->om);
+                                }
+                            }
+                            $converter = self::$convertersCache[$converter];
+
                             if ($converter instanceof VariableConversorInterface) {
                                 $entityToConverter = $converter::getClass();
                                 if (count($converters)) {
