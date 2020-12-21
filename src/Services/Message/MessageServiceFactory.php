@@ -16,6 +16,7 @@ use Uloc\ApiBundle\Entity\MessageService\Message;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
 /**
+ * @TODO: Service to generate link to define Receiver and Readed props
  * Responsável por construir uma menssagem
  * @author Tiago Felipe
  * @version 0.0.1
@@ -89,7 +90,11 @@ class MessageServiceFactory
             $message->setMessage($text);
             $message->setMessageText($pureText);
             $message->setStatus(MessageServiceInterface::STATUS_CREATED);
-            // TODO: CC, BCC, Priority, ReplyTo
+            // TODO: CC, BCC, ReplyTo
+
+            if (isset($config['priority'])) {
+                $message->setPriority(intval($config['priority']));
+            }
 
             $transmissor = $this->parseMessage($message);
 
