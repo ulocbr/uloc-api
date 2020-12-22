@@ -29,7 +29,7 @@ class Variable extends FormEntity
 
     protected $description;
 
-    protected $internal;
+    protected $internal = false;
 
     /**
      * Parametros para chamar alguma funcao especifica para tratamento da variavel.

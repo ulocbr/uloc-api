@@ -32,7 +32,7 @@ class Template extends File
 
     protected $pureText;
 
-    protected $internal;
+    protected $internal = false;
 
     /**
      * @var array
