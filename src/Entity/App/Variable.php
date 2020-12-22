@@ -130,11 +130,10 @@ class Variable extends FormEntity
         $public = [
             'id',
             'name',
+            'value',
             'description',
-            'template',
-            'pureText',
-            'versions',
             'internal',
+            'callback',
         ];
         $representation
             ->setGroup('public')
