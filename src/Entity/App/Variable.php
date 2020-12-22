@@ -131,7 +131,6 @@ class Variable extends FormEntity
             'id',
             'name',
             'description',
-            'category' => ['id', 'name', 'type'],
             'template',
             'pureText',
             'versions',
