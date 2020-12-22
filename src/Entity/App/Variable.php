@@ -21,9 +21,9 @@ use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 class Variable extends FormEntity
 {
 
-	protected $id;
+    protected $id;
 
-	protected $name;
+    protected $name;
 
     protected $value;
 
@@ -31,10 +31,18 @@ class Variable extends FormEntity
 
     protected $internal;
 
-	/**
-	 * Parametros para chamar alguma funcao especifica para tratamento da variavel.
-	 */
-	protected $callback;
+    /**
+     * Parametros para chamar alguma funcao especifica para tratamento da variavel.
+     */
+    protected $callback;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return mixed
