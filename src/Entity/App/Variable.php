@@ -130,7 +130,6 @@ class Variable extends FormEntity
         $public = [
             'id',
             'name',
-            'name',
             'description',
             'category' => ['id', 'name', 'type'],
             'template',
