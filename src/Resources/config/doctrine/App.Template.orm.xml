@@ -18,6 +18,12 @@
         <field name="description" type="string" nullable="true"/>
 
         <field name="template" type="text" nullable="true"/>
+        <field name="email" type="text" nullable="true"/>
+        <field name="pdf" type="text" nullable="true"/>
+        <field name="csv" type="text" nullable="true"/>
+        <field name="excel" type="text" nullable="true"/>
+        <field name="txt" type="text" nullable="true"/>
+        <field name="printer" type="text" nullable="true"/>
         <field name="pureText" type="text" nullable="true"/>
 
         <field name="versions" type="array" nullable="true"/>

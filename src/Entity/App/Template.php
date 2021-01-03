@@ -30,6 +30,16 @@ class Template extends File
 
     protected $template;
 
+    /**
+     * @var Template Versions
+     */
+    protected $email;
+    protected $pdf;
+    protected $csv;
+    protected $excel;
+    protected $txt;
+    protected $printer;
+
     protected $pureText;
 
     protected $internal = false;
@@ -191,6 +201,102 @@ class Template extends File
         $this->subject = $subject;
     }
 
+    /**
+     * @return Template
+     */
+    public function getEmail(): Template
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param Template $email
+     */
+    public function setEmail(Template $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPdf()
+    {
+        return $this->pdf;
+    }
+
+    /**
+     * @param mixed $pdf
+     */
+    public function setPdf($pdf): void
+    {
+        $this->pdf = $pdf;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCsv()
+    {
+        return $this->csv;
+    }
+
+    /**
+     * @param mixed $csv
+     */
+    public function setCsv($csv): void
+    {
+        $this->csv = $csv;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExcel()
+    {
+        return $this->excel;
+    }
+
+    /**
+     * @param mixed $excel
+     */
+    public function setExcel($excel): void
+    {
+        $this->excel = $excel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTxt()
+    {
+        return $this->txt;
+    }
+
+    /**
+     * @param mixed $txt
+     */
+    public function setTxt($txt): void
+    {
+        $this->txt = $txt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrinter()
+    {
+        return $this->printer;
+    }
+
+    /**
+     * @param mixed $printer
+     */
+    public function setPrinter($printer): void
+    {
+        $this->printer = $printer;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
@@ -202,6 +308,12 @@ class Template extends File
             'description',
             'category' => ['id', 'name', 'type'],
             'template',
+            'email',
+            'pdf',
+            'csv',
+            'excel',
+            'txt',
+            'printer',
             'pureText',
             'versions',
             'internal',
