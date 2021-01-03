@@ -202,17 +202,17 @@ class Template extends File
     }
 
     /**
-     * @return Template
+     * @return mixed
      */
-    public function getEmail(): Template
+    public function getEmail()
     {
         return $this->email;
     }
 
     /**
-     * @param Template $email
+     * @param mixed $email
      */
-    public function setEmail(Template $email): void
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
