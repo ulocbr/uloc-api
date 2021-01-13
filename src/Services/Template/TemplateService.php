@@ -64,15 +64,43 @@ class TemplateService
             }
         }
 
+        $template = clone $template; // to prevent edit entity in flush
+
         $subject = $template->getSubject();
         $document = $template->getTemplate();
         $puretext = $template->getPureText();
+
+        $templateForEmail = $template->getEmail();
+        $templateForPdf = $template->getPdf();
+        $templateForExcel = $template->getExcel();
+        $templateForCsv = $template->getCsv();
+        $templateForTxt = $template->getTxt();
+        $templateForPrinter = $template->getPrinter();
 
         // Extract all vars from template
         $subjectVars = self::extractTemplateVars($subject);
         $documentVars = self::extractTemplateVars($document);
         $pureTextVars = self::extractTemplateVars($puretext);
-        $allVars = array_values(array_unique(array_merge($documentVars, $pureTextVars, $subjectVars)));
+
+        $templateForEmailVars = self::extractTemplateVars($templateForEmail);
+        $templateForPdfVars = self::extractTemplateVars($templateForPdf);
+        $templateForExcelVars = self::extractTemplateVars($templateForExcel);
+        $templateForCsvVars = self::extractTemplateVars($templateForCsv);
+        $templateForTxtVars = self::extractTemplateVars($templateForTxt);
+        $templateForPrinterVars = self::extractTemplateVars($templateForPrinter);
+
+        $allVars = array_values(array_unique(array_merge(
+            $documentVars,
+            $pureTextVars,
+            $subjectVars,
+
+            $templateForEmailVars,
+            $templateForPdfVars,
+            $templateForExcelVars,
+            $templateForCsvVars,
+            $templateForTxtVars,
+            $templateForPrinterVars
+        )));
 
         // Check if exists custom vars in database
         if (count($allVars)) {
@@ -141,6 +169,25 @@ class TemplateService
                     $subject = str_ireplace('{' . $var . '}', $value, $subject);
                     $document = str_ireplace('{' . $var . '}', $value, $document);
                     $puretext = str_ireplace('{' . $var . '}', $value, $puretext);
+
+                    if (!empty($templateForEmail)) {
+                        $templateForEmail = str_ireplace('{' . $var . '}', $value, $templateForEmail);
+                    }
+                    if (!empty($templateForPdf)) {
+                        $templateForPdf = str_ireplace('{' . $var . '}', $value, $templateForPdf);
+                    }
+                    if (!empty($templateForExcel)) {
+                        $templateForExcel = str_ireplace('{' . $var . '}', $value, $templateForExcel);
+                    }
+                    if (!empty($templateForCsv)) {
+                        $templateForCsv = str_ireplace('{' . $var . '}', $value, $templateForCsv);
+                    }
+                    if (!empty($templateForTxt)) {
+                        $templateForTxt = str_ireplace('{' . $var . '}', $value, $templateForTxt);
+                    }
+                    if (!empty($templateForPrinter)) {
+                        $templateForPrinter = str_ireplace('{' . $var . '}', $value, $templateForPrinter);
+                    }
                 }
             }
         }
@@ -152,6 +199,25 @@ class TemplateService
                     $subject = str_ireplace('{' . $var['name'] . '}', $var['value'], $subject);
                     $document = str_ireplace('{' . $var['name'] . '}', $var['value'], $document);
                     $puretext = str_ireplace('{' . $var['name'] . '}', $var['value'], $puretext);
+
+                    if (!empty($templateForEmail)) {
+                        $templateForEmail = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForEmail);
+                    }
+                    if (!empty($templateForPdf)) {
+                        $templateForPdf = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForPdf);
+                    }
+                    if (!empty($templateForExcel)) {
+                        $templateForExcel = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForExcel);
+                    }
+                    if (!empty($templateForCsv)) {
+                        $templateForCsv = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForCsv);
+                    }
+                    if (!empty($templateForTxt)) {
+                        $templateForTxt = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForTxt);
+                    }
+                    if (!empty($templateForPrinter)) {
+                        $templateForPrinter = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForPrinter);
+                    }
                 }
             }
         }
@@ -159,6 +225,13 @@ class TemplateService
         $template->setSubject($subject);
         $template->setTemplate($document);
         $template->setPureText($puretext);
+
+        $template->setEmail($templateForEmail);
+        $template->setPdf($templateForPdf);
+        $template->setExcel($templateForExcel);
+        $template->setCsv($templateForCsv);
+        $template->setTxt($templateForTxt);
+        $template->setPrinter($templateForPrinter);
 
         #dd($template);
 
@@ -172,6 +245,7 @@ class TemplateService
      */
     static function extractTemplateVars($document)
     {
+        if (empty($document)) return [];
         preg_match_all('#{(.*?)}#i', $document, $result);
         return isset($result[1]) && is_array(@$result[1]) ? @$result[1] : [];
     }
