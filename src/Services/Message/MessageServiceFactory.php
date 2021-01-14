@@ -68,11 +68,12 @@ class MessageServiceFactory
      * @param string $text
      * @param string $pureText
      * @param array $config
+     * @param array $extra
      *
      * @return Message se tudo ocorrer com sucesso ou NULL em caso de erro
      * @throws \Exception
      */
-    public function queue($transmissorAlias, $senderName, $sender, $recipientName, $recipient, $subject, $text, $pureText = null, $config = [])
+    public function queue($transmissorAlias, $senderName, $sender, $recipientName, $recipient, $subject, $text, $pureText = null, $config = [], $extra = [])
     {
         try {
             if (!$this->transmissor->getTransmissor($transmissorAlias)) {
@@ -90,6 +91,7 @@ class MessageServiceFactory
             $message->setMessage($text);
             $message->setMessageText($pureText);
             $message->setStatus(MessageServiceInterface::STATUS_CREATED);
+            $message->setExtra($extra);
             // TODO: CC, BCC, ReplyTo
 
             if (isset($config['priority'])) {

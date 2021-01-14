@@ -117,6 +117,11 @@ class Message implements MessageServiceInterface
     private $config = [];
 
     /**
+     * @var array
+     */
+    private $extra = [];
+
+    /**
      * @var integer
      *
      */
@@ -626,6 +631,22 @@ class Message implements MessageServiceInterface
     public function setPriority($priority): void
     {
         $this->priority = $priority;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtra(): ?array
+    {
+        return $this->extra;
+    }
+
+    /**
+     * @param array $extra
+     */
+    public function setExtra(?array $extra): void
+    {
+        $this->extra = $extra;
     }
 
 }

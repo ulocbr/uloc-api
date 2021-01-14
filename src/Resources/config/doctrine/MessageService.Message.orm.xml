@@ -45,6 +45,7 @@
         <field name="type" type="string" nullable="false"/>
 
         <field name="config" type="array" nullable="true"/>
+        <field name="extra" type="array" nullable="true"/>
 
         <field name="attempts" type="integer" />
 
