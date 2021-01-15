@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Uloc\ApiBundle\Manager\UserManagerInterface;
 use Uloc\ApiBundle\Services\Config\ConfigServiceInterface;
@@ -65,6 +66,17 @@ class UlocApiExtension extends Extension
         $container->setAlias(ConfigServiceInterface::class, 'uloc_api.config_service');
 
         $container->setAlias(UserManagerInterface::class, 'uloc_api.manager.user_manager');
+
+        $configMessegeHandler = $config['message_async_handler_default'];
+
+        $container->setAlias('uloc_api.message_async_handler', new Alias($configMessegeHandler['service'], true));
+        $container->setAlias(MessageHandlerInterface::class, 'uloc_api.message_async_handler');
+
+        if ($configMessegeHandler['service'] === 'uloc_api.message_async_handler.default') {
+            $container
+                ->findDefinition('uloc_api.message_async_handler')
+                ->addTag('messenger.message_handler');
+        }
 
         $container
             ->findDefinition('uloc_api.key_loader')

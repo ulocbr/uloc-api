@@ -67,6 +67,15 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
+                ->arrayNode('message_async_handler_default')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('service')
+                            ->defaultValue('uloc_api.message_async_handler.default')
+                        ->end()
+                    ->end()
+                ->end()
+
                 ->scalarNode('user_identity_field')
                     ->defaultValue('username')
                     ->cannotBeEmpty()

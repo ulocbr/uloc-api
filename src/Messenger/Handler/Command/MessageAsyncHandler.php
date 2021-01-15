@@ -10,9 +10,8 @@ use Uloc\ApiBundle\Services\Message\MessageServiceFactory;
 use Uloc\ApiBundle\Services\Message\MessageServiceInterface;
 use Uloc\ApiBundle\Services\Message\MessageTransmissor;
 
-class MessageAsyncHandler implements MessageHandlerInterface
+class MessageAsyncHandler/* implements MessageHandlerInterface*/
 {
-
 
     private $om;
     private $logger;

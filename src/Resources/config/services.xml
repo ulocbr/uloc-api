@@ -87,12 +87,12 @@
             <tag name="uloc.messenger_transmissor" alias="email"/>
         </service>
 
-        <service id="Uloc\ApiBundle\Messenger\Handler\Command\MessageAsyncHandler" autoconfigure="true">
+        <service id="uloc_api.message_async_handler.default" class="Uloc\ApiBundle\Messenger\Handler\Command\MessageAsyncHandler" public="true" autoconfigure="true">
             <argument type="service" id="uloc_api.object_manager"/>
             <argument type="service" id="uloc_api.logger" />
             <argument type="service" id="uloc_api.messenger.default" />
-            <tag name="messenger.message_handler"/>
         </service>
+        <service id="Symfony\Component\Messenger\Handler\MessageHandlerInterface" alias="uloc_api.message_async_handler" />
 
         <service id="uloc_api.template.default" class="Uloc\ApiBundle\Services\Template\TemplateService" public="true" autoconfigure="true">
             <argument type="service" id="uloc_api.object_manager"/>
