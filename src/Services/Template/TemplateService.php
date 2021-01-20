@@ -102,6 +102,19 @@ class TemplateService
             $templateForPrinterVars
         )));
 
+        $loader = new \Twig\Loader\ArrayLoader([
+            'document' => $document,
+            'subject' => $subject,
+            'puretext' => $puretext,
+            'templateForEmail' => $templateForEmail,
+            'templateForPdf' => $templateForPdf,
+            'templateForExcel' => $templateForExcel,
+            'templateForCsv' => $templateForCsv,
+            'templateForTxt' => $templateForTxt,
+            'templateForPrinter' => $templateForPrinter,
+        ]);
+        $twig = new \Twig\Environment($loader);
+
         // Check if exists custom vars in database
         if (count($allVars)) {
             foreach ($allVars as $key => $var) {
@@ -162,64 +175,50 @@ class TemplateService
             }
         }
 
-        // Proccess custom vars
-        if (count($dataToParse)) {
-            foreach ($dataToParse as $var => $value) {
-                if ($value) {
-                    $subject = str_ireplace('{' . $var . '}', $value, $subject);
-                    $document = str_ireplace('{' . $var . '}', $value, $document);
-                    $puretext = str_ireplace('{' . $var . '}', $value, $puretext);
-
-                    if (!empty($templateForEmail)) {
-                        $templateForEmail = str_ireplace('{' . $var . '}', $value, $templateForEmail);
-                    }
-                    if (!empty($templateForPdf)) {
-                        $templateForPdf = str_ireplace('{' . $var . '}', $value, $templateForPdf);
-                    }
-                    if (!empty($templateForExcel)) {
-                        $templateForExcel = str_ireplace('{' . $var . '}', $value, $templateForExcel);
-                    }
-                    if (!empty($templateForCsv)) {
-                        $templateForCsv = str_ireplace('{' . $var . '}', $value, $templateForCsv);
-                    }
-                    if (!empty($templateForTxt)) {
-                        $templateForTxt = str_ireplace('{' . $var . '}', $value, $templateForTxt);
-                    }
-                    if (!empty($templateForPrinter)) {
-                        $templateForPrinter = str_ireplace('{' . $var . '}', $value, $templateForPrinter);
-                    }
-                }
-            }
-        }
+        $finalParseVars = [];
 
         // Proccess custom and internal stored vars
         if (count($allVars)) {
             foreach ($allVars as $var) {
                 if ($var['value']) {
-                    $subject = str_ireplace('{' . $var['name'] . '}', $var['value'], $subject);
-                    $document = str_ireplace('{' . $var['name'] . '}', $var['value'], $document);
-                    $puretext = str_ireplace('{' . $var['name'] . '}', $var['value'], $puretext);
-
-                    if (!empty($templateForEmail)) {
-                        $templateForEmail = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForEmail);
-                    }
-                    if (!empty($templateForPdf)) {
-                        $templateForPdf = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForPdf);
-                    }
-                    if (!empty($templateForExcel)) {
-                        $templateForExcel = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForExcel);
-                    }
-                    if (!empty($templateForCsv)) {
-                        $templateForCsv = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForCsv);
-                    }
-                    if (!empty($templateForTxt)) {
-                        $templateForTxt = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForTxt);
-                    }
-                    if (!empty($templateForPrinter)) {
-                        $templateForPrinter = str_ireplace('{' .  $var['name']  . '}', $var['value'], $templateForPrinter);
-                    }
+                    $finalParseVars[$var['name']] = $var['value'];
                 }
             }
+        }
+
+        // Proccess custom vars
+        if (count($dataToParse)) {
+            // This replace $allVars keys if exists
+            foreach ($dataToParse as $key => $value) {
+                $finalParseVars[$key] = $value;
+            }
+        }
+
+        try {
+            $subject = $twig->render('subject', $finalParseVars);
+            $document = $twig->render('document', $finalParseVars);
+            $puretext = $twig->render('puretext', $finalParseVars);
+        } catch (\Exception | \Twig\Error\SyntaxError $e) {
+            // nothing to do
+        }
+
+        if (!empty($templateForEmail)) {
+            $templateForEmail = $twig->render('templateForEmail', $finalParseVars);
+        }
+        if (!empty($templateForPdf)) {
+            $templateForPdf = $twig->render('templateForPdf', $finalParseVars);
+        }
+        if (!empty($templateForExcel)) {
+            $templateForExcel = $twig->render('templateForExcel', $finalParseVars);
+        }
+        if (!empty($templateForCsv)) {
+            $templateForCsv = $twig->render('templateForCsv', $finalParseVars);
+        }
+        if (!empty($templateForTxt)) {
+            $templateForTxt = $twig->render('templateForTxt', $finalParseVars);
+        }
+        if (!empty($templateForPrinter)) {
+            $templateForPrinter = $twig->render('templateForPrinter', $finalParseVars);
         }
 
         $template->setSubject($subject);
@@ -246,7 +245,7 @@ class TemplateService
     static function extractTemplateVars($document)
     {
         if (empty($document)) return [];
-        preg_match_all('#{(.*?)}#i', $document, $result);
+        preg_match_all('#{{(.*?)}}#i', $document, $result);
         return isset($result[1]) && is_array(@$result[1]) ? @$result[1] : [];
     }
 
