@@ -194,32 +194,79 @@ class TemplateService
             }
         }
 
-        try {
-            $subject = $twig->render('subject', $finalParseVars);
-            $document = $twig->render('document', $finalParseVars);
-            $puretext = $twig->render('puretext', $finalParseVars);
-        } catch (\Exception | \Twig\Error\SyntaxError $e) {
-            // nothing to do
+
+        if (!empty($subject)) {
+            try {
+                $subject = $twig->render('subject', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
+        }
+
+        if (!empty($document)) {
+            try {
+                $document = $twig->render('document', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
+        }
+
+        if (!empty($puretext)) {
+            try {
+                $puretext = $twig->render('puretext', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
 
         if (!empty($templateForEmail)) {
-            $templateForEmail = $twig->render('templateForEmail', $finalParseVars);
+            try {
+                $templateForEmail = $twig->render('templateForEmail', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
+
         if (!empty($templateForPdf)) {
-            $templateForPdf = $twig->render('templateForPdf', $finalParseVars);
+            try {
+                $templateForPdf = $twig->render('templateForPdf', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
+
         if (!empty($templateForExcel)) {
-            $templateForExcel = $twig->render('templateForExcel', $finalParseVars);
+            try {
+                $templateForExcel = $twig->render('templateForExcel', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
+
         if (!empty($templateForCsv)) {
-            $templateForCsv = $twig->render('templateForCsv', $finalParseVars);
+            try {
+                $templateForCsv = $twig->render('templateForCsv', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
+
         if (!empty($templateForTxt)) {
-            $templateForTxt = $twig->render('templateForTxt', $finalParseVars);
+            try {
+                $templateForTxt = $twig->render('templateForTxt', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
+        
         if (!empty($templateForPrinter)) {
-            $templateForPrinter = $twig->render('templateForPrinter', $finalParseVars);
+            try {
+                $templateForPrinter = $twig->render('templateForPrinter', $finalParseVars);
+            } catch (\Exception | \Twig\Error\SyntaxError $e) {
+                // nothing to do
+            }
         }
+
 
         $template->setSubject($subject);
         $template->setTemplate($document);
