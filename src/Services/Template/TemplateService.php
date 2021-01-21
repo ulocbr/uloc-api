@@ -15,7 +15,6 @@ use Uloc\ApiBundle\Entity\App\Template;
 use Uloc\ApiBundle\Entity\App\Variable;
 use Uloc\ApiBundle\Services\Config\ConfigServiceInterface;
 use Uloc\ApiBundle\Services\Log\LogInterface;
-use Uloc\ApiBundle\Services\Message\MessageTransmissor;
 
 /**
  * Class TemplateService
@@ -175,13 +174,16 @@ class TemplateService
             }
         }
 
+        /**
+         * VAR AAA.BBB.CCC is converted to ['AAA']['BBB']['CCC']
+         */
         $finalParseVars = [];
 
         // Proccess custom and internal stored vars
         if (count($allVars)) {
             foreach ($allVars as $var) {
                 if ($var['value']) {
-                    $finalParseVars[$var['name']] = $var['value'];
+                    $this->mountVarLevel($var['name'], $var['value'], $finalParseVars);
                 }
             }
         }
@@ -190,10 +192,9 @@ class TemplateService
         if (count($dataToParse)) {
             // This replace $allVars keys if exists
             foreach ($dataToParse as $key => $value) {
-                $finalParseVars[$key] = $value;
+                $this->mountVarLevel($key, $value, $finalParseVars);
             }
         }
-
 
         if (!empty($subject)) {
             try {
@@ -258,7 +259,7 @@ class TemplateService
                 // nothing to do
             }
         }
-        
+
         if (!empty($templateForPrinter)) {
             try {
                 $templateForPrinter = $twig->render('templateForPrinter', $finalParseVars);
@@ -303,5 +304,29 @@ class TemplateService
     protected function loadVariable($name)
     {
         return $this->om->getRepository(Variable::class)->findBy(['name' => $name], ['id' => 'ASC']);
+    }
+
+    protected function mountVarLevel($name, $value, &$resultset)
+    {
+        // mount matriz
+        if (is_array($value)) {
+            if (!isset($resultset[$name])) {
+                $resultset[$name] = [];
+            }
+            $resultset[$name] = array_merge_recursive($resultset[$name], $value);
+        } else {
+            $levels = explode('.', $name);
+            $point = &$resultset;
+            foreach ($levels as $level) {
+                if (!isset($point[$level])) {
+                    if (!is_array($point)) {
+                        $point = [];
+                    }
+                    $point[$level] = null;
+                }
+                $point = &$point[$level];
+            }
+            return $point = $value;
+        }
     }
 }
