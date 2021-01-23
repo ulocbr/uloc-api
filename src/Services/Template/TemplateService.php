@@ -201,6 +201,7 @@ class TemplateService
                 $subject = $twig->render('subject', $finalParseVars);
             } catch (\Exception | \Twig\Error\SyntaxError $e) {
                 // nothing to do
+                throw $e;
             }
         }
 
@@ -209,6 +210,7 @@ class TemplateService
                 $document = $twig->render('document', $finalParseVars);
             } catch (\Exception | \Twig\Error\SyntaxError $e) {
                 // nothing to do
+                throw $e;
             }
         }
 
@@ -293,7 +295,7 @@ class TemplateService
     static function extractTemplateVars($document)
     {
         if (empty($document)) return [];
-        preg_match_all('#{{(.*?)}}#i', $document, $result);
+        preg_match_all('#{{\s*(.*?)\s*}}#i', $document, $result);
         return isset($result[1]) && is_array(@$result[1]) ? @$result[1] : [];
     }
 
