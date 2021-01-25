@@ -289,6 +289,7 @@ class TemplateService
     }
 
     /**
+     * Extract all {{ XXX }} vars
      * @param $document
      * @return array
      */
