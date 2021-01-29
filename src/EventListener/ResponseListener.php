@@ -26,7 +26,7 @@ class ResponseListener
         $request = $event->getRequest();
         $responseHeaders = $response->headers;
 
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, cache-control');
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept, authorization, cache-control, uloc-mi');
         if (empty($responseHeaders->get('Access-Control-Allow-Origin'))) {
             $responseHeaders->set('Access-Control-Allow-Origin', '*');
         }
