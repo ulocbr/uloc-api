@@ -79,7 +79,7 @@
             </join-table>
         </many-to-many>
 
-        <many-to-many field="tagsCreated" target-entity="Uloc\ApiBundle\Entity\Person\Tag" mapped-by="creator"/>
+        <one-to-many field="tagsCreated" target-entity="Uloc\ApiBundle\Entity\Person\Tag" mapped-by="creator"/>
 
         <one-to-many field="users" target-entity="Uloc\ApiBundle\Entity\User\User" mapped-by="person"/>
 
