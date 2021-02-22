@@ -209,15 +209,6 @@
                 </option>
             </constraint>
         </property>
-
-        <property name="expedition">
-            <constraint name="NotBlank">
-                <option name="message">uloc_person.document.expedition.not_blank</option>
-                <option name="groups">
-                    <value>full</value>
-                </option>
-            </constraint>
-        </property>
     </class>
 
     <class name="Uloc\ApiBundle\Entity\Person\Contact">
