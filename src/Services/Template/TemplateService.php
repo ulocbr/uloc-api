@@ -145,20 +145,20 @@ class TemplateService
 
                             if ($converter instanceof VariableConversorInterface) {
                                 $entityToConverter = $converter::getClass();
-                                if (count($converters)) {
+                                if ($entityToConverter && count($converters)) {
                                     foreach ($converters as $dataToConverter) {
                                         if (is_a($dataToConverter, $entityToConverter)) {
                                             // Class can converter variable
                                             $converter->setData($dataToConverter);
-                                            $converteVars = $converter->getVariables();
-                                            if (isset($converteVars[$var])) {
-                                                $method = $converteVars[$var];
-                                                $convertedValue = call_user_func([$converter, $method]);
-                                            }
                                         }
                                     }
                                 } else {
                                     // @TODO: Auto search for converter?
+                                }
+                                $converteVars = $converter->getVariables();
+                                if (isset($converteVars[$var])) {
+                                    $method = $converteVars[$var];
+                                    $convertedValue = call_user_func([$converter, $method]);
                                 }
                             }
                         }
