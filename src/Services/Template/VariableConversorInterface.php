@@ -22,7 +22,7 @@ interface VariableConversorInterface
 
     public function setData($data): self;
 
-    public static function getClass(): string;
+    public static function getClass(): ?string;
 
     public function setOm($om): self;
 
