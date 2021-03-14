@@ -24,6 +24,8 @@ class Log
 
     protected $type;
 
+    protected $date;
+
     protected $entity;
     protected $entityId;
 
@@ -61,6 +63,22 @@ class Log
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     */
+    public function setDate($date): void
+    {
+        $this->date = $date;
     }
 
     /**
@@ -212,6 +230,7 @@ class Log
         $public = [
             'id',
             'type',
+            'date',
             'entity',
             'entityId',
             'user',

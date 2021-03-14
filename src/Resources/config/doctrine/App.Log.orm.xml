@@ -20,6 +20,8 @@
 
         <field name="type" type="string"/>
 
+        <field name="date" type="datetime"/>
+
         <field name="entity" type="string"/>
         <field name="entityId" type="bigint" nullable="true"/>
         <field name="user" type="string" nullable="true"/>
