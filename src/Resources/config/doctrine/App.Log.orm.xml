@@ -12,6 +12,7 @@
             <index columns="entity_id" name="entity_id"/>
             <index columns="action" name="action"/>
             <index columns="user_id" name="entity_id"/>
+            <index columns="date" name="date"/>
         </indexes>
 
         <id name="id" type="integer" column="id">
