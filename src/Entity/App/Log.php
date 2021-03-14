@@ -158,7 +158,6 @@ class Log
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
-        parent::loadApiRepresentation($representation);
         $public = [
             'id',
             'entity',
