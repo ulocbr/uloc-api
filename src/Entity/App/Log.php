@@ -25,8 +25,10 @@ class Log
     protected $type;
 
     protected $entity;
-
     protected $entityId;
+
+    protected $user;
+    protected $userId;
 
     protected $action;
 
@@ -35,7 +37,6 @@ class Log
     protected $context;
 
     protected $oldObject;
-
     protected $newObject;
 
     /**
@@ -174,6 +175,38 @@ class Log
         $this->newObject = $newObject;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         $public = [
@@ -181,6 +214,8 @@ class Log
             'type',
             'entity',
             'entityId',
+            'user',
+            'userId',
             'action',
             'message',
             'context',
