@@ -22,6 +22,8 @@ class Log
 
     protected $id;
 
+    protected $type;
+
     protected $entity;
 
     protected $entityId;
@@ -42,6 +44,22 @@ class Log
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**
@@ -160,6 +178,7 @@ class Log
     {
         $public = [
             'id',
+            'type',
             'entity',
             'entityId',
             'action',
