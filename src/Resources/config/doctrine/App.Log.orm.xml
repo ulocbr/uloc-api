@@ -28,7 +28,7 @@
         <field name="user" type="string" nullable="true"/>
         <field name="userId" type="bigint" nullable="true"/>
 
-        <field name="action" type="string"/>
+        <field name="action" type="string" nullable="true"/>
         <field name="message" type="text"/>
 
         <field name="context" type="array" nullable="true"/>
