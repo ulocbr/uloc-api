@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Uloc\ApiBundle\Services\Log\SystemLog;
+use Uloc\ApiBundle\Services\Log\LogInterface;
 
 /*
  * Ouvinte para uma exceção que envolva a API
@@ -23,7 +23,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
     private $logger;
 
-    public function __construct($debug, ResponseFactory $responseFactory, SystemLog $logger)
+    public function __construct($debug, ResponseFactory $responseFactory, LogInterface $logger)
     {
         $this->debug = $debug;
         $this->responseFactory = $responseFactory;
