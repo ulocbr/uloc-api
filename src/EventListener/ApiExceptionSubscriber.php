@@ -2,6 +2,8 @@
 
 namespace Uloc\ApiBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ApiProblemException;
 use Uloc\ApiBundle\Api\ResponseFactory;
@@ -87,12 +89,19 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
      */
     private function logException(\Exception $exception)
     {
-        $message = sprintf('Uncaught PHP Exception %s: "%s" at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
+        $eclass = get_class($exception);
+        $message = sprintf('Uncaught PHP Exception %s: "%s" at %s line %s', $eclass, $exception->getMessage(), $exception->getFile(), $exception->getLine());
         $isCritical = !$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500;
         $context = array('exception' => $exception);
         if ($isCritical) {
             $this->logger->critical($message, $context);
         } else {
+            if (in_array($eclass, [
+                NotFoundHttpException::class,
+                MethodNotAllowedHttpException::class
+            ])) {
+                return;
+            }
             $this->logger->error($message, $context);
         }
     }
