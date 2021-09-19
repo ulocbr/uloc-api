@@ -235,6 +235,9 @@ abstract class BaseController extends AbstractController
     public function checkAcl($acl, $ownerId = null)
     {
         $user = $this->getUser();
+        if (is_array($acl)) {
+            $acl = $acl[0];
+        }
         if (isset($ownerId)) {
             if ($user->getId() === $ownerId) {
                 return true;
@@ -249,6 +252,9 @@ abstract class BaseController extends AbstractController
 
     public function isGrantedAcl($acl, $ownerId = null)
     {
+        if (is_array($acl)) {
+            $acl = $acl[0];
+        }
         if (!$this->checkAcl($acl, $ownerId)) {
             throw new AccessDeniedException(
                 serialize([
