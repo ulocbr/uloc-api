@@ -75,6 +75,12 @@ class EmailTransmissor extends MessageTransmissor
             $email->priority($message->getPriority());
         }
 
+        if ($message->getAttachments()) {
+            foreach ($message->getAttachments() as $attachment) {
+                $email->attach($attachment->getFile(), $attachment->getFilename());
+            }
+        }
+
         try {
             $this->mailer->send($email);
             return true;

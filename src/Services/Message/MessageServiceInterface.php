@@ -42,6 +42,7 @@ interface MessageServiceInterface
     public function getMessage();
     public function getMessageText();
     public function getConfig(): ?array;
+    public function getAttachments();
     public function getId();
 
 }

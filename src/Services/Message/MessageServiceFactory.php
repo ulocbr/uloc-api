@@ -13,6 +13,7 @@ namespace Uloc\ApiBundle\Services\Message;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Uloc\ApiBundle\Entity\MessageService\Message;
+use Uloc\ApiBundle\Entity\MessageService\MessageAttachment;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
 /**
@@ -93,6 +94,23 @@ class MessageServiceFactory
             $message->setStatus(MessageServiceInterface::STATUS_CREATED);
             $message->setExtra($extra);
             // TODO: CC, BCC, ReplyTo
+
+            if (isset($config['attachments']) && is_array($config['attachments'])) {
+                // @TODO: Em caso de mensagem assíncrona, como será tratado os anexos?
+                foreach ($config['attachments'] as $_attachment) {
+                    if(!($_attachment instanceof MessageAttachment)){
+                        // ... @todo
+                        /*$attachment = new MessageAttachment();
+                        $attachment->setFile($_attachment);
+                        $attachment->setFilename();*/
+                    } else{
+                        $attachment = $_attachment;
+                    }
+                    $message->addAttachment($attachment);
+                    $attachment->setMessage($message);
+                    $this->om->persist($attachment);
+                }
+            }
 
             if (isset($config['priority'])) {
                 $message->setPriority(intval($config['priority']));
