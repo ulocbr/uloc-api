@@ -93,7 +93,7 @@ class MessageServiceFactory
             $message->setMessageText($pureText);
             $message->setStatus(MessageServiceInterface::STATUS_CREATED);
             $message->setExtra($extra);
-            // TODO: CC, BCC, ReplyTo
+            // TODO: BCC, ReplyTo
 
             if (isset($config['attachments']) && is_array($config['attachments'])) {
                 // @TODO: Em caso de mensagem assíncrona, como será tratado os anexos?
@@ -131,6 +131,10 @@ class MessageServiceFactory
 
             if (isset($config['transport'])) {
                 $message->setConfig(array_merge_recursive($message->getConfig(), ['transport' => $config['transport']]));
+            }
+
+            if (isset($extra['ccs']) && is_array($extra['ccs'])) {
+                $message->setCcs($extra['ccs']);
             }
 
             if ($this->senderType === self::SENDER_INSTANTLY) {
