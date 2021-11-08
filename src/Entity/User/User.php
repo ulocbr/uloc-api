@@ -109,6 +109,10 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         return $this->username;
     }
 
+    public function getUserIdentifier() {
+        return $this->username;
+    }
+
     public function setUsername($username)
     {
         $this->username = $username;
@@ -543,6 +547,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         $this->name = $name;
         return $this;
     }
+
 
 
     /**
