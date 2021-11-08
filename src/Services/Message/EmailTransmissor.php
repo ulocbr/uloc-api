@@ -60,7 +60,13 @@ class EmailTransmissor extends MessageTransmissor
             ->html($message->getMessage());
 
         if ($message->getCcs()) {
-            $email->cc($message->getCcs());
+            if (is_array($message->getCcs())) {
+                foreach ($message->getCcs() as $cc) {
+                    $email->addCc($cc);
+                }
+            } else {
+                $email->cc($message->getCcs());
+            }
         }
 
         if ($message->getBccs()) {
