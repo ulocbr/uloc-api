@@ -85,6 +85,10 @@
 
         <one-to-many field="communicationHistory" target-entity="Uloc\ApiBundle\Entity\Person\CommunicationHistory" mapped-by="person"/>
 
+        <many-to-one field="organization" target-entity="Uloc\ApiBundle\Entity\Person\Person">
+            <join-column name="organization_id" referenced-column-name="id" nullable="true"/>
+        </many-to-one>
+
     </entity>
 
 </doctrine-mapping>

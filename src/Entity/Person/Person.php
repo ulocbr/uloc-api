@@ -225,6 +225,12 @@ class Person extends FormEntity
 
     /**
      * R
+     * Muitas pessoas podem estar relacionadas à uma organização
+     */
+    protected $organization;
+
+    /**
+     * R
      * Um Person tem Muitos CommunicationHistory
      */
     protected $communicationHistory;
@@ -983,6 +989,22 @@ class Person extends FormEntity
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param mixed $organization
+     */
+    public function setOrganization(?self $organization): void
+    {
+        $this->organization = $organization;
     }
 
     public static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
