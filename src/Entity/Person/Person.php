@@ -110,6 +110,12 @@ class Person extends FormEntity
     protected $description;
 
     /**
+     * @var array
+     *
+     */
+    protected $cache;
+
+    /**
      * R
      * Um Person tem Muitos Owners
      */
@@ -1005,6 +1011,22 @@ class Person extends FormEntity
     public function setOrganization(?self $organization): void
     {
         $this->organization = $organization;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCache(): array
+    {
+        return !is_array($this->cache) ? [] : $this->cache;
+    }
+
+    /**
+     * @param array $cache
+     */
+    public function setCache(?array $cache): void
+    {
+        $this->cache = $cache;
     }
 
     public static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)

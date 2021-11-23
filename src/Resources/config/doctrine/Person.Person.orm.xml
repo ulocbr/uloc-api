@@ -34,6 +34,8 @@
 
         <field name="description" type="text" nullable="true"/>
 
+        <field name="cache" type="array" nullable="true"/>
+
         <one-to-many field="owners" target-entity="Uloc\ApiBundle\Entity\Person\Owner" mapped-by="person"/>
         <one-to-many field="personsManaged" target-entity="Uloc\ApiBundle\Entity\Person\Owner" mapped-by="owner"/>
 
