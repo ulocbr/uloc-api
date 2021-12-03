@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle\Repository;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -91,12 +92,20 @@ class BaseRepository extends EntityRepository
         }
     }
 
-    public function processResult(Query $query, QueryBuilder $queryCount)
+    public function processResult(Query $query, QueryBuilder $queryCount, $usePaginator = false)
     {
-        return [
-            'result' => $query->getArrayResult(),
-            'total' => $queryCount->getQuery()->getSingleScalarResult()
-        ];
+        if(!$usePaginator) {
+            return [
+                'result' => $query->getArrayResult(),
+                'total' => $queryCount->getQuery()->getSingleScalarResult()
+            ];
+        } else {
+            $paginator = new Paginator($query, true);
+            return [
+                'result' => (array)$paginator->getIterator(),
+                'total' => count($paginator)
+            ];
+        }
     }
 
     public function findAllSimpleBasic(
@@ -113,7 +122,8 @@ class BaseRepository extends EntityRepository
         $hydrationMode = \Doctrine\ORM\Query::HYDRATE_ARRAY,
         $defaultSelect = null,
         $joins = null,
-        $joinsQueryCount = null
+        $joinsQueryCount = null,
+        $usePaginator = false
     )
     {
         $defaultAlias = 'a';
@@ -170,7 +180,7 @@ class BaseRepository extends EntityRepository
             ->setFirstResult($offset)
             ->setHydrationMode($hydrationMode);
 
-        return $this->processResult($query, $queryCount);
+        return $this->processResult($query, $queryCount, $usePaginator);
     }
 
     public function findAllSimple(int $limit = 100, int $offset = 0, $sortBy = null, $sortDesc = null, array $filters = null, $onlyActive = false, $hideDeleted = true)
