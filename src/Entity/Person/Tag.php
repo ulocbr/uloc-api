@@ -32,6 +32,12 @@ class Tag extends FormEntity implements TagInterface
     private $description;
 
     /**
+     * @var string
+     *
+     */
+    private $color;
+
+    /**
      * Muitos Tags tem Um Person.
      */
     private $persons;
@@ -134,6 +140,22 @@ class Tag extends FormEntity implements TagInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
     }
 
     /**
