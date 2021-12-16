@@ -29,7 +29,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function create(string $name, int $type = 1, bool $active = true, array $extras = null, array $options = null)
     {
-        $person = is_array($extras) && $extras['entity'] ?  $extras['entity'] : new Person();
+        $person = is_array($extras) && $extras['entity'] ? $extras['entity'] : new Person();
         $person->setName($name);
         $person->setType($type);
         $person->setActive($active);
@@ -47,6 +47,10 @@ class PersonManager extends CustomManager implements PersonManagerInterface
          * Possibilites: Address, Emails, Phones, Contacts
          */
         if (is_array($extras)) {
+
+            if (isset($extras['entity']) && $extras['entity'] instanceof Person) {
+                $this->autoPersists($extras['entity']);
+            }
 
             /**
              * Primary Document
@@ -906,5 +910,31 @@ class PersonManager extends CustomManager implements PersonManagerInterface
     public function listCommunicates(int $limit = null, int $offset = 0, $filter = null)
     {
         // TODO: Implement listCommunicates() method.
+    }
+
+    public function autoPersists(Person $person)
+    {
+        if ($person->getEmails()) {
+            $this->persistObjects($person->getEmails());
+        }
+        if ($person->getPhoneNumbers()) {
+            $this->persistObjects($person->getPhoneNumbers());
+        }
+        if ($person->getTags()) {
+            $this->persistObjects($person->getTags());
+        }
+        if ($person->getContacts()) {
+            $this->persistObjects($person->getContacts());
+        }
+        if ($person->getAddresses()) {
+            $this->persistObjects($person->getAddresses());
+        }
+    }
+
+    public function persistObjects($objs)
+    {
+        foreach ($objs as $o) {
+            $this->om->persist($o);
+        }
     }
 }
