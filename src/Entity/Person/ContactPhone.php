@@ -171,7 +171,8 @@ class ContactPhone extends FormEntity
      */
     public function setPhoneNumber($phoneNumber)
     {
-        $this->phoneNumber = preg_replace('/\D/', '$1', $phoneNumber);
+        //$this->phoneNumber = preg_replace('/\D/', '$1', $phoneNumber);
+        $this->phoneNumber = preg_replace('/[^0-9+]/', '$1', $phoneNumber);
 
         return $this;
     }
