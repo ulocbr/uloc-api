@@ -14,6 +14,8 @@
 
         <field name="extra" type="json" nullable="true"/>
 
+        <field name="permission" type="string" nullable="true"/>
+
     </entity>
 
 </doctrine-mapping>

@@ -35,6 +35,12 @@ class GlobalConfig
      * @var string
      *
      */
+    private $permission;
+
+    /**
+     * @var string
+     *
+     */
     private $value;
 
     /**
@@ -148,5 +154,21 @@ class GlobalConfig
     public function getExtra()
     {
         return $this->extra;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPermission()
+    {
+        return $this->permission;
+    }
+
+    /**
+     * @param string $permission
+     */
+    public function setPermission($permission): void
+    {
+        $this->permission = $permission;
     }
 }
