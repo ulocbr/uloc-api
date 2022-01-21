@@ -19,18 +19,18 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="type" type="string"/>
+        <field name="type" type="string" length="10"/>
 
         <field name="date" type="datetime"/>
 
-        <field name="entity" type="string" nullable="true"/>
+        <field name="entity" type="string" length="30" nullable="true"/>
         <field name="entityId" type="bigint" nullable="true"/>
-        <field name="user" type="string" nullable="true"/>
+        <field name="user" type="string" length="50" nullable="true"/>
         <field name="userId" type="bigint" nullable="true"/>
-        <field name="person" type="string" nullable="true"/>
+        <field name="person" type="string" length="50" nullable="true"/>
         <field name="personId" type="bigint" nullable="true"/>
 
-        <field name="action" type="string" nullable="true"/>
+        <field name="action" type="string" length="50" nullable="true"/>
         <field name="message" type="text"/>
 
         <field name="context" type="array" nullable="true"/>
