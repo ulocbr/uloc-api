@@ -50,6 +50,11 @@ abstract class FormEntity extends CommonEntity
     private $createdByUser;
 
     /**
+     * @var null|string
+     */
+    private $createdByName;
+
+    /**
      * @var null|\DateTime
      */
     private $dateModified;
@@ -428,12 +433,29 @@ abstract class FormEntity extends CommonEntity
         $this->deleted = $deleted;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getCreatedByName()
+    {
+        return $this->createdByName;
+    }
+
+    /**
+     * @param string|null $createdByName
+     */
+    public function setCreatedByName($createdByName): void
+    {
+        $this->createdByName = $createdByName;
+    }
+
     static $serializeApi = [
         'slug',
         'active',
         'createdAt',
         'createdBy',
         'createdByUser',
+        'createdByName',
         'dateModified',
         'modifiedBy',
         'modifiedByUser',

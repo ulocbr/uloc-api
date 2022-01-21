@@ -17,6 +17,7 @@
 
         <field name="createdBy" type="integer" nullable="true"/>
         <field name="createdByUser" type="string" nullable="true"/>
+        <field name="createdByName" type="string" nullable="true"/>
 
         <field name="dateModified" type="datetime" nullable="true"/>
 
