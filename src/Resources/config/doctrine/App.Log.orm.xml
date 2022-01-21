@@ -27,6 +27,8 @@
         <field name="entityId" type="bigint" nullable="true"/>
         <field name="user" type="string" nullable="true"/>
         <field name="userId" type="bigint" nullable="true"/>
+        <field name="person" type="string" nullable="true"/>
+        <field name="personId" type="bigint" nullable="true"/>
 
         <field name="action" type="string" nullable="true"/>
         <field name="message" type="text"/>
