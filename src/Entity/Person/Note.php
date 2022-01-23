@@ -154,7 +154,7 @@ class Note extends FormEntity
     /**
      * @return ArrayCollection|NoteComment
      */
-    public function getComments(): ArrayCollection
+    public function getComments()
     {
         return $this->comments;
     }
