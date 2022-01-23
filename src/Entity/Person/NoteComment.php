@@ -10,7 +10,7 @@ use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
  * Note
  *
  */
-class Note extends FormEntity
+class NoteComment extends FormEntity
 {
     /**
      * @var int
@@ -22,7 +22,7 @@ class Note extends FormEntity
      * @var string
      *
      */
-    private $note;
+    private $comment;
 
     /**
      * @var string
@@ -31,24 +31,17 @@ class Note extends FormEntity
     private $label;
 
     /**
-     * Muitos Anotacoes tem Um Person.
+     * Many NoteComment's have an Person.
      */
     private $person;
 
     /**
-     * Um Anotacoes tem Muitos History
+     * Many NoteComment's is relacted to an Note.
      */
-    private $history;
-
-    /**
-     * Um Anotacoes tem Muitos Comentarios
-     */
-    private $comments;
+    private $note;
 
     public function __construct()
     {
-        $this->history = new ArrayCollection();
-        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -68,32 +61,6 @@ class Note extends FormEntity
     }
 
     /**
-     * @return mixed
-     */
-    public function getHistory()
-    {
-        return $this->history;
-    }
-
-    /**
-     * @param NoteHistory $history
-     */
-    public function addHistory(NoteHistory $history)
-    {
-        $this->history[] = $history;
-    }
-
-    /**
-     * Remove history
-     *
-     * @param \Uloc\ApiBundle\Entity\Person\NoteHistory $history
-     */
-    public function removeHistory(\Uloc\ApiBundle\Entity\Person\NoteHistory $history)
-    {
-        $this->history->removeElement($history);
-    }
-
-    /**
      * Get id
      *
      * @return int
@@ -106,11 +73,11 @@ class Note extends FormEntity
     /**
      * Set note
      *
-     * @param string $note
+     * @param Note $note
      *
-     * @return Note
+     * @return self
      */
-    public function setNote($note)
+    public function setNote(Note $note)
     {
         $this->note = $note;
 
@@ -120,7 +87,7 @@ class Note extends FormEntity
     /**
      * Get note
      *
-     * @return string
+     * @return Note
      */
     public function getNote()
     {
@@ -152,19 +119,19 @@ class Note extends FormEntity
     }
 
     /**
-     * @return ArrayCollection|NoteComment
+     * @return string
      */
-    public function getComments(): ArrayCollection
+    public function getComment()
     {
-        return $this->comments;
+        return $this->comment;
     }
 
     /**
-     * @param NoteComment $comments
+     * @param string $comment
      */
-    public function addComment(NoteComment $comment): void
+    public function setComment($comment): void
     {
-        $this->comments[] = $comment;
+        $this->comment = $comment;
     }
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)

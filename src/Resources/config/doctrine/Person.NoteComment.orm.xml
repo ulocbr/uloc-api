@@ -4,13 +4,13 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity table="person_note" name="Uloc\ApiBundle\Entity\Person\Note" repository-class="Uloc\ApiBundle\Repository\Person\NoteRepository">
+    <entity table="person_note_comment" name="Uloc\ApiBundle\Entity\Person\NoteComment" repository-class="Uloc\ApiBundle\Repository\Person\NoteCommentRepository">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="note" type="text" nullable="true"/>
+        <field name="comment" type="text" nullable="true"/>
 
         <field name="label" type="string" length="50" nullable="true"/>
 
@@ -18,8 +18,10 @@
             <join-column name="person_id" referenced-column-name="id"/>
         </many-to-one>
 
-        <one-to-many field="history" target-entity="Uloc\ApiBundle\Entity\Person\NoteHistory" mapped-by="note"/>
-        <one-to-many field="comments" target-entity="Uloc\ApiBundle\Entity\Person\NoteComment" mapped-by="note"/>
+        <many-to-one field="note" target-entity="Uloc\ApiBundle\Entity\Person\Note" inversed-by="comments">
+            <join-column name="note_id" referenced-column-name="id"/>
+        </many-to-one>
+
     </entity>
 
 </doctrine-mapping>
