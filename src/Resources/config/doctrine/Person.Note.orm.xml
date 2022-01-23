@@ -19,7 +19,11 @@
         </many-to-one>
 
         <one-to-many field="history" target-entity="Uloc\ApiBundle\Entity\Person\NoteHistory" mapped-by="note"/>
-        <one-to-many field="comments" target-entity="Uloc\ApiBundle\Entity\Person\NoteComment" mapped-by="note"/>
+        <one-to-many field="comments" target-entity="Uloc\ApiBundle\Entity\Person\NoteComment" mapped-by="note">
+            <order-by>
+                <order-by-field name="id" direction="DESC" />
+            </order-by>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>
