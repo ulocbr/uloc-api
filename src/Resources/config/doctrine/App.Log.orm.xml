@@ -10,6 +10,7 @@
             <index columns="type" name="type"/>
             <index columns="entity" name="entity"/>
             <index columns="entity_id" name="entity_id"/>
+            <index columns="refer_id" name="refer_id"/>
             <index columns="action" name="action"/>
             <index columns="user_id" name="entity_id"/>
             <index columns="date" name="date"/>
@@ -25,6 +26,7 @@
 
         <field name="entity" type="string" length="30" nullable="true"/>
         <field name="entityId" type="bigint" nullable="true"/>
+        <field name="referId" type="bigint" nullable="true"/>
         <field name="user" type="string" length="50" nullable="true"/>
         <field name="userId" type="bigint" nullable="true"/>
         <field name="person" type="string" length="50" nullable="true"/>

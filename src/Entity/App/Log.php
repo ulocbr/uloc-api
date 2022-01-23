@@ -28,6 +28,7 @@ class Log
 
     protected $entity;
     protected $entityId;
+    protected $referId;
 
     protected $user;
     protected $userId;
@@ -259,6 +260,22 @@ class Log
         $this->personId = $personId;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getReferId()
+    {
+        return $this->referId;
+    }
+
+    /**
+     * @param mixed $referId
+     */
+    public function setReferId($referId): void
+    {
+        $this->referId = $referId;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         $public = [
@@ -267,6 +284,7 @@ class Log
             'date',
             'entity',
             'entityId',
+            'referId',
             'user',
             'userId',
             'person',
