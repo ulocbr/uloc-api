@@ -31,12 +31,33 @@ class NoteComment extends FormEntity
     private $label;
 
     /**
+     * Many NoteComment's have an Person.
+     */
+    private $person;
+
+    /**
      * Many NoteComment's is relacted to an Note.
      */
     private $note;
 
     public function __construct()
     {
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person $person
+     */
+    public function setPerson(Person $person)
+    {
+        $this->person = $person;
     }
 
     /**
