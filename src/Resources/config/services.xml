@@ -53,7 +53,7 @@
             <argument type="service" id="uloc_api.logger.native"/>
             <argument type="tagged" tag="uloc.logger" />
         </service>
-        <service public="true" id="Uloc\ApiBundle\Services\Log\LogInterface" alias="uloc_api.logger"/>
+        <service id="Uloc\ApiBundle\Services\Log\LogInterface" alias="uloc_api.logger"/>
         <service id="uloc_api.logger.native" class="Symfony\Component\HttpKernel\Log\Logger" public="false">
         </service>
 
