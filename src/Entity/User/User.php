@@ -600,7 +600,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'email',
             'roles',
             'acl',
-            'person' => ['id', 'name'],
+            'person' => ['id', 'name', 'photo'],
             'status'
         ];
 
