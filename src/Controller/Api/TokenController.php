@@ -18,6 +18,7 @@ class TokenController extends BaseController
     public static $AuthHeaders = [];
     public static $AuthCookies = [];
     public static $AuthExtraResponse = [];
+    public static $AuthResponseData = [];
 
     /**
      * TODO: DOC! Doc use this or rewrite
@@ -125,6 +126,7 @@ class TokenController extends BaseController
                 $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
             }
 
+            self::$AuthResponseData = $data;
             return $response;
         }
 
