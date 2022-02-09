@@ -17,6 +17,7 @@ class TokenController extends BaseController
 
     public static $AuthHeaders = [];
     public static $AuthCookies = [];
+    public static $AuthExtraResponse = [];
 
     /**
      * TODO: DOC! Doc use this or rewrite
@@ -78,6 +79,11 @@ class TokenController extends BaseController
                 'token' => $token,
                 'user' => $userContent
             ];
+
+            if (count(self::$AuthExtraResponse)) {
+                $data['extra'] = self::$AuthExtraResponse;
+            }
+
             $response = new JsonResponse($data);
             /*$cookie = Cookie::create('sl_session')
                 ->withValue($token)
