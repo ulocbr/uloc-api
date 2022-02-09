@@ -112,21 +112,22 @@ class TokenController extends BaseController
                 $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
             }
 
+            self::$AuthResponseData = $data;
             return $response;
         } catch (\Exception $e) {
-            $response = new JsonResponse([
+            self::$AuthResponseData = [
                 'detail' => $e->getMessage(),
                 'status' => 401,
                 'title' => 'Unauthorized',
                 'type' => 'authentication'
-            ], 401);
+            ];
+            $response = new JsonResponse(self::$AuthResponseData, 401);
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
             $refer = $request->headers->get('origin');
             if (!empty($refer)) {
                 $response->headers->set('Access-Control-Allow-Origin', filter_var($refer, FILTER_SANITIZE_URL));
             }
 
-            self::$AuthResponseData = $data;
             return $response;
         }
 
