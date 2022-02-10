@@ -29,7 +29,7 @@ class PersonManager extends CustomManager implements PersonManagerInterface
 
     public function create(string $name, int $type = 1, bool $active = true, array $extras = null, array $options = null)
     {
-        $person = is_array($extras) && $extras['entity'] ? $extras['entity'] : new Person();
+        $person = is_array($extras) && isset($extras['entity']) ? $extras['entity'] : new Person();
         $person->setName($name);
         $person->setType($type);
         $person->setActive($active);
