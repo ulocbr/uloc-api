@@ -113,6 +113,7 @@ class TokenController extends BaseController
             }
 
             self::$AuthResponseData = $data;
+            self::$AuthResponseData['user'] = $user;
             return $response;
         } catch (\Exception $e) {
             self::$AuthResponseData = [
