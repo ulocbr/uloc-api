@@ -144,7 +144,9 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
             $this->filterActive($query, $filters['active'], $queryCount);
         }
 
-        $query = $query->getQuery()
+        $query = $query
+            ->orderBy('p.name', 'ASC')
+            ->getQuery()
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
