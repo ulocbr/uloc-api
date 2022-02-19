@@ -30,6 +30,8 @@ class TemplateCategory extends FormEntity
     protected $templates;
 
     protected $internal;
+    protected $childrens;
+    protected $parent;
 
     /**
      * TemplateCategory constructor.
@@ -37,6 +39,7 @@ class TemplateCategory extends FormEntity
     public function __construct()
     {
         $this->templates = new ArrayCollection();
+        $this->childrens = new ArrayCollection();
     }
 
 
@@ -144,6 +147,46 @@ class TemplateCategory extends FormEntity
         $this->internal = $internal;
     }
 
+    /**
+     * @return ArrayCollection|self
+     */
+    public function getChildrens()
+    {
+        return $this->childrens;
+    }
+
+    /**
+     * @param ArrayCollection|self $childrens
+     */
+    public function addChildren(self $category): void
+    {
+        $this->childrens[] = $category;
+    }
+
+    public function removeChildren(self $category): void
+    {
+        if ($this->childrens->contains($category) ) {
+            $this->childrens->removeElement($category);
+            $category->setParent(null);
+        }
+    }
+
+    /**
+     * @return self|null
+     */
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param self|null $parent
+     */
+    public function setParent(?self $parent): void
+    {
+        $this->parent = $parent;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
@@ -153,7 +196,8 @@ class TemplateCategory extends FormEntity
             'name',
             'description',
             'type',
-            'internal'
+            'internal',
+            'parent', ['id', 'code', 'name', 'internal']
         ];
         $representation
             ->setGroup('public')

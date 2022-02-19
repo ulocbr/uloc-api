@@ -19,6 +19,9 @@
 
         <field name="internal" type="boolean"/>
 
+        <one-to-many field="childrens" target-entity="Uloc\ApiBundle\Entity\App\TemplateCategory" mapped-by="parent"/>
+        <many-to-one field="parent" target-entity="Uloc\ApiBundle\Entity\App\TemplateCategory" inversed-by="childrens" />
+
         <one-to-many field="templates" target-entity="Uloc\ApiBundle\Entity\App\Template" mapped-by="category"/>
 
     </entity>
