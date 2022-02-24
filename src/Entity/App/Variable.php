@@ -36,6 +36,8 @@ class Variable extends FormEntity
      */
     protected $callback;
 
+    protected $fake;
+
     /**
      * @return mixed
      */
@@ -122,6 +124,22 @@ class Variable extends FormEntity
     public function setInternal(?bool $internal): void
     {
         $this->internal = $internal;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFake()
+    {
+        return $this->fake;
+    }
+
+    /**
+     * @param mixed $fake
+     */
+    public function setFake($fake): void
+    {
+        $this->fake = $fake;
     }
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
