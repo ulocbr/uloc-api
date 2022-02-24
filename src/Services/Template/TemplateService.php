@@ -53,7 +53,7 @@ class TemplateService
      * @param string[] $oderPriority
      * @throws \Exception
      */
-    public function proccessTemplate($template, array $dataToParse = [], array $converters = [], $oderPriority = ['custom', 'internal'])
+    public function proccessTemplate($template, array $dataToParse = [], array $converters = [], $oderPriority = ['custom', 'internal'], $useFake = false)
     {
 
         if (!($template instanceof Template)) {
@@ -129,36 +129,40 @@ class TemplateService
 
                 $convertedValue = null;
                 if ($value) {
-                    $convertedValue = $value->getValue();
-                    if ($value->getCallback()) {
-                        $converter = $value->getCallback();
-                        if (class_exists($converter)) {
+                    if ($useFake) {
+                        $convertedValue = $value->getFake();
+                    } else {
+                        $convertedValue = $value->getValue();
+                        if ($value->getCallback()) {
+                            $converter = $value->getCallback();
+                            if (class_exists($converter)) {
 
-                            // Perform cache
-                            if (!array_key_exists($converter, self::$convertersCache)) {
-                                self::$convertersCache[$converter] = new $converter;
-                                if (is_callable([self::$convertersCache[$converter], 'setOm'])) {
-                                    self::$convertersCache[$converter]->setOm($this->om);
-                                }
-                            }
-                            $converter = self::$convertersCache[$converter];
-
-                            if ($converter instanceof VariableConversorInterface) {
-                                $entityToConverter = $converter::getClass();
-                                if ($entityToConverter && count($converters)) {
-                                    foreach ($converters as $dataToConverter) {
-                                        if (is_a($dataToConverter, $entityToConverter)) {
-                                            // Class can converter variable
-                                            $converter->setData($dataToConverter);
-                                        }
+                                // Perform cache
+                                if (!array_key_exists($converter, self::$convertersCache)) {
+                                    self::$convertersCache[$converter] = new $converter;
+                                    if (is_callable([self::$convertersCache[$converter], 'setOm'])) {
+                                        self::$convertersCache[$converter]->setOm($this->om);
                                     }
-                                } else {
-                                    // @TODO: Auto search for converter?
                                 }
-                                $converteVars = $converter->getVariables();
-                                if (isset($converteVars[$var])) {
-                                    $method = $converteVars[$var];
-                                    $convertedValue = call_user_func([$converter, $method]);
+                                $converter = self::$convertersCache[$converter];
+
+                                if ($converter instanceof VariableConversorInterface) {
+                                    $entityToConverter = $converter::getClass();
+                                    if ($entityToConverter && count($converters)) {
+                                        foreach ($converters as $dataToConverter) {
+                                            if (is_a($dataToConverter, $entityToConverter)) {
+                                                // Class can converter variable
+                                                $converter->setData($dataToConverter);
+                                            }
+                                        }
+                                    } else {
+                                        // @TODO: Auto search for converter?
+                                    }
+                                    $converteVars = $converter->getVariables();
+                                    if (isset($converteVars[$var])) {
+                                        $method = $converteVars[$var];
+                                        $convertedValue = call_user_func([$converter, $method]);
+                                    }
                                 }
                             }
                         }
