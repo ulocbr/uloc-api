@@ -129,7 +129,7 @@ class TemplateService
 
                 $convertedValue = null;
                 if ($value) {
-                    if ($useFake) {
+                    if ($useFake && !empty($value->getFake())) {
                         $convertedValue = $value->getFake();
                     } else {
                         $convertedValue = $value->getValue();
