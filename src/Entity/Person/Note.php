@@ -31,6 +31,12 @@ class Note extends FormEntity
     private $label;
 
     /**
+     * @var integer
+     *
+     */
+    private $type;
+
+    /**
      * Muitos Anotacoes tem Um Person.
      */
     private $person;
@@ -165,6 +171,22 @@ class Note extends FormEntity
     public function addComment(NoteComment $comment): void
     {
         $this->comments[] = $comment;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType(?int $type): void
+    {
+        $this->type = $type;
     }
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
