@@ -43,4 +43,18 @@ class ConfigService implements ConfigServiceInterface
         return $computedValue = $config->getValue();
     }
 
+    public function getConfigsByPermission($permission)
+    {
+        $config = $this->om->getRepository(GlobalConfig::class)->findBy(['permission' => $permission]);
+        if (!$config) {
+            return null;
+        }
+
+        $array = [];
+        foreach ($config as $c) {
+            $array[$c->getName()] = $c->getValue();
+        }
+        return $array;
+    }
+
 }
