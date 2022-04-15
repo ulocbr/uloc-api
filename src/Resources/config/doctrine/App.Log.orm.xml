@@ -7,6 +7,7 @@
     <entity table="app_log" name="Uloc\ApiBundle\Entity\App\Log" repository-class="Uloc\ApiBundle\Repository\App\LogRepository">
 
         <indexes>
+            <index columns="entity,entity_id,action" name="S1"/>
             <index columns="type" name="type"/>
             <index columns="entity" name="entity"/>
             <index columns="entity_id" name="entity_id"/>
