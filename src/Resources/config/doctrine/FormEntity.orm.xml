@@ -8,6 +8,7 @@
 
         <indexes>
             <index columns="deleted" name="deleted"></index>
+            <index columns="active" name="active"></index>
         </indexes>
         <field name="slug" type="string" length="255" nullable="true" />
 
