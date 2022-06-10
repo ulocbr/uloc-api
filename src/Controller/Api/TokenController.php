@@ -59,6 +59,12 @@ class TokenController extends BaseController
                 throw new \Exception('Usuário sem permissão de acesso à api');
             }
 
+            if ($request->request->get('needRole')) {
+                if (!in_array($request->request->get('needRole'), $roles)) {
+                    throw new \Exception(sprintf('Usuário sem permissão de acesso. [%s]', $request->request->get('needRole')));
+                }
+            }
+
             $isValid = $userManager->isPasswordValid($passGET);
 
             if (!$isValid) {
