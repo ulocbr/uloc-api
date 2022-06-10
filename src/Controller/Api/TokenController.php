@@ -61,7 +61,7 @@ class TokenController extends BaseController
 
             if ($request->request->get('needRole')) {
                 if (!in_array($request->request->get('needRole'), $roles)) {
-                    throw new \Exception(sprintf('Usuário sem permissão de acesso. [%s]', $request->request->get('needRole')));
+                    throw new \Exception(sprintf('Usuário sem permissão de acesso. [%s]', str_replace('ROLE_', '', $request->request->get('needRole'))));
                 }
             }
 
