@@ -76,10 +76,10 @@
                 <option name="min">1</option>
                 <option name="max">5</option>
                 <option name="minMessage">
-                    Informe ao menos um e-mail
+                    uloc_person.emails.needOne
                 </option>
                 <option name="maxMessage">
-                    Your first name cannot be longer than {{ limit }} characters
+                    uloc_person.emails.limit
                 </option>
                 <option name="groups">
                     <value>personSimple</value>
