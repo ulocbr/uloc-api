@@ -97,10 +97,10 @@
                 <option name="min">1</option>
                 <option name="max">5</option>
                 <option name="minMessage">
-                    uloc_person.phomes.needOne
+                    uloc_person.phones.needOne
                 </option>
                 <option name="maxMessage">
-                    uloc_person.phomes.limit
+                    uloc_person.phones.limit
                 </option>
                 <option name="groups">
                     <value>personSimple</value>
