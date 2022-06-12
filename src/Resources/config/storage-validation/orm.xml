@@ -41,6 +41,7 @@
             <constraint name="NotBlank">
                 <option name="message">uloc_person.name.not_blank</option>
                 <option name="groups">
+                    <value>personSimple</value>
                     <value>personBasic</value>
                 </option>
             </constraint>
@@ -72,6 +73,19 @@
             </constraint>
             <constraint name="Email">
                 <option name="message">uloc_person.email.invalid</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">1</option>
+                <option name="max">5</option>
+                <option name="minMessage">
+                    Informe ao menos um e-mail
+                </option>
+                <option name="maxMessage">
+                    Your first name cannot be longer than {{ limit }} characters
+                </option>
+                <option name="groups">
+                    <value>personSimple</value>
+                </option>
             </constraint>
         </property>
     </class>
