@@ -50,3 +50,5 @@ uloc_person:
       not_blank: 'Informe o valor/informação do contato'
   emails:
     needOne: 'Necessário ao menos um e-mail'
+  phones:
+    needOne: 'Necessário ao menos um telefone'

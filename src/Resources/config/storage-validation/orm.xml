@@ -110,6 +110,24 @@
                 <option name="message">uloc_person.phone.not_blank</option>
             </constraint>
         </property>
+        <constraint name="Valid">
+            <option name="groups">
+                <value>personSimple</value>
+            </option>
+        </constraint>
+        <constraint name="Count">
+            <option name="min">1</option>
+            <option name="max">5</option>
+            <option name="minMessage">
+                uloc_person.phomes.needOne
+            </option>
+            <option name="maxMessage">
+                uloc_person.phomes.limit
+            </option>
+            <option name="groups">
+                <value>personSimple</value>
+            </option>
+        </constraint>
     </class>
 
     <class name="Uloc\ApiBundle\Entity\Person\Address">
