@@ -99,6 +99,18 @@ class Person extends FormEntity
 
     /**
      * @var string
+     *
+     */
+    protected $deviceRegistration;
+
+    /**
+     * @var string
+     *
+     */
+    protected $browserRegistration;
+
+    /**
+     * @var string
      * #Assert\NotBlank(message="É necessário informar a nationality", groups={"PersonFisica"})
      */
     protected $nationality;
@@ -1027,6 +1039,38 @@ class Person extends FormEntity
     public function setCache(?array $cache): void
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeviceRegistration(): string
+    {
+        return $this->deviceRegistration;
+    }
+
+    /**
+     * @param string $deviceRegistration
+     */
+    public function setDeviceRegistration(string $deviceRegistration): void
+    {
+        $this->deviceRegistration = $deviceRegistration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrowserRegistration(): ?string
+    {
+        return $this->browserRegistration;
+    }
+
+    /**
+     * @param string $browserRegistration
+     */
+    public function setBrowserRegistration(?string $browserRegistration): void
+    {
+        $this->browserRegistration = $browserRegistration;
     }
 
     public static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)

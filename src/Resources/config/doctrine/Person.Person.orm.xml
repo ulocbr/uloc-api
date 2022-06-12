@@ -29,6 +29,8 @@
         <field name="status" type="smallint"/>
 
         <field name="ipRegistration" type="string" nullable="true"/>
+        <field name="deviceRegistration" type="string" nullable="true"/>
+        <field name="browserRegistration" type="string" nullable="true"/>
 
         <field name="nationality" type="string" nullable="true"/>
 
