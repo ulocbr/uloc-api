@@ -124,11 +124,19 @@
         <property name="areaCode">
             <constraint name="NotBlank">
                 <option name="message">uloc_person.phone.areaCode.not_blank</option>
+                <option name="groups">
+                    <value>Default</value>
+                    <value>personSimple</value>
+                </option>
             </constraint>
         </property>
         <property name="phoneNumber">
             <constraint name="NotBlank">
                 <option name="message">uloc_person.phone.not_blank</option>
+                <option name="groups">
+                    <value>Default</value>
+                    <value>personSimple</value>
+                </option>
             </constraint>
         </property>
     </class>
