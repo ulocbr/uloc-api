@@ -41,6 +41,7 @@
             <constraint name="NotBlank">
                 <option name="message">uloc_person.name.not_blank</option>
                 <option name="groups">
+                    <value>Default</value>
                     <value>personSimple</value>
                     <value>personBasic</value>
                 </option>
@@ -64,17 +65,14 @@
                 </option>
             </constraint>
         </property>
-    </class>
 
-    <class name="Uloc\ApiBundle\Entity\Person\ContactEmail">
-        <property name="email">
-            <constraint name="NotBlank">
-                <option name="message">uloc_person.email.invalid</option>
+        <property name="emails">
+            <constraint name="Valid">
+                <option name="groups">
+                    <value>personSimple</value>
+                </option>
             </constraint>
-            <constraint name="Email">
-                <option name="message">uloc_person.email.invalid</option>
-            </constraint>
-            <constraint name="Length">
+            <constraint name="Count">
                 <option name="min">1</option>
                 <option name="max">5</option>
                 <option name="minMessage">
@@ -86,6 +84,17 @@
                 <option name="groups">
                     <value>personSimple</value>
                 </option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Uloc\ApiBundle\Entity\Person\ContactEmail">
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">uloc_person.email.invalid</option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">uloc_person.email.invalid</option>
             </constraint>
         </property>
     </class>
