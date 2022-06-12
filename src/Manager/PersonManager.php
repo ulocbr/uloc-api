@@ -166,6 +166,14 @@ class PersonManager extends CustomManager implements PersonManagerInterface
                 $person->setIpRegistration($extras['ipRegistration']);
             }
 
+            if (isset($extras['deviceRegistration'])) {
+                $person->setDeviceRegistration($extras['deviceRegistration']);
+            }
+
+            if (isset($extras['browserRegistration'])) {
+                $person->setBrowserRegistration($extras['browserRegistration']);
+            }
+
             if (isset($extras['nationality'])) {
                 $person->setNationality($extras['nationality']);
             }
