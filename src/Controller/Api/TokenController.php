@@ -43,7 +43,11 @@ class TokenController extends BaseController
             $user = $userManager->findByUsername($userGET);
 
             if (!$user) {
-                throw $this->createNotFoundException("Credenciais não encontrada");
+                /** @var User $user */
+                $user = $userManager->findUserByDocument($userGET);
+                if (!$user) {
+                    throw $this->createNotFoundException("Credenciais não encontrada");
+                }
             }
 
             $userManager->manager($user);

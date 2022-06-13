@@ -61,6 +61,28 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
         return $user;
     }
 
+    public function loadUserByPersonDocument($document, $exception = true)
+    {
+        $documentPure = preg_replace('/\D/', '$1', trim($document));
+        if (empty($documentPure)) {
+            $documentPure = '000000000000000000000_dev-null';
+        }
+        $user = $this->getEntityManager()->createQueryBuilder()
+            ->select('u, p')
+            ->from(User::class, "u")
+            ->join('u.person', 'p')
+            ->where('p.document IN (:documents)')
+            ->setParameter('documents', [$document, $documentPure])
+            ->getQuery()
+            ->getResult();
+
+        if (!$user && $exception) {
+            throw new UsernameNotFoundException(sprintf('Usuário com o documento "%s" não existe.', $username));
+        }
+
+        return isset($user[0]) ? $user[0] : $user;
+    }
+
     /**
      * @param $login
      * @return null|object|User

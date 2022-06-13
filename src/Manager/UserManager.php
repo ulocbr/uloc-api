@@ -176,6 +176,13 @@ class UserManager extends CustomManager implements UserManagerInterface
             ->loadUserByUsername($username, false);
     }
 
+    public function findUserByDocument(string $document)
+    {
+        return $this->om
+            ->getRepository(User::class)
+            ->loadUserByPersonDocument($document, false);
+    }
+
     public function isPasswordValid($password)
     {
         if ($this->passwordEncoder) {
