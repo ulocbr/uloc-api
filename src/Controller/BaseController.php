@@ -247,7 +247,7 @@ abstract class BaseController extends AbstractController
         if ($hasAdm) {
             return true;
         }
-        if (is_array($orRole)) {
+        if (!empty($orRole)) {
             if (in_array($orRole, $user->getRoles())) {
                 return true;
             }
