@@ -248,8 +248,16 @@ abstract class BaseController extends AbstractController
             return true;
         }
         if (!empty($orRole)) {
-            if (in_array($orRole, $user->getRoles())) {
-                return true;
+            if (is_array($orRole)) {
+                foreach ($orRole as $_role) {
+                    if (in_array($_role, $user->getRoles())) {
+                        return true;
+                    }
+                }
+            } else {
+                if (in_array($orRole, $user->getRoles())) {
+                    return true;
+                }
             }
         }
         return AclPolicy::checkAcl($acl, $user->getAcl());
