@@ -23,6 +23,12 @@ class Tag extends FormEntity implements TagInterface
      * @var string
      *
      */
+    private $code;
+
+    /**
+     * @var string
+     *
+     */
     private $name;
 
     /**
@@ -36,6 +42,12 @@ class Tag extends FormEntity implements TagInterface
      *
      */
     private $color;
+
+    /**
+     * @var boolean
+     *
+     */
+    private $internal = false;
 
     /**
      * Muitos Tags tem Um Person.
@@ -176,6 +188,38 @@ class Tag extends FormEntity implements TagInterface
     public function getPersons()
     {
         return $this->persons;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInternal(): bool
+    {
+        return $this->internal;
+    }
+
+    /**
+     * @param bool $internal
+     */
+    public function setInternal(bool $internal): void
+    {
+        $this->internal = $internal;
     }
 
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)

@@ -6,15 +6,28 @@
 
     <entity table="person_tag" name="Uloc\ApiBundle\Entity\Person\Tag" repository-class="Uloc\ApiBundle\Repository\Person\TagRepository">
 
+        <indexes>
+            <index columns="name" name="name"/>
+            <index columns="code" name="code"/>
+        </indexes>
+
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
         </id>
+
+        <field name="code" type="string"/>
 
         <field name="name" type="string"/>
 
         <field name="description" type="text" nullable="true"/>
 
         <field name="color" type="string" length="30" nullable="true"/>
+
+        <field name="internal" type="boolean" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
 
         <many-to-many field="persons" target-entity="Uloc\ApiBundle\Entity\Person\Person" mapped-by="tags" fetch="EXTRA_LAZY"/>
 
