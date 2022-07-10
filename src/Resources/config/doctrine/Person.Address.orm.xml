@@ -10,9 +10,9 @@
             <index columns="zip" name="zip"/>
             <index columns="country" name="country"/>
             <index columns="city" name="city"/>
-            <index columns="cityId" name="cityId"/>
+            <index columns="city_id" name="city_id"/>
             <index columns="state" name="state"/>
-            <index columns="stateId" name="stateId"/>
+            <index columns="state_id" name="state_id"/>
             <index columns="latitude" name="latitude"/>
             <index columns="longitude" name="longitude"/>
         </indexes>
