@@ -54,6 +54,12 @@ class Address extends FormEntity
      * @var string
      *
      */
+    private $country;
+
+    /**
+     * @var string
+     *
+     */
     private $city;
 
     /**
@@ -459,14 +465,44 @@ class Address extends FormEntity
         $this->stateId = $stateId;
     }
 
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         parent::loadApiRepresentation($representation);
 
         $public = [
             'id',
-            'name',
-            'code',
+            'address',
+            'complement',
+            'number',
+            'district',
+            'districtId',
+            'zip',
+            'country',
+            'city',
+            'cityId',
+            'state',
+            'stateId',
+            'otherPurpose',
+            'default',
+            'latitude',
+            'longitude',
+            'person' => ['id', 'name'],
             'purpose' => ['id', 'code', 'name'],
         ];
 

@@ -6,6 +6,17 @@
 
     <entity table="person_address" name="Uloc\ApiBundle\Entity\Person\Address" repository-class="Uloc\ApiBundle\Repository\Person\AddressRepository">
 
+        <indexes>
+            <index columns="zip" name="zip"/>
+            <index columns="country" name="country"/>
+            <index columns="city" name="city"/>
+            <index columns="cityId" name="cityId"/>
+            <index columns="state" name="state"/>
+            <index columns="stateId" name="stateId"/>
+            <index columns="latitude" name="latitude"/>
+            <index columns="longitude" name="longitude"/>
+        </indexes>
+
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
         </id>
@@ -21,6 +32,8 @@
         <field name="districtId" type="integer" nullable="true"/>
 
         <field name="zip" type="string" nullable="true"/>
+
+        <field name="country" type="string" length="100" nullable="true"/>
 
         <field name="city" type="string" length="100" nullable="true"/>
 
