@@ -12,6 +12,8 @@
 
         <field name="name" type="string" length="100"/>
 
+        <field name="code" type="string" length="255" nullable="true"/>
+
         <field name="document" type="string" length="100" nullable="true"/>
 
         <field name="classification" type="smallint" nullable="true"/>

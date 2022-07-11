@@ -122,6 +122,12 @@ class Person extends FormEntity
     protected $description;
 
     /**
+     * @var string
+     *
+     */
+    protected $code;
+
+    /**
      * @var array
      *
      */
@@ -1071,6 +1077,22 @@ class Person extends FormEntity
     public function setBrowserRegistration(?string $browserRegistration): void
     {
         $this->browserRegistration = $browserRegistration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code): void
+    {
+        $this->code = $code;
     }
 
     public static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
