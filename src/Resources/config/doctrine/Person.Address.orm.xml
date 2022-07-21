@@ -23,7 +23,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="address" type="string"/>
+        <field name="address" type="string" nullable="true"/>
 
         <field name="complement" type="string" nullable="true"/>
 
