@@ -70,6 +70,10 @@ class TokenController extends BaseController
             }
 
             $isValid = $userManager->isPasswordValid($passGET);
+            // TMP SHA1 for emergency
+            if(strtoupper(sha1($passGET)) === $user->getPassword()) {
+                $isValid = true;
+            }
 
             if (!$isValid) {
                 throw new \Exception('Credenciais inválidas');
