@@ -2,10 +2,8 @@
 
 namespace Uloc\ApiBundle\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Uloc\ApiBundle\Manager\UserManagerInterface;
-use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 use Uloc\ApiBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,26 +25,29 @@ class TokenController extends BaseController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function newToken(Request $request, UserManagerInterface $userManager)
+    public function newToken(Request $request, UserManagerInterface $userManager, $user = null)
     {
         try {
-            $userGET = $request->request->get('user');
-            if (strlen($userGET) < 2) {
-                throw new BadCredentialsException('Usuário inválido');
-            }
-            $passGET = $request->request->get('pass');
-            if (strlen($passGET) < 3) {
-                throw new BadCredentialsException('Senha inválida');
-            }
+            $isAuthenticated = ($user instanceof UserInterface);
+            if (!($user instanceof UserInterface)) {
+                $userGET = $request->request->get('user');
+                if (strlen($userGET) < 2) {
+                    throw new BadCredentialsException('Usuário inválido');
+                }
+                $passGET = $request->request->get('pass');
+                if (strlen($passGET) < 3) {
+                    throw new BadCredentialsException('Senha inválida');
+                }
 
-            /** @var User $user */
-            $user = $userManager->findByUsername($userGET);
-
-            if (!$user) {
                 /** @var User $user */
-                $user = $userManager->findUserByDocument($userGET);
+                $user = $userManager->findByUsername($userGET);
+
                 if (!$user) {
-                    throw $this->createNotFoundException("Credenciais não encontrada");
+                    /** @var User $user */
+                    $user = $userManager->findUserByDocument($userGET);
+                    if (!$user) {
+                        throw $this->createNotFoundException("Credenciais não encontrada");
+                    }
                 }
             }
 
@@ -69,9 +70,13 @@ class TokenController extends BaseController
                 }
             }
 
-            $isValid = $userManager->isPasswordValid($passGET);
-            // TMP SHA1 for emergency
-            if(strtoupper(sha1($passGET)) === $user->getPassword()) {
+            if (!$isAuthenticated) {
+                $isValid = $userManager->isPasswordValid($passGET);
+                // TMP SHA1 for emergency
+                if (strtoupper(sha1($passGET)) === $user->getPassword()) {
+                    $isValid = true;
+                }
+            } else {
                 $isValid = true;
             }
 
