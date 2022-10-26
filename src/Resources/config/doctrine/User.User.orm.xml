@@ -23,7 +23,7 @@
 
         <field name="acl" column="acl" type="array" />
 
-        <field name="config" column="config" type="array" />
+        <field name="config" column="config" type="json" />
 
         <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
 
