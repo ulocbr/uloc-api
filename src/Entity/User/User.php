@@ -49,6 +49,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
 
     protected $acl;
 
+    protected $config;
+
     /**
      * @var \DateTime|null
      */
@@ -548,7 +550,21 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
 
+    /**
+     * @param mixed $config
+     */
+    public function setConfig($config): void
+    {
+        $this->config = $config;
+    }
 
     /**
      * {@inheritdoc}
@@ -609,6 +625,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'username',
             'email',
             'roles',
+            'config',
             'acl',
             'lastLogin',
             'enabled',

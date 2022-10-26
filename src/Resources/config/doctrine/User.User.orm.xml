@@ -23,6 +23,8 @@
 
         <field name="acl" column="acl" type="array" />
 
+        <field name="config" column="config" type="array" />
+
         <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
 
         <field name="confirmationToken" column="confirmation_token" type="string" length="180" unique="true" nullable="true" />
