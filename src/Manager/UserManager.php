@@ -213,6 +213,7 @@ class UserManager extends CustomManager implements UserManagerInterface
             "name" => $this->user->getPerson() ? $this->user->getPerson()->getName() : $this->user->getUsername(),
             "roles" => $this->user->getRoles(),
             "acl" => $this->user->getAcl(),
+            "config" => $this->user->getConfig(),
             // "image" => 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))),
             "image" => $this->user->getPerson() ? $this->user->getPerson()->getPhoto() : 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))), // @DEPRECATED
             "photo" => $this->user->getPerson() ? $this->user->getPerson()->getPhoto() : 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))),
