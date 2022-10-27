@@ -6,6 +6,11 @@
 
     <entity table="app_global_config" name="Uloc\ApiBundle\Entity\App\GlobalConfig" repository-class="Uloc\ApiBundle\Repository\App\GlobalConfigRepository">
 
+        <indexes>
+            <index columns="permission" name="permission"></index>
+            <index columns="active" name="active"></index>
+        </indexes>
+
         <field name="description" type="string" />
 
         <id name="name" type="string" />
@@ -15,6 +20,12 @@
         <field name="extra" type="json" nullable="true"/>
 
         <field name="permission" type="string" nullable="true"/>
+
+        <field name="active" type="boolean" nullable="false">
+            <options>
+                <option name="default">1</option>
+            </options>
+        </field>
 
     </entity>
 
