@@ -23,11 +23,7 @@
 
         <field name="acl" column="acl" type="array" />
 
-        <field name="config" column="config" type="json" nullable="true">
-            <options>
-                <option name="default">null</option>
-            </options>
-        </field>
+        <field name="config" column="config" type="json" nullable="true" />
 
         <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
 
