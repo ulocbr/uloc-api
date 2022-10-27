@@ -49,6 +49,12 @@ class GlobalConfig
      */
     private $extra;
 
+    /**
+     * @var boolean
+     *
+     */
+    private $active;
+
 
     /**
      * Get id
@@ -170,5 +176,21 @@ class GlobalConfig
     public function setPermission($permission): void
     {
         $this->permission = $permission;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(?bool $active): void
+    {
+        $this->active = $active;
     }
 }
