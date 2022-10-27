@@ -23,7 +23,7 @@
 
         <field name="acl" column="acl" type="array" />
 
-        <field name="config" column="config" type="json">
+        <field name="config" column="config" type="json" nullable="true">
             <options>
                 <option name="default">null</option>
             </options>
