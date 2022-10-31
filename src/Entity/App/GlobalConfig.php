@@ -53,7 +53,7 @@ class GlobalConfig
      * @var boolean
      *
      */
-    private $active;
+    private $active = true;
 
 
     /**
