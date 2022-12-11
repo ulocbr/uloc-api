@@ -25,6 +25,11 @@ abstract class FormEntity extends CommonEntity
 {
 
     /**
+     * @var integer
+     */
+    private $oldId;
+
+    /**
      * @var string
      */
     private $slug;
@@ -447,6 +452,22 @@ abstract class FormEntity extends CommonEntity
     public function setCreatedByName($createdByName): void
     {
         $this->createdByName = $createdByName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOldId(): ?int
+    {
+        return $this->oldId;
+    }
+
+    /**
+     * @param int $oldId
+     */
+    public function setOldId(?int $oldId): void
+    {
+        $this->oldId = $oldId;
     }
 
     static $serializeApi = [
