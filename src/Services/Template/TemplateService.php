@@ -28,6 +28,7 @@ class TemplateService
     protected $logger;
     protected $configService;
     public static $convertersCache = [];
+    public static $twigExtensions = [];
 
     public function __construct(ObjectManager $om, LogInterface $logger, ConfigServiceInterface $configService)
     {
@@ -113,6 +114,12 @@ class TemplateService
             'templateForPrinter' => $templateForPrinter,
         ]);
         $twig = new \Twig\Environment($loader);
+
+        if (count(self::$twigExtensions)) {
+            foreach (self::$twigExtensions as $extension) {
+                $twig->addExtension($extension);
+            }
+        }
 
         // Check if exists custom vars in database
         if (count($allVars)) {
