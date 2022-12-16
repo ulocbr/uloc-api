@@ -24,9 +24,9 @@ use Uloc\ApiBundle\Services\Log\LogInterface;
  */
 class TemplateService
 {
-    private $om;
-    private $logger;
-    private $configService;
+    protected $om;
+    protected $logger;
+    protected $configService;
     public static $convertersCache = [];
 
     public function __construct(ObjectManager $om, LogInterface $logger, ConfigServiceInterface $configService)
