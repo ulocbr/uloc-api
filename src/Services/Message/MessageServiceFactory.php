@@ -82,7 +82,7 @@ class MessageServiceFactory
             }
 
             if (is_array($recipient)) {
-                if(count($recipient) > 1) {
+                if (count($recipient) > 1) {
                     $ccs = array_slice($recipient, 0, count($recipient));
                     if (isset($extra['ccs']) && is_array($extra['ccs'])) {
                         $extra['ccs'] = array_merge($extra['ccs'], $ccs);
@@ -110,12 +110,12 @@ class MessageServiceFactory
             if (isset($config['attachments']) && is_array($config['attachments'])) {
                 // @TODO: Em caso de mensagem assíncrona, como será tratado os anexos?
                 foreach ($config['attachments'] as $_attachment) {
-                    if(!($_attachment instanceof MessageAttachment)){
+                    if (!($_attachment instanceof MessageAttachment)) {
                         // ... @todo
                         /*$attachment = new MessageAttachment();
                         $attachment->setFile($_attachment);
                         $attachment->setFilename();*/
-                    } else{
+                    } else {
                         $attachment = $_attachment;
                     }
                     $message->addAttachment($attachment);
@@ -147,6 +147,20 @@ class MessageServiceFactory
 
             if (isset($extra['ccs']) && is_array($extra['ccs'])) {
                 $message->setCcs($extra['ccs']);
+            }
+
+            // Pixel
+            if (!isset($config['disablePixel'])) {
+                if ($transmissorAlias === 'email') {
+                    $clientInstance = '';
+                    if (isset($_ENV['CLIENT_DOMAIN'])) {
+                        $clientInstance = 'client=' . $_ENV['CLIENT_DOMAIN'] . '&';
+                    }
+                    $text .= '<img src="' . $_ENV['PIXEL_ENDPOINT'] . '?' . $clientInstance . 'id=' . $message->getId() . '">';
+                    $message->setMessage($text);
+                    $this->om->persist($message);
+                    $this->om->flush();
+                }
             }
 
             if ($this->senderType === self::SENDER_INSTANTLY) {
