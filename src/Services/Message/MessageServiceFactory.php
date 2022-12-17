@@ -81,6 +81,18 @@ class MessageServiceFactory
                 throw new \Exception('Transsmissor ' . $transmissorAlias . ' not exists.');
             }
 
+            if (is_array($recipient)) {
+                if(count($recipient) > 1) {
+                    $ccs = array_slice($recipient, 0, count($recipient));
+                    if (isset($extra['ccs']) && is_array($extra['ccs'])) {
+                        $extra['ccs'] = array_merge($extra['ccs'], $ccs);
+                    } else {
+                        $extra['ccs'] = $ccs;
+                    }
+                }
+                $recipient = $recipient[0];
+            }
+
             $message = new Message();
             $message->setType($transmissorAlias);
             $message->setDateRegistry(new \DateTime());
