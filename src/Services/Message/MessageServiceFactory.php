@@ -172,10 +172,10 @@ class MessageServiceFactory
             } else {
                 if ($this->bus) {
                     $messageLight = clone $message;
-                    /*$messageLight->setMessage(null);
+                    $messageLight->setMessage(null);
                     $messageLight->setMessageText(null);
                     $messageLight->clearAttachments();
-                    $messageLight->clearLogs();*/ // TODO: TEST LARGE EMAILS
+                    $messageLight->clearLogs();
                     $this->bus->dispatch($messageLight);
                 }
             }

@@ -10,7 +10,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="name" type="string" length="100"/>
+        <field name="name" type="string" length="200"/>
 
         <field name="code" type="string" length="255" nullable="true"/>
 
