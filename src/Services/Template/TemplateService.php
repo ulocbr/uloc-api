@@ -11,7 +11,6 @@
 namespace Uloc\ApiBundle\Services\Template;
 
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Uloc\ApiBundle\Entity\App\Template;
 use Uloc\ApiBundle\Entity\App\Variable;
