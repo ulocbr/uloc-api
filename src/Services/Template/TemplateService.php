@@ -11,6 +11,8 @@
 namespace Uloc\ApiBundle\Services\Template;
 
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Uloc\ApiBundle\Entity\App\Template;
 use Uloc\ApiBundle\Entity\App\Variable;
 use Uloc\ApiBundle\Services\Config\ConfigServiceInterface;
@@ -27,14 +29,16 @@ class TemplateService
     protected $om;
     protected $logger;
     protected $configService;
+    protected $security;
     public static $convertersCache = [];
     public static $twigExtensions = [];
 
-    public function __construct(ObjectManager $om, LogInterface $logger, ConfigServiceInterface $configService)
+    public function __construct(ObjectManager $om, LogInterface $logger, ConfigServiceInterface $configService, Security $security)
     {
         $this->om = $om;
         $this->logger = $logger;
         $this->configService = $configService;
+        $this->security = $security;
     }
 
     /**
@@ -197,6 +201,10 @@ class TemplateService
                     $this->mountVarLevel($var['name'], $var['value'], $finalParseVars);
                 }
             }
+        }
+
+        if ($this->security && $this->security->getUser()) {
+            $finalParseVars['_user'] = $this->security->getUser();
         }
 
         // Proccess custom vars
