@@ -69,6 +69,13 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
             throw new CustomUserMessageAuthenticationException('Invalid Roles');
         }
 
+        if (isset($_SERVER['USER_CLIENT'])) {
+            $client = $data['client'] ?? null;
+            if ($client !== $_SERVER['USER_CLIENT']) {
+                throw new CustomUserMessageAuthenticationException('Invalid User Client Session');
+            }
+        }
+
         return $user;
     }
 
