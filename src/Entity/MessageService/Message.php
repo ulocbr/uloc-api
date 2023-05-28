@@ -122,6 +122,11 @@ class Message implements MessageServiceInterface
     private $extra = [];
 
     /**
+     * @var string
+     */
+    private $session = 'default';
+
+    /**
      * @var integer
      *
      */
@@ -647,6 +652,22 @@ class Message implements MessageServiceInterface
     public function setExtra(?array $extra): void
     {
         $this->extra = $extra;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param string $session
+     */
+    public function setSession($session): void
+    {
+        $this->session = $session;
     }
 
 }

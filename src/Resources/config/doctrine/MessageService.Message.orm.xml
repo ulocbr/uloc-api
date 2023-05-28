@@ -14,6 +14,7 @@
             <index columns="type" name="type"></index>
             <index columns="status" name="status"></index>
             <index columns="schedule_for" name="scheduleFor"></index>
+            <index columns="session" name="session"></index>
         </indexes>
 
         <field name="dateRegistry" type="datetime" nullable="false" />
@@ -46,6 +47,11 @@
 
         <field name="config" type="array" nullable="true"/>
         <field name="extra" type="array" nullable="true"/>
+        <field name="session" type="string" nullable="true">
+            <options>
+                <option name="default">default</option>
+            </options>
+        </field>
 
         <field name="attempts" type="integer" />
 

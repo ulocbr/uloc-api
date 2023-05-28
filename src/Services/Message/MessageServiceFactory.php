@@ -70,11 +70,12 @@ class MessageServiceFactory
      * @param string $pureText
      * @param array $config
      * @param array $extra
+     * @param string $session
      *
      * @return Message se tudo ocorrer com sucesso ou NULL em caso de erro
      * @throws \Exception
      */
-    public function queue($transmissorAlias, $senderName, $sender, $recipientName, $recipient, $subject, $text, $pureText = null, $config = [], $extra = [])
+    public function queue($transmissorAlias, $senderName, $sender, $recipientName, $recipient, $subject, $text, $pureText = null, $config = [], $extra = [], $session = 'default')
     {
         try {
             if (!$this->transmissor->getTransmissor($transmissorAlias)) {
