@@ -106,6 +106,7 @@ class MessageServiceFactory
             $message->setMessageText($pureText);
             $message->setStatus(MessageServiceInterface::STATUS_CREATED);
             $message->setExtra($extra);
+            $message->setSession($session);
             // TODO: BCC, ReplyTo
 
             if (isset($config['attachments']) && is_array($config['attachments'])) {
