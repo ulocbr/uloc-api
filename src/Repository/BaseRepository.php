@@ -66,11 +66,26 @@ class BaseRepository extends EntityRepository
             ];
         }
 
-        if (in_array($sortBy, array_keys($sortByPossibles))) {
-            $qb->orderBy($sortByPossibles[$sortBy], $sortDesc ? Criteria::DESC : Criteria::ASC);
+        if (is_array($sortBy)) {
+            foreach ($sortBy as $sortByItem) {
+                if (is_array($sortByItem)) {
+                    $sortValue = $sortByItem[0];
+                    $sortOrder = $sortByItem[1];
+                } else {
+                    $sortValue = $sortByItem;
+                    $sortOrder = $sortDesc ? Criteria::DESC : Criteria::ASC;
+                }
+                if (in_array($sortValue, array_keys($sortByPossibles))) {
+                    $qb->addOrderBy($sortByPossibles[$sortValue], $sortOrder);
+                }
+            }
         } else {
-            // Ordering default
-            // $qb->orderBy('id', 'DESC');
+            if (in_array($sortBy, array_keys($sortByPossibles))) {
+                $qb->orderBy($sortByPossibles[$sortBy], $sortDesc ? Criteria::DESC : Criteria::ASC);
+            } else {
+                // Ordering default
+                // $qb->orderBy('id', 'DESC');
+            }
         }
     }
 
