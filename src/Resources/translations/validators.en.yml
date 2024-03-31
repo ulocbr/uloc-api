@@ -2,11 +2,9 @@ uloc_user:
   username:
     already_used: 'Este usuário já existe.'
     not_blank: 'Nome do login do usuário não pode ser em branco.'
-  name:
-    not_blank: 'Nome do usuário não pode ser em branco.'
   email:
-    not_blank: 'Nome do usuário não pode ser em branco.'
-    invalid: 'E-mail  informado é inválido. "{{ value }}"'
+    not_blank: 'Email do usuário não pode ser em branco.'
+    invalid: 'E-mail informado é inválido. "{{ value }}"'
 
 uloc_person:
   name:
