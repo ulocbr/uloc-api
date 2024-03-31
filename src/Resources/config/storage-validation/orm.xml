@@ -14,12 +14,6 @@
             </option>
         </constraint>
 
-        <property name="name">
-            <constraint name="NotBlank">
-                <option name="message">uloc_user.name.not_blank</option>
-            </constraint>
-        </property>
-
         <property name="username">
             <constraint name="NotBlank">
                 <option name="message">uloc_user.username.not_blank</option>
