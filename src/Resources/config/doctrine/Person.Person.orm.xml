@@ -24,6 +24,8 @@
 
         <field name="treatment" type="string" length="10" nullable="true"/>
 
+        <field name="surname" type="string" length="20" nullable="true"/>
+
         <field name="gender" type="smallint" nullable="true"/>
 
         <field name="birthDate" type="date" nullable="true"/>

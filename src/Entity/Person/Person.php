@@ -73,6 +73,14 @@ class Person extends FormEntity
     protected $treatment;
 
     /**
+     * @var string
+     *
+     * Surname / Apelido
+     * e.g: Tiago F.
+     */
+    protected $surname;
+
+    /**
      * @var int
      * #Assert\NotBlank(message="É necessário informar um gênero", groups={"PersonFisica"})
      */
@@ -1093,6 +1101,16 @@ class Person extends FormEntity
     public function setCode($code): void
     {
         $this->code = $code;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(?string $surname): void
+    {
+        $this->surname = $surname;
     }
 
     public static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
