@@ -30,6 +30,8 @@ class Group implements GroupInterface
      */
     private $roles;
 
+    private $acl;
+
     /**
      * Many Groups have Many Users.
      */
@@ -153,4 +155,57 @@ class Group implements GroupInterface
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAcl()
+    {
+        return $this->acl;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setAcl(array $acl)
+    {
+        $this->acl = $acl;
+    }
+
+    /**
+     * @param string $acl
+     */
+    public function addAcl($acl)
+    {
+        if (!$this->hasAcl($acl)) {
+            $this->acl[] = strtoupper($acl);
+        }
+    }
+
+    /**
+     * @param string $acl
+     *
+     * @return bool
+     */
+    public function hasAcl($acl)
+    {
+        return in_array(strtoupper($acl), $this->acl, true);
+    }
+
+    /**
+     * @param string $acl
+     *
+     * @return static
+     */
+    public function removeAcl($acl)
+    {
+        if (false !== $key = array_search(strtoupper($acl), $this->acl, true)) {
+            unset($this->acl[$key]);
+            $this->acl = array_values($this->acl);
+        }
+
+        return $this;
+    }
+
+    
 }
