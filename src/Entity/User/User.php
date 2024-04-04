@@ -79,6 +79,11 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     protected $status;
 
     /**
+     * Many Users have an default Group.
+     */
+    protected $defaultGroup;
+
+    /**
      * Many Users have Many Groups.
      */
     protected $groups;
@@ -575,6 +580,22 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getDefaultGroup()
+    {
+        return $this->defaultGroup;
+    }
+
+    /**
+     * @param mixed $defaultGroup
+     */
+    public function setDefaultGroup($defaultGroup)
+    {
+        $this->defaultGroup = $defaultGroup;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function serialize()
@@ -624,6 +645,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'email',
             'roles',
             'acl',
+            'defaultGroup' => ['id', 'name', 'roles', 'acl'],
             'person' => ['id', 'name', 'photo'],
             'status'
         ];
@@ -637,7 +659,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'acl',
             'lastLogin',
             'enabled',
-            'groupsArray as groups',
+            'defaultGroup' => ['id', 'name', 'roles', 'acl'],
+            'groupsArray as groups' => ['id', 'name', 'roles', 'acl'],
             'person' => ['id', 'name'],
             'status'
         ];
