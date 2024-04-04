@@ -53,6 +53,13 @@
             <join-column name="person_id" referenced-column-name="id"/>
         </many-to-one>
 
+        <many-to-one field="defaultGroup" target-entity="Uloc\ApiBundle\Entity\User\Group" inversed-by="usersDefault">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-column name="group_id" referenced-column-name="id"/>
+        </many-to-one>
+
     </entity>
 
 </doctrine-mapping>

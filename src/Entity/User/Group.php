@@ -38,11 +38,17 @@ class Group implements GroupInterface
     private $users;
 
     /**
+     * One Groups have Default Many Users.
+     */
+    private $usersDefault;
+
+    /**
      * Group constructor.
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->usersDefault = new ArrayCollection();
     }
 
     /**
@@ -205,6 +211,16 @@ class Group implements GroupInterface
         }
 
         return $this;
+    }
+
+    public function getUsersDefault()
+    {
+        return $this->usersDefault;
+    }
+
+    public function setUsersDefault($usersDefault)
+    {
+        $this->usersDefault = $usersDefault;
     }
 
     
