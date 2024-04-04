@@ -232,6 +232,14 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     /**
      * {@inheritdoc}
      */
+    public function getGroupsArray()
+    {
+        return $this->groups->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addGroup(GroupInterface $group)
     {
         if (!$this->getGroups()->contains($group)) {
@@ -629,7 +637,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'acl',
             'lastLogin',
             'enabled',
-            'groups',
+            'groupsArray as groups',
             'person' => ['id', 'name'],
             'status'
         ];
