@@ -660,7 +660,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'lastLogin',
             'enabled',
             'defaultGroup' => ['id', 'name', 'roles', 'acl'],
-            'groupsArray as groups' => ['id', 'name', 'roles', 'acl'],
+            'groups' => ['id', 'name', 'roles', 'acl'],
             'person' => ['id', 'name'],
             'status'
         ];
