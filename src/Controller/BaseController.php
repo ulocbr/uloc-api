@@ -232,7 +232,7 @@ abstract class BaseController extends AbstractController
         // var_dump($this->logger);
     }
 
-    public function checkAcl($acl, $ownerId = null, $orRole = null)
+    public function checkAcl($acl, $ownerId = null, $orRole = null, $roleSeparator = '/')
     {
         $user = $this->getUser();
         if (is_array($acl)) {
@@ -247,6 +247,17 @@ abstract class BaseController extends AbstractController
         if ($hasAdm) {
             return true;
         }
+
+        try {
+            // test role eq acl
+            $aclToRole = explode($roleSeparator, $acl);
+            $aclToRole = 'ROLE_' . strtoupper($aclToRole[0]);
+            if (in_array($aclToRole, $user->getRoles())) {
+                return true;
+            }
+        } catch (\Throwable $e) {
+        }
+
         if (!empty($orRole)) {
             if (is_array($orRole)) {
                 foreach ($orRole as $_role) {
