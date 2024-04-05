@@ -3,14 +3,14 @@
 namespace Uloc\ApiBundle\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
+use Uloc\ApiBundle\Entity\FormEntity;
 use Uloc\ApiBundle\Model\GroupInterface;
 
 /**
  * Group
  *
  */
-class Group implements GroupInterface
+class Group extends FormEntity implements GroupInterface
 {
     /**
      * @var int
