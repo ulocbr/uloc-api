@@ -5,6 +5,7 @@ namespace Uloc\ApiBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Uloc\ApiBundle\Entity\FormEntity;
 use Uloc\ApiBundle\Model\GroupInterface;
+use Uloc\ApiBundle\Serializer\ApiRepresentationMetadataInterface;
 
 /**
  * Group
@@ -223,5 +224,32 @@ class Group extends FormEntity implements GroupInterface
         $this->usersDefault = $usersDefault;
     }
 
-    
+    static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
+    {
+        parent::loadApiRepresentation($representation);
+        $public = [
+            'id',
+            'name',
+            'roles',
+            'acl',
+            'active',
+        ];
+
+        $admin = [
+            'id',
+            'name',
+            'roles',
+            'acl',
+            'active',
+        ];
+        $representation
+            ->setGroup('public')
+            ->addProperties(
+                $public
+            )
+            ->setGroup('admin')
+            ->addProperties(
+                array_merge($public, $admin)
+            )->build();
+    }
 }
