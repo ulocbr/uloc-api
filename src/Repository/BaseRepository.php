@@ -66,7 +66,9 @@ class BaseRepository extends EntityRepository
             ];
         }
 
-        if (is_array($sortBy)) {
+        if (is_callable($sortBy)) {
+            $sortBy($qb);
+        } elseif (is_array($sortBy)) {
             foreach ($sortBy as $sortByItem) {
                 if (is_array($sortByItem)) {
                     $sortValue = $sortByItem[0];
