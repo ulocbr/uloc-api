@@ -132,6 +132,10 @@ class MessageServiceFactory
 
             $transmissor = $this->parseMessage($message);
 
+            if (!empty($config['sender']['connection'])) {
+                $transmissor->parseConnection($config['sender']['connection']);
+            }
+
             $this->om->persist($message);
             $this->om->flush();
 

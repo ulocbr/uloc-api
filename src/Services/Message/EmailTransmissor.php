@@ -23,6 +23,7 @@ class EmailTransmissor extends MessageTransmissor
 {
 
     private $mailer;
+    private $transport;
 
     public function __construct(ConfigServiceInterface $configService, LogInterface $logger, MailerInterface $mailer)
     {
@@ -34,17 +35,20 @@ class EmailTransmissor extends MessageTransmissor
     {
         $message = $this->getMessage();
 
+        $clientTransport = $this->configService->getAppConfig('mail-transport.email');
+
         $config = $message->getConfig();
-        if ($config) {
+        if ($this->transport) {
+        } elseif ($config) {
             if (isset($config['transport_inline'])) {
-                $transport = Transport::fromDsn($config['transport']);
+                $this->transport = $transport = Transport::fromDsn($config['transport']);
                 $this->mailer = new Mailer($transport);
-            } elseif (isset($config['transport'])) {
-                $transport = $this->configService->getAppConfig('mail-transport.' . $config['transport']);
+            } elseif (isset($config['transport']) || $clientTransport) { // @TODO: Por que $config['transport']? Avaliar retirada
+                $transport = $clientTransport;
                 if (empty($transport)) {
                     throw new \Exception(sprintf('Transport %s not found in software configuration. Need to exists %s config with transport DSN', $transport, 'mail-transport.' . $config['transport']));
                 }
-                $transport = Transport::fromDsn($transport);
+                $this->transport = $transport = Transport::fromDsn($transport);
                 $this->mailer = new Mailer($transport);
             }
         }
@@ -92,10 +96,28 @@ class EmailTransmissor extends MessageTransmissor
             return true;
         } catch (TransportExceptionInterface | \Exception $e) {
             $this->logger->error($e->getMessage());
+            if ('cli' === PHP_SAPI) {
+                var_dump($e->getMessage());
+            }
             return false;
             // some error prevented the email sending; display an
             // error message or try to resend the message
         }
+    }
+
+    public function parseConnection($connection) {
+
+        if (!empty($connection['dsn'])) {
+            $this->transport = $transport = Transport::fromDsn($connection);
+        } else {
+            $this->transport = $transport = (new  Transport\Smtp\EsmtpTransport($connection['hostname'], $connection['port'], $connection['encryption'] === 'tls'))
+                ->setUsername($connection['login'])
+                ->setPassword($connection['password'])
+            ;
+            $transport->addAuthenticator(new Transport\Smtp\Auth\LoginAuthenticator());
+        }
+
+        $this->mailer = new Mailer($transport);
     }
 
     public function getName()
