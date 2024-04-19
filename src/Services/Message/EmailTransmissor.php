@@ -110,9 +110,19 @@ class EmailTransmissor extends MessageTransmissor
         if (!empty($connection['dsn'])) {
             $this->transport = $transport = Transport::fromDsn($connection);
         } else {
-            $this->transport = $transport = (new  Transport\Smtp\EsmtpTransport($connection['hostname'], $connection['port'], $connection['encryption'] === 'tls'))
-                ->setUsername($connection['login'])
-                ->setPassword($connection['password'])
+            if (empty($connection['hostname'])) {
+                throw new \Exception('Ausência do hostname nas configurações da conexão');
+            }
+            if (empty($connection['username'])) {
+                throw new \Exception('Ausência do username nas configurações da conexão');
+            }
+            $tls = false;
+            if (!empty($connection['encryption'])) {
+                $tls = $connection['encryption'] === 'tls';
+            }
+            $this->transport = $transport = (new  Transport\Smtp\EsmtpTransport($connection['hostname'], $connection['port'] ?? 465, $tls))
+                ->setUsername($connection['username'])
+                ->setPassword($connection['password'] ?? null)
             ;
             $transport->addAuthenticator(new Transport\Smtp\Auth\LoginAuthenticator());
         }
