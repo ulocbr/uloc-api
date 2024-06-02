@@ -17,6 +17,8 @@
         <field name="description" type="string" length="255" nullable="true"/>
 
         <field name="required" type="boolean"/>
+        <field name="type" type="string" length="20" nullable="true"/>
+        <field name="config" type="json" nullable="true"/>
 
     </entity>
 

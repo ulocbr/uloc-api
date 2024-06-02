@@ -41,6 +41,10 @@ class ExtraField
      */
     private $required;
 
+    private $type;
+
+    private $config = [];
+
     /**
      * Get id
      *
@@ -145,6 +149,30 @@ class ExtraField
     public function getRequired()
     {
         return $this->required;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    public function setConfig($config): self
+    {
+        $this->config = $config;
+
+        return $this;
     }
 
     public function __toString()
