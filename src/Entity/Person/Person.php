@@ -739,6 +739,20 @@ class Person extends FormEntity
         return $this;
     }
 
+    public function getExtra()
+    {
+        $fields = [];
+
+        if ($this->extraFields->count()) {
+            /* @var PersonExtraField $extra */
+            foreach ($this->extraFields as $extra) {
+                $fields[$extra->getExtraField()->getCode()] = $extra->getValue();
+            }
+        }
+
+        return $fields;
+    }
+
     /**
      * @return mixed
      */

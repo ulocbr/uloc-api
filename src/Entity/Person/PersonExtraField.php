@@ -59,7 +59,7 @@ class PersonExtraField
     }
 
     /**
-     * @return mixed
+     * @return ExtraField
      */
     public function getExtraField()
     {
