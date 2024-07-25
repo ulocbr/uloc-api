@@ -2,11 +2,13 @@
 
 namespace Uloc\ApiBundle\Entity\Person;
 
+use Uloc\ApiBundle\Entity\FormEntity;
+
 /**
  * PersonExtraField
  *
  */
-class PersonExtraField
+class PersonExtraField extends FormEntity
 {
     /**
      * @var int
