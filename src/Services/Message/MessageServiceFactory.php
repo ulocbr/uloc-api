@@ -109,6 +109,13 @@ class MessageServiceFactory
             $message->setSession($session);
             // TODO: BCC, ReplyTo
 
+            if (!empty($config['referEntity'])) {
+                $message->setReferEntity($config['referEntity']);
+            }
+            if (!empty($config['referEntityId'])) {
+                $message->setReferEntityId($config['referEntityId']);
+            }
+
             if (isset($config['attachments']) && is_array($config['attachments'])) {
                 // @TODO: Em caso de mensagem assíncrona, como será tratado os anexos?
                 foreach ($config['attachments'] as $_attachment) {
