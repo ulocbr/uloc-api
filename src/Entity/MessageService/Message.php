@@ -133,6 +133,16 @@ class Message implements MessageServiceInterface
     private $attempts = 0;
 
     /**
+     * @var string
+     */
+    private $referEntity;
+
+    /**
+     * @var integer
+     */
+    private $referEntityId;
+
+    /**
      * Um Message tem Muitos Attachments
      */
     private $attachments;
@@ -668,6 +678,26 @@ class Message implements MessageServiceInterface
     public function setSession($session): void
     {
         $this->session = $session;
+    }
+
+    public function getReferEntity(): ?string
+    {
+        return $this->referEntity;
+    }
+
+    public function setReferEntity(?string $referEntity): void
+    {
+        $this->referEntity = $referEntity;
+    }
+
+    public function getReferEntityId(): ?int
+    {
+        return $this->referEntityId;
+    }
+
+    public function setReferEntityId(?int $referEntityId): void
+    {
+        $this->referEntityId = $referEntityId;
     }
 
 }

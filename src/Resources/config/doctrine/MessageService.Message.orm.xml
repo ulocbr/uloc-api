@@ -54,6 +54,8 @@
         </field>
 
         <field name="attempts" type="integer" />
+        <field name="referEntity" type="string" length="50" nullable="true" />
+        <field name="referEntityId" type="integer" nullable="true" />
 
         <one-to-many field="attachments" target-entity="Uloc\ApiBundle\Entity\MessageService\MessageAttachment"
                      mapped-by="message"/>
