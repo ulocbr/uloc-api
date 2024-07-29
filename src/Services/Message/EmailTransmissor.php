@@ -83,7 +83,7 @@ class EmailTransmissor extends MessageTransmissor
             ]);
 
             if (0 === count($violations)) {
-                $email->addCc($emailGlobalCc);
+                $email->addBcc($emailGlobalCc);
             }
         }
 
