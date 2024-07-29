@@ -16,6 +16,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Validator\Validation;
 use Uloc\ApiBundle\Services\Config\ConfigServiceInterface;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
@@ -70,6 +71,19 @@ class EmailTransmissor extends MessageTransmissor
                 }
             } else {
                 $email->cc($message->getCcs());
+            }
+        }
+
+        // Config to copy
+        $emailGlobalCc = $this->configService->getAppConfig('email.default.cc');
+        if (!empty($emailGlobalCc)) {
+            $validator = Validation::createValidator();
+            $violations = $validator->validate($emailGlobalCc, [
+                new \Symfony\Component\Validator\Constraints\Email()
+            ]);
+
+            if (0 === count($violations)) {
+                $email->addCc($emailGlobalCc);
             }
         }
 
