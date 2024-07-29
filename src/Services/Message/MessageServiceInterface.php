@@ -44,5 +44,6 @@ interface MessageServiceInterface
     public function getConfig(): ?array;
     public function getAttachments();
     public function getId();
+    public function getSession();
 
 }

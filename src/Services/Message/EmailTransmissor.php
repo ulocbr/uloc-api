@@ -75,15 +75,17 @@ class EmailTransmissor extends MessageTransmissor
         }
 
         // Config to copy
-        $emailGlobalCc = $this->configService->getAppConfig('email.default.cc');
-        if (!empty($emailGlobalCc)) {
-            $validator = Validation::createValidator();
-            $violations = $validator->validate($emailGlobalCc, [
-                new \Symfony\Component\Validator\Constraints\Email()
-            ]);
+        if ($message->getSession() !== 'mkt') {
+            $emailGlobalCc = $this->configService->getAppConfig('email.default.cc');
+            if (!empty($emailGlobalCc)) {
+                $validator = Validation::createValidator();
+                $violations = $validator->validate($emailGlobalCc, [
+                    new \Symfony\Component\Validator\Constraints\Email()
+                ]);
 
-            if (0 === count($violations)) {
-                $email->addBcc($emailGlobalCc);
+                if (0 === count($violations)) {
+                    $email->addBcc($emailGlobalCc);
+                }
             }
         }
 
