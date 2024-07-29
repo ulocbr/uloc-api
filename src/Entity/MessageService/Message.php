@@ -143,6 +143,11 @@ class Message implements MessageServiceInterface
     private $referEntityId;
 
     /**
+     * @var integer
+     */
+    private $personId;
+
+    /**
      * Um Message tem Muitos Attachments
      */
     private $attachments;
@@ -698,6 +703,16 @@ class Message implements MessageServiceInterface
     public function setReferEntityId(?int $referEntityId): void
     {
         $this->referEntityId = $referEntityId;
+    }
+
+    public function getPersonId(): ?int
+    {
+        return $this->personId;
+    }
+
+    public function setPersonId(?int $personId): void
+    {
+        $this->personId = $personId;
     }
 
 }
