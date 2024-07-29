@@ -15,6 +15,7 @@
             <index columns="status" name="status"></index>
             <index columns="schedule_for" name="scheduleFor"></index>
             <index columns="session" name="session"></index>
+            <index columns="person_id" name="personId"></index>
         </indexes>
 
         <field name="dateRegistry" type="datetime" nullable="false" />
