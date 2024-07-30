@@ -107,6 +107,11 @@ class MessageServiceFactory
             $message->setStatus(MessageServiceInterface::STATUS_CREATED);
             $message->setExtra($extra);
             $message->setSession($session);
+
+            if (!empty($config['personId'])) {
+                $message->setPersonId($config['personId']);
+            }
+
             // TODO: BCC, ReplyTo
 
             if (!empty($config['referEntity'])) {
