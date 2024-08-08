@@ -661,7 +661,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'enabled',
             'defaultGroup' => ['id', 'name', 'roles', 'acl'],
             'groups' => ['id', 'name', 'roles', 'acl'],
-            'person' => ['id', 'name'],
+            'person' => ['id', 'name', 'document', 'type'],
             'status'
         ];
         $representation
