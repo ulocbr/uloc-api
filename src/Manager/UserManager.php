@@ -342,38 +342,37 @@ class UserManager extends CustomManager implements UserManagerInterface
 
     public function validate2FA(User $user, $code)
     {
-        try {
-            $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
-                ->where('a.user = :user')
-                ->andWhere('a.expires > :agora')
-                ->andWhere('a.code = :code')
-                ->setParameter('user', $user->getId())
-                ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
-                ->setParameter('code', $code)
-                ->setMaxResults(1)
-                ->getQuery()->getOneOrNullResult();
+        $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
+            ->where('a.user = :user')
+            ->andWhere('a.expires > :agora')
+            ->andWhere('a.code = :code')
+            ->setParameter('user', $user->getId())
+            ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->setParameter('code', $code)
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
 
-            if (!$check2f) {
-                return false;
-            }
-
-            $ip = $this->checkIp();
-            if (!$ip) {
-                $ip = new AuthSecurityIp();
-                $ip->setIp(Utils::get_client_ip_env());
-                $ip->setValid(true);
-                $ip->setBlock(false);
-                $ip->setDate(new \DateTime());
-                $ip->setExpires((new \DateTime())->modify('+10 days'));
-                $this->om->persist($ip);
-                $this->om->flush();
-            }
-        } catch (\Throwable $e) {
-
+        if (!$check2f) {
+            return false;
         }
+
+        $ip = $this->checkIp();
+        if (!$ip) {
+            $ip = new AuthSecurityIp();
+            $ip->setIp(Utils::get_client_ip_env());
+            $ip->setValid(true);
+            $ip->setBlock(false);
+            $ip->setDate(new \DateTime());
+            $ip->setExpires((new \DateTime())->modify('+10 days'));
+            $this->om->persist($ip);
+            $this->om->flush();
+        }
+
+        return true;
     }
 
-    public function persist2FA ($entity) {
+    public function persist2FA($entity)
+    {
         $this->om->persist($entity);
         $this->om->flush();
     }
