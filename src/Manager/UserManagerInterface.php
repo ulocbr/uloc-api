@@ -128,4 +128,8 @@ interface UserManagerInterface
      */
     public function redefinePassword($password = null);
 
+    public function start2FA(User $user, $config);
+    public function validate2FA(User $user, $code);
+    public function persist2FA($entity);
+
 }
