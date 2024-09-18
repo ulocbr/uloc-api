@@ -289,8 +289,9 @@ class UserManager extends CustomManager implements UserManagerInterface
     {
         $ip = Utils::get_client_ip_env();
 
-        $buscaIp = $this->om->getRepository(AuthSecurityIp::class)->createQueryBuilder('s')
-            ->where('s.id = :ip')
+        $buscaIp = $this->om->getRepository(AuthSecurityIp::class)
+            ->createQueryBuilder('s')
+            ->where('s.ip = :ip')
             ->andWhere('s.expires > :agora')
             ->setParameter('ip', $ip)
             ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
