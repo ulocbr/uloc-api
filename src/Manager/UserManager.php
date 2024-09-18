@@ -318,7 +318,9 @@ class UserManager extends CustomManager implements UserManagerInterface
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
 
+        $new = false;
         if (!$check2f) {
+            $new = true;
             $check2f = new AuthSecurity();
             $check2f->setToken(md5(uniqid()));
             $code = rand(0, 999999);
@@ -332,7 +334,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         }
 
         if ($this->eventDispatcher) {
-            $this->eventDispatcher->dispatch(new User2FAEvent($check2f), 'security.2FA');
+            $new && $this->eventDispatcher->dispatch(new User2FAEvent($check2f), 'security.2FA');
         }
 
         return $check2f;
