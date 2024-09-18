@@ -340,13 +340,13 @@ class UserManager extends CustomManager implements UserManagerInterface
         return $check2f;
     }
 
-    public function validate2FA(User $user, $code)
+    public function validate2FA($token, $code)
     {
         $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
-            ->where('a.user = :user')
+            ->where('a.token = :token')
             ->andWhere('a.expires > :agora')
             ->andWhere('a.code = :code')
-            ->setParameter('user', $user->getId())
+            ->setParameter('token', $token)
             ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
             ->setParameter('code', $code)
             ->setMaxResults(1)
