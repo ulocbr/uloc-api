@@ -93,42 +93,48 @@ class TokenController extends BaseController
                 $userContent['person'] = $user->getPerson()->getId();
             }
 
-            $securityConfig = $userManager->getSecurityConfig();
-
             $return2FA = false;
-            if (!empty($securityConfig['security.2FA'])) {
-                if (empty($securityConfig['security.2FA.roles'])) {
-                    $validateRoles = ['ROLE_ERP'];
-                } else {
-                    $validateRoles = explode(',', $securityConfig['security.2FA.roles']);
-                }
 
-                if (empty(array_intersect($validateRoles, $roles))) {
-                    goto no2fa;
-                }
+            try {
+                $securityConfig = $userManager->getSecurityConfig();
 
-                // Verifica se o IP já foi validado
-                try {
-                    $ip = $userManager->checkIp();
-                    if ($ip === true) {
+                if (!empty($securityConfig['security.2FA'])) {
+                    if (empty($securityConfig['security.2FA.roles'])) {
+                        $validateRoles = ['ROLE_ERP'];
+                    } else {
+                        $validateRoles = explode(',', $securityConfig['security.2FA.roles']);
+                    }
+
+                    if (empty(array_intersect($validateRoles, $roles))) {
                         goto no2fa;
                     }
 
-                    if ($ip instanceof AuthSecurityIp || $ip === false) {
-                        // Inicia 2FA
-                        try {
-                            $auth2FA = $userManager->start2FA($user, $securityConfig['security.2FA']);
-                            $return2FA = true;
-                        } catch (\Throwable $e) {
-                            $this->logger->critical($e->getMessage());
+                    // Verifica se o IP já foi validado
+                    try {
+                        $ip = $userManager->checkIp();
+                        if ($ip === true) {
                             goto no2fa;
                         }
-                    }
-                } catch (\Throwable $e) {
-                    if ($e->getCode() === 503) {
-                        return new JsonResponse(['status' => $e->getMessage()], 503);
+
+                        if ($ip instanceof AuthSecurityIp || $ip === false) {
+                            // Inicia 2FA
+                            try {
+                                $auth2FA = $userManager->start2FA($user, $securityConfig['security.2FA']);
+                                $return2FA = true;
+                            } catch (\Throwable $e) {
+                                $this->logger->critical($e->getMessage());
+                                goto no2fa;
+                            }
+                        }
+                    } catch (\Throwable $e) {
+                        if ($e->getCode() === 503) {
+                            return new JsonResponse(['status' => $e->getMessage()], 503);
+                        }
                     }
                 }
+            } catch (\Throwable $e) {
+                $this->logger->critical($e->getMessage());
+                goto no2fa;
             }
 
             no2fa:
