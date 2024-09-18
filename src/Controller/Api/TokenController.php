@@ -160,6 +160,7 @@ class TokenController extends BaseController
                         'method' => $securityConfig['security.2FA'] ?? null,
                         'id' => $auth2FA->getId(),
                         'token' => $auth2FA->getToken(),
+                        'recipient' => $auth2FA->getRecipient(),
                         'expires' => $auth2FA->getExpires()->format('Y-m-d H:i:s'),
                     ], JsonResponse::HTTP_ACCEPTED);
             }
