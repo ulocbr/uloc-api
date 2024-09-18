@@ -368,6 +368,9 @@ class UserManager extends CustomManager implements UserManagerInterface
             $this->om->flush();
         }
 
+        $this->om->remove($check2f);
+        $this->om->flush();
+
         return $check2f;
     }
 
