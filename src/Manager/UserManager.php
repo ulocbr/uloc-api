@@ -312,7 +312,7 @@ class UserManager extends CustomManager implements UserManagerInterface
     {
         $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
             ->where('a.user = :user')
-            ->andWhere('a.expires < :agora')
+            ->andWhere('a.expires > :agora')
             ->setParameter('user', $user->getId())
             ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
             ->setMaxResults(1)
@@ -342,7 +342,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         try {
             $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
                 ->where('a.user = :user')
-                ->andWhere('a.expires < :agora')
+                ->andWhere('a.expires > :agora')
                 ->andWhere('a.code = :code')
                 ->setParameter('user', $user->getId())
                 ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
