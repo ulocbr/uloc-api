@@ -95,6 +95,7 @@ class TokenController extends BaseController
 
             $securityConfig = $userManager->getSecurityConfig();
 
+            $return2FA = false;
             if (!empty($securityConfig['security.2FA'])) {
                 if (empty($securityConfig['security.2FA.roles'])) {
                     $validateRoles = ['ROLE_ERP'];
@@ -107,7 +108,6 @@ class TokenController extends BaseController
                 }
 
                 // Verifica se o IP já foi validado
-                $return2FA = false;
                 try {
                     $ip = $userManager->checkIp();
                     if ($ip === true) {
