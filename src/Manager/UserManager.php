@@ -6,10 +6,15 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Uloc\ApiBundle\Entity\App\GlobalConfig;
+use Uloc\ApiBundle\Entity\AuthSecurity;
+use Uloc\ApiBundle\Entity\AuthSecurityIp;
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Event\UlocApiBundleEvents;
+use Uloc\ApiBundle\Event\User2FAEvent;
 use Uloc\ApiBundle\Event\UserNewTokenEvent;
+use Uloc\ApiBundle\Helpers\Utils;
 use Uloc\ApiBundle\Manager\Model\CustomManager;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 
@@ -238,7 +243,8 @@ class UserManager extends CustomManager implements UserManagerInterface
         }
     }
 
-    public function generatePassword(){
+    public function generatePassword()
+    {
         $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
         return $password = substr(str_shuffle($data), 0, 6);
     }
@@ -258,5 +264,115 @@ class UserManager extends CustomManager implements UserManagerInterface
         return $password;
     }
 
+    public function getSecurityConfig()
+    {
+        $auth2FA = $this->om->getRepository(GlobalConfig::class)->findOneBy([
+            'name' => 'security.2FA'
+        ]);
+
+        $auth2FARoles = $this->om->getRepository(GlobalConfig::class)->findOneBy([
+            'name' => 'security.2FA.roles'
+        ]);
+
+        $validateIP = $this->om->getRepository(GlobalConfig::class)->findOneBy([
+            'name' => 'security.validateIp'
+        ]);
+
+        return [
+            'security.2FA' => $auth2FA ? $auth2FA->getValue() : null,
+            'security.2FA.roles' => $auth2FARoles ? $auth2FARoles->getValue() : null,
+            'security.validateIp' => $validateIP ? $validateIP->getValue() : null,
+        ];
+    }
+
+    public function checkIp()
+    {
+        $ip = Utils::get_client_ip_env();
+
+        $buscaIp = $this->om->getRepository(AuthSecurityIp::class)->findOneBy([
+            'ip' => $ip
+        ]);
+
+        if (!$buscaIp) {
+            return false;
+        }
+
+        if ($buscaIp->isBlock()) {
+            throw new \Exception('Service Unavailable', 503);
+        }
+
+        if ($buscaIp->isValid()) {
+            return true;
+        }
+
+        return $buscaIp;
+    }
+
+    public function start2FA(User $user, $config)
+    {
+        $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
+            ->where('a.user = :user')
+            ->andWhere('a.expires < :agora')
+            ->setParameter('user', $user->getId())
+            ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+
+        if (!$check2f) {
+            $check2f = new AuthSecurity();
+            $check2f->setToken(md5(uniqid()));
+            $code = rand(0, 999999);
+            $code = sprintf('%06d', $code);
+            $check2f->setCode($code);
+            $check2f->setExpires((new \DateTime())->modify('+10 minutes'));
+            $check2f->setUser($user);
+            $this->om->persist($check2f);
+            $this->om->flush();
+        }
+
+        if ($this->eventDispatcher) {
+            $this->eventDispatcher->dispatch(new User2FAEvent($check2f), 'security.2FA');
+        }
+
+        return $check2f;
+    }
+
+    public function validate2FA(User $user, $code)
+    {
+        try {
+            $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
+                ->where('a.user = :user')
+                ->andWhere('a.expires < :agora')
+                ->andWhere('a.code = :code')
+                ->setParameter('user', $user->getId())
+                ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
+                ->setParameter('code', $code)
+                ->setMaxResults(1)
+                ->getQuery()->getOneOrNullResult();
+
+            if (!$check2f) {
+                return false;
+            }
+
+            $ip = $this->checkIp();
+            if (!$ip) {
+                $ip = new AuthSecurityIp();
+                $ip->setIp(Utils::get_client_ip_env());
+                $ip->setValid(true);
+                $ip->setBlock(false);
+                $ip->setDate(new \DateTime());
+                $ip->setExpires((new \DateTime())->modify('+10 days'));
+                $this->om->persist($ip);
+                $this->om->flush();
+            }
+        } catch (\Throwable $e) {
+
+        }
+    }
+
+    public function persist2FA ($entity) {
+        $this->om->persist($entity);
+        $this->om->flush();
+    }
 
 }
