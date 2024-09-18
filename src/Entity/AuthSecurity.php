@@ -17,6 +17,7 @@ class AuthSecurity
     private $expires;
 
     private $method;
+    private $recipient;
 
     private $data;
 
@@ -105,5 +106,20 @@ class AuthSecurity
         $this->method = $method;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRecipient()
+    {
+        return $this->recipient;
+    }
+
+    /**
+     * @param mixed $recipient
+     */
+    public function setRecipient($recipient): void
+    {
+        $this->recipient = $recipient;
+    }
 
 }

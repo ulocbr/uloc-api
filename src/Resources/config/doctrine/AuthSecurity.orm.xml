@@ -16,6 +16,7 @@
 
         <field name="expires" type="datetime" nullable="true"/>
         <field name="method" type="string" length="255" nullable="true"/>
+        <field name="recipient" type="string" length="255" nullable="true"/>
         <field name="data" type="json" nullable="true"/>
 
         <many-to-one field="user" target-entity="Uloc\ApiBundle\Entity\User\User">
