@@ -368,7 +368,7 @@ class UserManager extends CustomManager implements UserManagerInterface
             $this->om->flush();
         }
 
-        return true;
+        return $check2f;
     }
 
     public function persist2FA($entity)
