@@ -157,7 +157,7 @@ class TokenController extends BaseController
                 return new JsonResponse(
                     [
                         'need2FA' => true,
-                        'method' => $securityConfig['security.2FA'] ?? null,
+                        'method' => $auth2FA->getMethod(),
                         'id' => $auth2FA->getId(),
                         'token' => $auth2FA->getToken(),
                         'recipient' => $auth2FA->getRecipient(),
