@@ -16,6 +16,8 @@ class AuthSecurity
 
     private $expires;
 
+    private $method;
+
     private $data;
 
     public function getId(): ?int
@@ -86,4 +88,22 @@ class AuthSecurity
     {
         $this->data = $data;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param mixed $method
+     */
+    public function setMethod($method): void
+    {
+        $this->method = $method;
+    }
+
+
 }
