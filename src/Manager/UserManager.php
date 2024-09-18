@@ -324,6 +324,7 @@ class UserManager extends CustomManager implements UserManagerInterface
             $code = rand(0, 999999);
             $code = sprintf('%06d', $code);
             $check2f->setCode($code);
+            $check2f->setMethod($config);
             $check2f->setExpires((new \DateTime())->modify('+10 minutes'));
             $check2f->setUser($user);
             $this->om->persist($check2f);
