@@ -321,11 +321,12 @@ class UserManager extends CustomManager implements UserManagerInterface
             ->setParameter('user', $user->getId())
             ->setParameter('agora', (new \DateTime())->format('Y-m-d H:i:s'))
             ->setMaxResults(1)
+            ->orderBy('a.id', 'DESC')
             ->getQuery()->getOneOrNullResult();
 
         $new = false;
         if (!$check2f) {
-            $new = true;
+            $this->isNew2FA = $new = true;
             $check2f = new AuthSecurity();
             $check2f->setToken(md5(uniqid()));
             $code = rand(0, 999999);
@@ -343,6 +344,13 @@ class UserManager extends CustomManager implements UserManagerInterface
         }
 
         return $check2f;
+    }
+
+    private $isNew2FA = false;
+
+    public function isNew2FA(): bool
+    {
+        return $this->isNew2FA;
     }
 
     public function validate2FA($token, $code)

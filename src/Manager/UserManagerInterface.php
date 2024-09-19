@@ -131,5 +131,6 @@ interface UserManagerInterface
     public function start2FA(User $user, $config);
     public function validate2FA($token, $code);
     public function persist2FA($entity);
+    public function isNew2FA(): bool;
 
 }
