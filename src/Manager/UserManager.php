@@ -313,7 +313,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         return $buscaIp;
     }
 
-    public function start2FA(User $user, $config)
+    public function start2FA(User $user, $config, $dispatchEvent = true)
     {
         $check2f = $this->om->getRepository(AuthSecurity::class)->createQueryBuilder('a')
             ->where('a.user = :user')
@@ -339,7 +339,7 @@ class UserManager extends CustomManager implements UserManagerInterface
         }
 
         if ($this->eventDispatcher) {
-            $new && $this->eventDispatcher->dispatch(new User2FAEvent($check2f), 'security.2FA');
+            $dispatchEvent && $new && $this->eventDispatcher->dispatch(new User2FAEvent($check2f), 'security.2FA');
         }
 
         return $check2f;
