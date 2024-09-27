@@ -127,7 +127,7 @@ class EmailTransmissor extends MessageTransmissor
     public function parseConnection($connection) {
 
         if (!empty($connection['dsn'])) {
-            $this->transport = $transport = Transport::fromDsn($connection);
+            $this->transport = $transport = Transport::fromDsn($connection['dsn']);
         } else {
             if (empty($connection['hostname'])) {
                 throw new \Exception('Ausência do hostname nas configurações da conexão');
