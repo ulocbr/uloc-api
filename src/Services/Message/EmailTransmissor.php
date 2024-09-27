@@ -115,6 +115,9 @@ class EmailTransmissor extends MessageTransmissor
             if ('cli' === PHP_SAPI) {
                 var_dump($e->getMessage());
             }
+            if (MessageServiceFactory::$interceptErrors) {
+                throw $e;
+            }
             return false;
             // some error prevented the email sending; display an
             // error message or try to resend the message

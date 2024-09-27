@@ -28,6 +28,8 @@ class MessageServiceFactory
     const SENDER_QUEUE = 'queue';
     const SENDER_INSTANTLY = 'instantly';
 
+    public static $interceptErrors = false;
+
     /**
      * @var string
      * queue - Fila
