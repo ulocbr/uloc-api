@@ -8,7 +8,7 @@
 
         <indexes>
             <index columns="entity,entity_id,action" name="S1"/>
-            <index columns="ip,action" name="ipAction"/>
+            <index columns="date,action,ip" name="dateActionIp"/>
             <index columns="type" name="type"/>
             <index columns="entity" name="entity"/>
             <index columns="entity_id" name="entity_id"/>
