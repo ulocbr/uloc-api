@@ -29,7 +29,7 @@ class UserLog implements LogInterface
         $this->em = $em;
     }
 
-    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null){
+    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null, $ip = null){
 
     }
 

@@ -28,8 +28,9 @@ interface LogInterface
      * @param string contexto      Um objeto contendo informações complementares do registro de log.
      * @param object oldObject     Um array contendo informações sobre a entidade antes de sofrer alterações. Se for uma nova entidade este array será vazio.
      * @param object newObject     Um array com a entidade alterada ou criada.
+     * @param string ip            IP de quem realizou a ação
      */
-    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null);
+    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null, $ip = null);
 
     /**
      * System is unusable.

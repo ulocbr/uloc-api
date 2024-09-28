@@ -24,7 +24,7 @@ class SystemLog implements LogInterface
         $this->nativeLogger = $nativeLogger;
     }
 
-    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null)
+    public function log($message, $entity, $action, $context, $oldObject = null, $newObject = null, $ip = null)
     {
 
     }
