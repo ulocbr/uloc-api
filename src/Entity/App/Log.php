@@ -26,6 +26,7 @@ class Log
 
     protected $date;
 
+    protected $ip;
     protected $entity;
     protected $entityId;
     protected $referId;
@@ -276,6 +277,22 @@ class Log
         $this->referId = $referId;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param mixed $ip
+     */
+    public function setIp($ip): void
+    {
+        $this->ip = $ip;
+    }
+
     static function loadApiRepresentation(ApiRepresentationMetadataInterface $representation)
     {
         $public = [
@@ -294,6 +311,7 @@ class Log
             'context',
             'oldObject',
             'newObject',
+            'ip',
         ];
         $representation
             ->setGroup('public')
