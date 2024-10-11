@@ -55,6 +55,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
      * @var \DateTime|null
      */
     protected $lastLogin;
+    protected $loginHash;
 
     /**
      * Random string sent to the user email address in order to verify it.
@@ -596,6 +597,22 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     }
 
     /**
+     * @return mixed
+     */
+    public function getLoginHash()
+    {
+        return $this->loginHash;
+    }
+
+    /**
+     * @param mixed $loginHash
+     */
+    public function setLoginHash($loginHash): void
+    {
+        $this->loginHash = $loginHash;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function serialize()
@@ -658,6 +675,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
             'config',
             'acl',
             'lastLogin',
+            'loginHash',
             'enabled',
             'defaultGroup' => ['id', 'name', 'roles', 'acl'],
             'groups' => ['id', 'name', 'roles', 'acl'],

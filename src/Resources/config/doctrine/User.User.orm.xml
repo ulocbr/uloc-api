@@ -16,6 +16,7 @@
             <index columns="email" name="email"></index>
             <index columns="enabled" name="enabled"></index>
             <index columns="status" name="status"></index>
+            <index columns="login_hash" name="login_hash"></index>
         </indexes>
 
         <field name="username" column="username" type="string" length="180" />
@@ -33,6 +34,7 @@
         <field name="config" column="config" type="json" nullable="true" />
 
         <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
+        <field name="loginHash" column="login_hash" type="string" length="255" nullable="true" />
 
         <field name="confirmationToken" column="confirmation_token" type="string" length="180" unique="true" nullable="true" />
 

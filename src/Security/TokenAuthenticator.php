@@ -13,16 +13,14 @@ namespace Uloc\ApiBundle\Security;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
 use Uloc\ApiBundle\Api\ResponseFactory;
 
-class TokenAuthenticator implements AbstractGuardAuthenticator
+class TokenAuthenticator extends AbstractGuardAuthenticator
 {
     private $em;
     private $responseFactory;
@@ -79,4 +77,8 @@ class TokenAuthenticator implements AbstractGuardAuthenticator
     }
 
 
+    public function supports(Request $request)
+    {
+        // TODO: Implement supports() method.
+    }
 }
