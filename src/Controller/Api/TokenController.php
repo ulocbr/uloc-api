@@ -86,6 +86,11 @@ class TokenController extends BaseController
             }
 
             $token = $userManager->generateToken();
+            $user->setLastLogin(new \DateTime());
+            $hash = \openssl_random_pseudo_bytes(16);
+            $hash = bin2hex($hash);
+            $user->setLoginHash($hash);
+            $userManager->update();
 
             $userContent = $userManager->getUserContent();
 
@@ -138,12 +143,6 @@ class TokenController extends BaseController
             }
 
             no2fa:
-
-            $user->setLastLogin(new \DateTime());
-            $hash = \openssl_random_pseudo_bytes(16);
-            $hash = bin2hex($hash);
-            $user->setLoginHash($hash);
-            $userManager->update();
 
             $data = [
                 'token' => $token,
