@@ -222,6 +222,7 @@ class UserManager extends CustomManager implements UserManagerInterface
             // "image" => 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))),
             "image" => $this->user->getPerson() ? $this->user->getPerson()->getPhoto() : 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))), // @DEPRECATED
             "photo" => $this->user->getPerson() ? $this->user->getPerson()->getPhoto() : 'https://www.gravatar.com/avatar/' . trim(strtolower(md5($this->user->getEmail()))),
+            "loginHash" => $this->user->getLoginHash(),
             "active" => $this->user->isActive(),
 
         ];
