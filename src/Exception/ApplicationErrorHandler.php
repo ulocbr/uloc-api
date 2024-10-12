@@ -4,7 +4,9 @@
 namespace Uloc\ApiBundle\Exception;
 
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Uloc\ApiBundle\Event\HandlerErrorEvent;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
 /**
@@ -15,19 +17,25 @@ use Uloc\ApiBundle\Services\Log\LogInterface;
 class ApplicationErrorHandler implements ApplicationErrorHandlerInterface
 {
     protected $logger;
+    protected $eventDispatcher;
 
-    public function __construct(LogInterface $logger)
+    public function __construct(LogInterface $logger, EventDispatcherInterface $eventDispatcher)
     {
         $this->logger = $logger;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
     public function handlerError($error, $responseFormat = 'json', $httpCode = 400)
     {
         /**
-         * TODO: Trata erros e armazena-os caso necessário.
          * Permitir ao $responseFormat além de json, um callback para customizar o response.
          */
+
+        try {
+            $this->eventDispatcher->dispatch(new HandlerErrorEvent($error), 'app.error');
+        } catch (\Throwable $e) {
+        }
 
         $unserialized = @unserialize($error);
         if ($unserialized === false) {

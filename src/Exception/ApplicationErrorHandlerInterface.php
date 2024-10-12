@@ -4,6 +4,7 @@
 namespace Uloc\ApiBundle\Exception;
 
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Uloc\ApiBundle\Services\Log\LogInterface;
 
 interface ApplicationErrorHandlerInterface
@@ -11,8 +12,9 @@ interface ApplicationErrorHandlerInterface
     /**
      * ApplicationErrorHandlerInterface constructor.
      * @param LogInterface $logger
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(LogInterface $logger);
+    public function __construct(LogInterface $logger, EventDispatcherInterface $eventDispatcher);
 
     /**
      * @param mixed $error
