@@ -17,6 +17,10 @@ interface ApplicationErrorHandlerInterface
     public function __construct(LogInterface $logger, EventDispatcherInterface $eventDispatcher);
 
     /**
+     * @return self
+     */
+    public function disableErrorEvent();
+    /**
      * @param mixed $error
      * @param string $responseFormat
      * @return mixed
