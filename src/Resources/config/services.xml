@@ -59,6 +59,7 @@
 
         <service id="uloc_api.error_handler" class="Uloc\ApiBundle\Exception\ApplicationErrorHandler" public="true">
             <argument type="service" id="uloc_api.logger"/>
+            <argument type="service" id="event_dispatcher"/>
         </service>
         <service id="Uloc\ApiBundle\Exception\ApplicationErrorHandlerInterface" alias="uloc_api.error_handler"/>
 
