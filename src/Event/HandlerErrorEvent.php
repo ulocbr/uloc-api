@@ -19,7 +19,7 @@ class HandlerErrorEvent extends Event
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getData()
     {
