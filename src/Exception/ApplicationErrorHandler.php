@@ -18,6 +18,7 @@ class ApplicationErrorHandler implements ApplicationErrorHandlerInterface
 {
     protected $logger;
     protected $eventDispatcher;
+    protected $disableErrorEvent = false;
 
     public function __construct(LogInterface $logger, EventDispatcherInterface $eventDispatcher)
     {
@@ -25,6 +26,13 @@ class ApplicationErrorHandler implements ApplicationErrorHandlerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @return self
+     */
+    public function disableErrorEvent() {
+        $this->disableErrorEvent = true;
+        return $this;
+    }
 
     public function handlerError($error, $responseFormat = 'json', $httpCode = 400)
     {
@@ -33,9 +41,9 @@ class ApplicationErrorHandler implements ApplicationErrorHandlerInterface
          */
 
         try {
-            $this->eventDispatcher->dispatch(new HandlerErrorEvent($error), 'app.error');
-        } catch (\Throwable $e) {
-        }
+            !$this->disableErrorEvent && $this->eventDispatcher->dispatch(new HandlerErrorEvent($error), 'app.error');
+        } catch (\Throwable $e) {}
+        $this->disableErrorEvent = false;
 
         $unserialized = @unserialize($error);
         if ($unserialized === false) {
