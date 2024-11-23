@@ -59,7 +59,7 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 
         $user = $this->em
             ->getRepository(User::class)
-            ->findOneBy(['username' => $username]);
+            ->findOneBy(['username' => $username, 'deleted' => false]);
 
         if(!method_exists($user, 'getRoles')){
             throw new CustomUserMessageAuthenticationException('Invalid User');
