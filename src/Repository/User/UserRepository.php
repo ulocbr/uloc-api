@@ -18,7 +18,8 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
     public function findUserByUsername($username)
     {
         return $this->findOneBy(array(
-            'username' => $username
+            'username' => $username,
+            'deleted' => false
         ));
     }
 
@@ -29,7 +30,8 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
     public function findUserByEmail($email)
     {
         return $this->findOneBy(array(
-            'email' => $email
+            'email' => $email,
+            'deleted' => false
         ));
     }
 
@@ -72,6 +74,7 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
             ->from(User::class, "u")
             ->join('u.person', 'p')
             ->where('p.document IN (:documents)')
+            ->andWhere('p.deleted = 0')
             ->setParameter('documents', [$document, $documentPure])
             ->getQuery()
             ->getResult();
@@ -90,10 +93,10 @@ class UserRepository extends BaseRepository implements UserLoaderInterface
     public function findUserByLogin($login)
     {
 
-        $usuario = $this->findOneBy(array('username' => $login));
+        $usuario = $this->findOneBy(array('username' => $login, 'deleted' => false));
 
         if (!$usuario) {
-            $usuario = $this->findOneBy(array('email' => $login));
+            $usuario = $this->findOneBy(array('email' => $login, 'deleted' => false));
         }
 
         return $usuario;
