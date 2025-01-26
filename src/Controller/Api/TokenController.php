@@ -30,12 +30,21 @@ class TokenController extends BaseController
     {
         try {
             $isAuthenticated = ($user instanceof UserInterface);
+            $userGET = null;
+            $passGET = null;
             if (!($user instanceof UserInterface)) {
-                $userGET = $request->request->get('user');
+                try {
+                    $data = \json_decode($request->getContent(), true);
+                    if ($data !== null && !empty($data['user']) && !empty($data['pass'])) {
+                        $userGET = $data['user'];
+                        $passGET = $data['pass'];
+                    }
+                } catch (\Throwable $e){}
+                $userGET = $userGET ?: $request->request->get('user');
                 if (strlen($userGET) < 2) {
                     throw new BadCredentialsException('Usuário inválido');
                 }
-                $passGET = $request->request->get('pass');
+                $passGET = $passGET ?: $request->request->get('pass');
                 if (strlen($passGET) < 3) {
                     throw new BadCredentialsException('Senha inválida');
                 }
