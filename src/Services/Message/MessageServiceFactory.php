@@ -29,6 +29,7 @@ class MessageServiceFactory
     const SENDER_INSTANTLY = 'instantly';
 
     public static $interceptErrors = false;
+    public static $errors = [];
 
     /**
      * @var string
@@ -186,6 +187,18 @@ class MessageServiceFactory
             if ($this->senderType === self::SENDER_INSTANTLY) {
                 if ($transmissor->transmit()) {
                     $this->setSended($message);
+                    $this->om->persist($message);
+                    $this->om->flush();
+                } else {
+                    $message->setStatus(MessageServiceInterface::STATUS_ERROR);
+                    if (!empty(self::$errors)) {
+                        $extra = $message->getExtra();
+                        if (!is_array($extra)) {
+                            $extra = [];
+                        }
+                        $extra['error'] = end(self::$errors);
+                        $message->setExtra($extra);
+                    }
                     $this->om->persist($message);
                     $this->om->flush();
                 }

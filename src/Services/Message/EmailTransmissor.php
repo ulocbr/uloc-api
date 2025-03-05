@@ -112,6 +112,7 @@ class EmailTransmissor extends MessageTransmissor
             return true;
         } catch (TransportExceptionInterface | \Exception $e) {
             $this->logger->error($e->getMessage());
+            MessageServiceFactory::$errors[] = $e->getMessage();
             if ('cli' === PHP_SAPI) {
                 var_dump($e->getMessage());
             }
