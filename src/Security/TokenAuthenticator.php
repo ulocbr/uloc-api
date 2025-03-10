@@ -11,7 +11,7 @@
 namespace Uloc\ApiBundle\Security;
 
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -28,7 +28,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     private $em;
     private $responseFactory;
 
-    public function __construct(EntityManager $em, ResponseFactory $responseFactory)
+    public function __construct(EntityManagerInterface $em, ResponseFactory $responseFactory)
     {
         $this->em = $em;
         $this->responseFactory = $responseFactory;
