@@ -10,13 +10,18 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="token" type="string" length="100" unique="true" />
+        <field name="token" type="string" length="255" unique="true" />
 
-        <field name="permission" type="object"/>
+        <field name="permission" type="json"/>
 
         <field name="notes" type="text" nullable="true"/>
 
-        <field name="createdAt" type="datetime"/>
+        <many-to-one field="user" target-entity="Uloc\ApiBundle\Entity\User\User">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-column name="user_id" referenced-column-name="id"/>
+        </many-to-one>
 
         <field name="expires" type="datetime" nullable="true"/>
 

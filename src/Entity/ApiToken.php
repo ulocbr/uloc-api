@@ -2,13 +2,15 @@
 
 namespace Uloc\ApiBundle\Entity;
 
+use Uloc\ApiBundle\Entity\User\User;
+
 /**
  * ApiToken
  *
  * Entidade responsável por armazenar os tokens permanentes no sistema
  *
  */
-class ApiToken
+class ApiToken extends FormEntity
 {
     /**
      * @var int
@@ -23,7 +25,13 @@ class ApiToken
     private $token;
 
     /**
-     * @var \stdClass
+     * @var User
+     *
+     */
+    private $user;
+
+    /**
+     * @var \array
      *
      */
     private $permission;
@@ -33,12 +41,6 @@ class ApiToken
      *
      */
     private $notes;
-
-    /**
-     * @var \DateTime
-     *
-     */
-    private $createdAt;
 
     private $expires;
 
@@ -79,7 +81,7 @@ class ApiToken
     /**
      * Set permission
      *
-     * @param \stdClass $permission
+     * @param \array $permission
      *
      * @return ApiToken
      */
@@ -93,7 +95,7 @@ class ApiToken
     /**
      * Get permission
      *
-     * @return \stdClass
+     * @return array
      */
     public function getPermission()
     {
@@ -125,30 +127,6 @@ class ApiToken
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return ApiToken
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
      * @return mixed
      */
     public function getExpires()
@@ -165,4 +143,15 @@ class ApiToken
         $this->expires = $expires;
         return $this;
     }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
 }

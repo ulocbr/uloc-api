@@ -15,10 +15,13 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ResponseFactory;
+use Uloc\ApiBundle\Entity\ApiToken;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
@@ -36,38 +39,79 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         /**
          * Extrai o token
          */
-        $token = $request->get('token');
-        return;
+        if (!$request->headers->has('X-AUTH-TOKEN')) {
+            return false;
+        }
+        $token = $request->headers->get('X-AUTH-TOKEN');
+
+        if (empty($token)) return false;
+
+        return $token;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        // TODO: Implement getUser() method.
+        try {
+            $data = $this->em->getRepository(ApiToken::class)->findBy([
+                'token' => $credentials
+            ]);
+
+            if (empty($data)) {
+                throw new \Exception('Token inválido');
+            }
+
+            if (count($data) > 1) {
+                throw new \Exception('Token em conflito');
+            }
+
+            /* @var \Uloc\ApiBundle\Entity\ApiToken $token */
+            $token = $data[0];
+        } catch (\Exception $e) {
+            throw new CustomUserMessageAuthenticationException($e->getMessage());
+        }
+
+        $user = $token->getUser();
+
+        if(!method_exists($user, 'getRoles')){
+            throw new CustomUserMessageAuthenticationException('Invalid User');
+        }
+
+        if( count($user->getRoles()) < 1 ){
+            throw new CustomUserMessageAuthenticationException('Invalid Roles');
+        }
+
+        if (isset($_SERVER['USER_CLIENT'])) {
+            $client = $data['client'] ?? null;
+            if ($client !== $_SERVER['USER_CLIENT']) {
+                throw new CustomUserMessageAuthenticationException(sprintf('Invalid User Client Session %s/%s', $client, $_SERVER['USER_CLIENT']));
+            }
+        }
+
+        return $user;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // TODO: Implement checkCredentials() method.
-    }
-
-    public function createAuthenticatedToken(UserInterface $user, $providerKey)
-    {
-        // TODO: Implement createAuthenticatedToken() method.
+        return true;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        // TODO: Implement onAuthenticationFailure() method.
+        $apiProblem = new ApiProblem(401);
+        // you could translate this
+        $apiProblem->set('detail', $exception->getMessageKey());
+
+        return $this->responseFactory->createResponse($apiProblem);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // TODO: Implement onAuthenticationSuccess() method.
+        // do nothing - let the controller be called
     }
 
     public function supportsRememberMe()
     {
-        // TODO: Implement supportsRememberMe() method.
+        return false;
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
@@ -79,6 +123,6 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        // TODO: Implement supports() method.
+        return $request->headers->has('X-AUTH-TOKEN');
     }
 }

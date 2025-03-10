@@ -17,6 +17,7 @@
         <service id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoder" public="true" />
 
         <service class="Uloc\ApiBundle\Security\JwtTokenAuthenticator" id="uloc_api.jwt_token_authenticator" autowire="true" autoconfigure="true"/>
+        <service class="Uloc\ApiBundle\Security\TokenAuthenticator" id="uloc_api.token_authenticator" autowire="true" autoconfigure="true"/>
         <service id="Uloc\ApiBundle\Api\ResponseFactory"/>
         <!--<service class="Uloc\ApiBundle\Services\JWT\Encoder\LcobucciJWTEncoder" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>-->
 
