@@ -80,12 +80,12 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             throw new CustomUserMessageAuthenticationException('Invalid Roles');
         }
 
-        if (isset($_SERVER['USER_CLIENT'])) {
+        /*if (isset($_SERVER['USER_CLIENT'])) {
             $client = $data['client'] ?? null;
             if ($client !== $_SERVER['USER_CLIENT']) {
                 throw new CustomUserMessageAuthenticationException(sprintf('Invalid User Client Session %s/%s', $client, $_SERVER['USER_CLIENT']));
             }
-        }
+        }*/
 
         return $user;
     }
