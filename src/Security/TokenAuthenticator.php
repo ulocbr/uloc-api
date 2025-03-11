@@ -27,6 +27,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 {
     private $em;
     private $responseFactory;
+    const AUTH_HEADER = 'X-API-KEY';
 
     public function __construct(EntityManagerInterface $em, ResponseFactory $responseFactory)
     {
@@ -39,10 +40,10 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         /**
          * Extrai o token
          */
-        if (!$request->headers->has('X-AUTH-TOKEN')) {
+        if (!$request->headers->has(self::AUTH_HEADER)) {
             return false;
         }
-        $token = $request->headers->get('X-AUTH-TOKEN');
+        $token = $request->headers->get(self::AUTH_HEADER);
 
         if (empty($token)) return false;
 
@@ -123,6 +124,6 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return $request->headers->has('X-AUTH-TOKEN');
+        return $request->headers->has(self::AUTH_HEADER);
     }
 }
