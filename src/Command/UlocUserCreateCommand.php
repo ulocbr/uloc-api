@@ -36,7 +36,7 @@ class UlocUserCreateCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $username = $input->getArgument('usuario');
@@ -45,7 +45,7 @@ class UlocUserCreateCommand extends Command
         $findUser = $em->getRepository(User::class)->findOneBy(['username' => $username]);
         if($findUser){
             $io->error("Já existe um usuário com o name ".$username."!");
-            return;
+            return Command::FAILURE;
         }
 
         $user = new User();
@@ -72,7 +72,7 @@ class UlocUserCreateCommand extends Command
         $io->text('Senha: '. $plainPassword );
         $io->newLine();
 
-        return 0;
+        return Command::SUCCESS;
     }
 
 }

@@ -35,7 +35,7 @@ class UlocTokenGetCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $username = $input->getArgument('usuario');
@@ -43,7 +43,7 @@ class UlocTokenGetCommand extends Command
         $findUser = $em->getRepository(User::class)->findOneBy(['username' => $username]);
         if(!$findUser){
             $io->error("Usuário ".$username." não encontrado!");
-            return;
+            return Command::FAILURE;
         }
 
         $exp = 3600; //1 hora
@@ -72,7 +72,7 @@ class UlocTokenGetCommand extends Command
             '<info>'.$token.'</info>',
         ]);*/
 
-        return 0;
+        return Command::SUCCESS;
     }
 
 }

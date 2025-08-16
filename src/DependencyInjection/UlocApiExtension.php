@@ -21,7 +21,7 @@ use Uloc\ApiBundle\Services\Log\LogInterface;
 
 class UlocApiExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         // $loader->load('storage-validation/orm.xml');
