@@ -3,6 +3,7 @@
 namespace Uloc\ApiBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Uloc\ApiBundle\DependencyInjection\Compiler\MessageTransmissorPass;
 use Uloc\ApiBundle\DependencyInjection\Compiler\PersonCompilerPass;
@@ -16,7 +17,10 @@ use Uloc\ApiBundle\Services\Message\MessageTransmissor;
 class UlocApiBundle extends Bundle
 {
 
-    public function getContainerExtension()
+    /**
+     * {@inheritdoc}
+     */
+    public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new UlocApiExtension();
