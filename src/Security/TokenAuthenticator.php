@@ -10,24 +10,27 @@
 
 namespace Uloc\ApiBundle\Security;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ResponseFactory;
 use Uloc\ApiBundle\Entity\ApiToken;
+use Uloc\ApiBundle\Entity\User\User;
 
-class TokenAuthenticator extends AbstractGuardAuthenticator
+class TokenAuthenticator extends AbstractAuthenticator
 {
-    private $em;
-    private $responseFactory;
-    const AUTH_HEADER = 'X-API-KEY';
+    private EntityManagerInterface $em;
+    private ResponseFactory $responseFactory;
+
+    private const AUTH_HEADER = 'X-API-KEY';
 
     public function __construct(EntityManagerInterface $em, ResponseFactory $responseFactory)
     {
@@ -35,95 +38,66 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         $this->responseFactory = $responseFactory;
     }
 
-    public function getCredentials(Request $request)
+    public function supports(Request $request): ?bool
     {
-        /**
-         * Extrai o token
-         */
-        if (!$request->headers->has(self::AUTH_HEADER)) {
-            return false;
-        }
-        $token = $request->headers->get(self::AUTH_HEADER);
-
-        if (empty($token)) return false;
-
-        return $token;
+        return $request->headers->has(self::AUTH_HEADER);
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function authenticate(Request $request): Passport
     {
-        try {
-            $data = $this->em->getRepository(ApiToken::class)->findBy([
-                'token' => $credentials
-            ]);
-
-            if (empty($data)) {
-                throw new \Exception('Token inválido');
-            }
-
-            if (count($data) > 1) {
-                throw new \Exception('Token em conflito');
-            }
-
-            /* @var \Uloc\ApiBundle\Entity\ApiToken $token */
-            $token = $data[0];
-        } catch (\Exception $e) {
-            throw new CustomUserMessageAuthenticationException($e->getMessage());
+        $tokenString = $request->headers->get(self::AUTH_HEADER);
+        if (!$tokenString) {
+            throw new CustomUserMessageAuthenticationException('Missing credentials');
         }
 
-        $user = $token->getUser();
+        $data = $this->em->getRepository(ApiToken::class)->findBy([
+            'token' => $tokenString,
+        ]);
 
-        if(!method_exists($user, 'getRoles')){
-            throw new CustomUserMessageAuthenticationException('Invalid User');
+        if (empty($data)) {
+            throw new CustomUserMessageAuthenticationException('Token inválido');
         }
 
-        if( count($user->getRoles()) < 1 ){
+        if (count($data) > 1) {
+            throw new CustomUserMessageAuthenticationException('Token em conflito');
+        }
+
+        /** @var ApiToken $apiToken */
+        $apiToken = $data[0];
+        $user = $apiToken->getUser();
+
+        if (!method_exists($user, 'getRoles') || count($user->getRoles()) < 1) {
             throw new CustomUserMessageAuthenticationException('Invalid Roles');
         }
 
-        /*if (isset($_SERVER['USER_CLIENT'])) {
-            $client = $data['client'] ?? null;
-            if ($client !== $_SERVER['USER_CLIENT']) {
-                throw new CustomUserMessageAuthenticationException(sprintf('Invalid User Client Session %s/%s', $client, $_SERVER['USER_CLIENT']));
-            }
-        }*/
+        $identifier = method_exists($user, 'getUserIdentifier') ? $user->getUserIdentifier() : $user->getUsername();
+        $userLoader = function (string $userIdentifier) use ($user): User {
+            return $user;
+        };
 
-        return $user;
+        return new SelfValidatingPassport(new UserBadge($identifier, $userLoader));
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        return true;
+        // do nothing; let the controller handle the response
+        return null;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $apiProblem = new ApiProblem(401);
-        // you could translate this
         $apiProblem->set('detail', $exception->getMessageKey());
 
         return $this->responseFactory->createResponse($apiProblem);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
-        // do nothing - let the controller be called
-    }
+        $apiProblem = new ApiProblem(401);
+        $message = $authException ? $authException->getMessageKey() : 'Missing credentials';
+        $apiProblem->set('detail', $message);
 
-    public function supportsRememberMe()
-    {
-        return false;
-    }
-
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-        // Não chama devido a não ser o entry point
-        return;
-    }
-
-
-    public function supports(Request $request)
-    {
-        return $request->headers->has(self::AUTH_HEADER);
+        return $this->responseFactory->createResponse($apiProblem);
     }
 }

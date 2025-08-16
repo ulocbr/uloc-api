@@ -10,130 +10,111 @@
 
 namespace Uloc\ApiBundle\Security;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Form\LoginForm;
 
-class UserFormAuthenticator extends AbstractFormLoginAuthenticator
+/**
+ * Login form authenticator compatible with Symfony 6/7.
+ *
+ * This class migrates the legacy Guard-based authenticator to the new
+ * passport-based API. It uses the login form defined in LoginForm and
+ * handles redirecting to the "home" route on success.
+ */
+class UserFormAuthenticator extends AbstractLoginFormAuthenticator
 {
-    private $formFactory;
-    private $em;
-    private $router;
-    private $passwordHasher;
+    private FormFactoryInterface $formFactory;
+    private EntityManagerInterface $em;
+    private RouterInterface $router;
 
-    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(FormFactoryInterface $formFactory, EntityManagerInterface $em, RouterInterface $router)
     {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->router = $router;
-        $this->passwordHasher = $passwordHasher;
-    }
-
-    public function getCredentials(Request $request)
-    {
-        $isLoginSubmit = $request->getPathInfo() == '/login' && $request->isMethod('POST');
-        if (!$isLoginSubmit) {
-            // skip authentication
-            return;
-        }
-
-        $form = $this->formFactory->create(LoginForm::class);
-        $form->handleRequest($request);
-
-        $data = $form->getData();
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $data['_username']
-        );
-
-        return $data;
-    }
-
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
-        $username = $credentials['_username'];
-
-        return $this->em->getRepository(User::class)
-            ->loadUserByUsername($username);
-    }
-
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        $password = $credentials['_password'];
-
-        return $this->passwordHasher->isPasswordValid($user, $password);
-    }
-
-    protected function getLoginUrl()
-    {
-        return $this->router->generate('security_login_form');
-    }
-
-    protected function getDefaultSuccessRedirectUrl()
-    {
-        return $this->router->generate('home');
     }
 
     /**
-     *
-     * @return RedirectResponse
+     * Called on every request to decide if this authenticator should be used
+     * for the request. Returning null means the authenticator will be used
+     * when the login form is submitted.
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function supports(Request $request): ?bool
     {
-        if ($request->getSession() instanceof SessionInterface) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
-        }
-
-        $url = $this->getLoginUrl();
-
-        return new RedirectResponse($url);
-    }
-
-    /**
-     * Does the authenticator support the given Request?
-     *
-     * If this returns false, the authenticator will be skipped.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    public function supports(Request $request)
-    {
-        return $request->attributes->get('_route') === 'app_login'
+        // Let the parent class decide when to trigger based on login URL and method
+        // But ensure we only handle POST requests to the login route
+        return $request->attributes->get('_route') === 'security_login_form'
             && $request->isMethod('POST');
     }
 
     /**
-     * Called when authentication executed and was successful!
-     *
-     * This should return the Response sent back to the user, like a
-     * RedirectResponse to the last page they visited.
-     *
-     * If you return null, the current request will continue, and the user
-     * will be authenticated. This makes sense, for example, with an API.
-     *
-     * @param Request $request
-     * @param TokenInterface $token
-     * @param string $providerKey The provider (i.e. firewall) key
-     *
-     * @return Response|null
+     * Build the Passport from the submitted login form data.
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function authenticate(Request $request): Passport
+    {
+        // Bind the form to the request to extract username & password
+        $form = $this->formFactory->create(LoginForm::class);
+        $form->handleRequest($request);
+
+        $data = $form->getData();
+        $username = $data['_username'] ?? '';
+        $password = $data['_password'] ?? '';
+
+        // Store the last username in the session so the login form can re-populate it
+        $request->getSession()->set(Security::LAST_USERNAME, $username);
+
+        // Closure to load the User entity lazily when validating the passport
+        $userLoader = function (string $userIdentifier): User {
+            return $this->em->getRepository(User::class)->loadUserByUsername($userIdentifier);
+        };
+
+        return new Passport(
+            new UserBadge($username, $userLoader),
+            new PasswordCredentials($password)
+        );
+    }
+
+    /**
+     * Called when authentication executed successfully. Redirect the user to
+     * the home page. Returning null would continue the request normally.
+     */
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         return new RedirectResponse($this->router->generate('home'));
+    }
+
+    /**
+     * Called when authentication fails. Store the error in the session and
+     * redirect back to the login page.
+     */
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
+    {
+        $session = $request->getSession();
+        if ($session) {
+            $session->set(Security::AUTHENTICATION_ERROR, $exception);
+        }
+        return new RedirectResponse($this->getLoginUrl($request));
+    }
+
+    /**
+     * Return the login route URL. AbstractLoginFormAuthenticator will call
+     * this when a request requires authentication but no credentials were
+     * provided.
+     */
+    protected function getLoginUrl(Request $request): string
+    {
+        return $this->router->generate('security_login_form');
     }
 }
