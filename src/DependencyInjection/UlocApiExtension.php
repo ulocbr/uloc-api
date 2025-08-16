@@ -104,7 +104,7 @@ class UlocApiExtension extends Extension
 
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'uloc_api';
     }
