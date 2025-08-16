@@ -286,8 +286,9 @@ class ApiTestCase extends KernelTestCase
         $user = new User();
         $user->setUsername($username);
         $user->setEmail($username . '@uloc.dev');
-        $password = $this->getService('security.password_encoder')
-            ->encodePassword($user, $plainPassword);
+        // Use the new password hasher service instead of the deprecated password encoder.
+        $passwordHasher = $this->getService('security.user_password_hasher');
+        $password = $passwordHasher->hashPassword($user, $plainPassword);
         $user->setPassword($password);
         if (null === $roles) {
             $user->setRoles(['ROLE_API', 'ROLE_TEAM_MEMBERS']);

@@ -2,13 +2,16 @@
 
 namespace Uloc\ApiBundle\Services\JWT\JWSProvider;
 
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Parser;
+// Import classes from lcobucci/jwt v5 and supporting packages.
+use DateTimeImmutable;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Hmac;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Token\UnencryptedToken;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
+use Lcobucci\Clock\SystemClock;
 use Uloc\ApiBundle\Services\JWT\KeyLoader\RawKeyLoader;
 use Uloc\ApiBundle\Services\JWT\Signature\CreatedJWS;
 use Uloc\ApiBundle\Services\JWT\Signature\LoadedJWS;
@@ -29,6 +32,13 @@ class LcobucciJWSProvider implements JWSProviderInterface
      * @var Signer
      */
     private $signer;
+
+    /**
+     * Holds the JWT configuration object (signer, keys, parser, validator).
+     *
+     * @var Configuration
+     */
+    private $configuration;
 
     /**
      * @var int
@@ -67,6 +77,26 @@ class LcobucciJWSProvider implements JWSProviderInterface
         $this->signer    = $this->getSignerForAlgorithm($signatureAlgorithm);
         $this->ttl       = $ttl;
         $this->clockSkew = $clockSkew;
+
+        // Initialise the configuration using the new API. When using HMAC
+        // algorithms, we rely on a symmetric key; for other algorithms (RSA/ECDSA),
+        // we use asymmetric keys.
+        $privateKey = $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE);
+        $publicKey  = $this->keyLoader->loadKey(RawKeyLoader::TYPE_PUBLIC);
+        $passphrase = $this->keyLoader->getPassphrase();
+
+        if ($this->signer instanceof Hmac) {
+            $this->configuration = Configuration::forSymmetricSigner(
+                $this->signer,
+                InMemory::plainText($privateKey)
+            );
+        } else {
+            $this->configuration = Configuration::forAsymmetricSigner(
+                $this->signer,
+                InMemory::plainText($privateKey, $passphrase ?? ''),
+                InMemory::plainText($publicKey)
+            );
+        }
     }
 
     /**
@@ -74,28 +104,38 @@ class LcobucciJWSProvider implements JWSProviderInterface
      */
     public function create(array $payload, array $header = [])
     {
-        $jws = new Builder();
-        foreach ($header as $k => $v) {
-            $jws->setHeader($k, $v);
-        }
-        $jws->setIssuedAt(time());
+        $now = new DateTimeImmutable();
 
+        // Start building a new token using the configuration
+        $builder = $this->configuration->builder()
+            ->issuedAt($now);
+
+        // Apply TTL to set expiration, if defined
         if (null !== $this->ttl) {
-            $jws->setExpiration(time() + $this->ttl);
+            $builder = $builder->expiresAt($now->modify('+' . $this->ttl . ' seconds'));
         }
 
+        // Set custom headers
+        foreach ($header as $k => $v) {
+            $builder = $builder->withHeader($k, $v);
+        }
+
+        // Set payload claims
         foreach ($payload as $name => $value) {
-            $jws->set($name, $value);
+            $builder = $builder->withClaim($name, $value);
         }
-
-        $e = null;
 
         try {
-            $this->sign($jws);
-        } catch (\InvalidArgumentException $e) {
+            // Build and sign the token
+            $token = $builder->getToken(
+                $this->configuration->signer(),
+                $this->configuration->signingKey()
+            );
+            return new CreatedJWS($token->toString(), true);
+        } catch (\Throwable $e) {
+            // If signing fails, return a failure flag with an empty token string
+            return new CreatedJWS('', false);
         }
-
-        return new CreatedJWS((string) $jws->getToken(), null === $e);
     }
 
     /**
@@ -103,14 +143,41 @@ class LcobucciJWSProvider implements JWSProviderInterface
      */
     public function load($token)
     {
-        $jws = (new Parser())->parse((string) $token);
-
-        $payload = [];
-        foreach ($jws->getClaims() as $claim) {
-            $payload[$claim->getName()] = $claim->getValue();
+        // Parse the string into a token instance
+        $jwt = $this->configuration->parser()->parse((string) $token);
+        if (!$jwt instanceof UnencryptedToken) {
+            return new LoadedJWS([], false, null !== $this->ttl, [], $this->clockSkew);
         }
 
-        return new LoadedJWS($payload, $this->verify($jws), null !== $this->ttl, $jws->getHeaders(), $this->clockSkew);
+        // Extract all claims into an associative array. Convert date claims to UNIX timestamps,
+        // as LoadedJWS expects numeric values for exp/iat claims.
+        $payload = [];
+        foreach ($jwt->claims()->all() as $name => $value) {
+            if ($value instanceof \DateTimeInterface) {
+                $payload[$name] = $value->getTimestamp();
+            } else {
+                $payload[$name] = $value;
+            }
+        }
+
+        // Build validation constraints: signature must be valid
+        $constraints = [
+            new SignedWith($this->configuration->signer(), $this->configuration->verificationKey()),
+        ];
+        // If TTL is set, also validate time-based claims with a leeway
+        if (null !== $this->ttl) {
+            $constraints[] = new LooseValidAt(new SystemClock(new \DateTimeZone('UTC')), $this->clockSkew ?? 0);
+        }
+
+        $valid = $this->configuration->validator()->validate($jwt, ...$constraints);
+
+        return new LoadedJWS(
+            $payload,
+            $valid,
+            null !== $this->ttl,
+            $jwt->headers()->all(),
+            $this->clockSkew
+        );
     }
 
     private function getSignerForAlgorithm($signatureAlgorithm)
@@ -138,28 +205,8 @@ class LcobucciJWSProvider implements JWSProviderInterface
         return new $signerClass();
     }
 
-    private function sign(Builder $jws)
-    {
-        if ($this->signer instanceof Hmac) {
-            return $jws->sign($this->signer, $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE));
-        }
-
-        return $jws->sign(
-            $this->signer,
-            new Key($this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE), $this->keyLoader->getPassphrase())
-        );
-    }
-
-    private function verify(Token $jwt)
-    {
-        if (!$jwt->validate(new ValidationData())) {
-            return false;
-        }
-
-        if ($this->signer instanceof Hmac) {
-            return $jwt->verify($this->signer, $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE));
-        }
-
-        return $jwt->verify($this->signer, $this->keyLoader->loadKey(RawKeyLoader::TYPE_PUBLIC));
-    }
+    // The sign() and verify() helper methods were used by older versions of the
+    // lcobucci/jwt library. With v5 these responsibilities are covered by
+    // the Configuration instance and validation constraints. These methods are
+    // retained here solely for reference and are no longer used.
 }

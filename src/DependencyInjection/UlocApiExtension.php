@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Uloc\ApiBundle\Manager\UserManagerInterface;
 use Uloc\ApiBundle\Services\Config\ConfigServiceInterface;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
@@ -91,7 +91,7 @@ class UlocApiExtension extends Extension
         $container
             ->findDefinition('uloc_api.user_create_command');
             // ->setArgument(0, EntityManagerInterface::class) # remove in 4.4
-            // ->setArgument(1, UserPasswordEncoderInterface::class); # remove in 4.4
+            // ->setArgument(1, UserPasswordHasherInterface::class); # remove in 4.4
 
         $container->setParameter('uloc_api.encoder.signature_algorithm', $encoderConfig['signature_algorithm']);
         $container->setParameter('uloc_api.encoder.crypto_engine', $encoderConfig['crypto_engine']);

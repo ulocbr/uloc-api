@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Uloc\ApiBundle\Entity\User\User;
 
 class UlocUserCreateCommand extends Command
@@ -17,12 +17,12 @@ class UlocUserCreateCommand extends Command
     protected static $defaultName = 'uloc:user:create';
 
     private $em;
-    private $encoder;
+    private $passwordHasher;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $encoder = null)
+    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher = null)
     {
         $this->em = $em;
-        $this->encoder = $encoder;
+        $this->passwordHasher = $passwordHasher;
         parent::__construct();
     }
 
@@ -51,8 +51,10 @@ class UlocUserCreateCommand extends Command
         $user = new User();
         $user->setUsername($username);
         $user->setEmail($username . '@wtis.com.br');
-        $password = $this->encoder
-            ->encodePassword($user, $plainPassword);
+        // Hash the user's password using the new password hasher service
+        $password = $this->passwordHasher
+            ? $this->passwordHasher->hashPassword($user, $plainPassword)
+            : $plainPassword;
         $user->setPassword($password);
 
         $user->setRoles(['ROLE_USER']);

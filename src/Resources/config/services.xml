@@ -14,7 +14,9 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoder" public="true" />
+        <!-- The legacy password encoder service is removed in Symfony 6+. The password
+             hasher is provided automatically by the framework. -->
+        <!-- <service id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoder" public="true" /> -->
 
         <service class="Uloc\ApiBundle\Security\JwtTokenAuthenticator" id="uloc_api.jwt_token_authenticator" autowire="true" autoconfigure="true"/>
         <service class="Uloc\ApiBundle\Security\TokenAuthenticator" id="uloc_api.token_authenticator" autowire="true" autoconfigure="true"/>
@@ -35,7 +37,7 @@
             <argument type="service" id="uloc_api.object_manager"/>
             <argument type="service" id="Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface"/>
             <argument type="service" id="uloc_api.manager.person_manager"/>
-            <argument type="service" id="Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface" on-invalid="null"/>
+            <argument type="service" id="Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface" on-invalid="null"/>
             <argument type="service" id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface" on-invalid="null"/>
             <argument type="tagged" tag="uloc.user" />
         </service>

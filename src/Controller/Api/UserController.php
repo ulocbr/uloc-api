@@ -5,8 +5,10 @@ namespace Uloc\ApiBundle\Controller\Api;
 use Uloc\ApiBundle\Api\ApiProblem;
 use Uloc\ApiBundle\Api\ApiProblemException;
 use Uloc\ApiBundle\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+// Use Symfony's built‑in Route attribute instead of the deprecated Sensio annotations.  
+// The Method annotation has been removed in Symfony 6+, so we specify HTTP methods
+// via the `methods` option on the Route attribute.  
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\User\User;
@@ -54,20 +56,14 @@ class UserController extends BaseController
         return $this->createApiResponseEncodeArray($response);
     }
 
-    /**
-     * @Route("/api/users/{id}", name="api_user_show")
-     * @Method("GET")
-     */
+    #[Route('/api/users/{id}', name: 'api_user_show', methods: ['GET'])]
     public function showAction(User $user, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         return $this->createApiResponse($user, 200, null, 'api_edit');
     }
 
-    /**
-     * @Route("/api/users/{id}", name="api_usurio_edit")
-     * @Method({"PATCH", "PUT"})
-     */
+    #[Route('/api/users/{id}', name: 'api_usurio_edit', methods: ['PATCH','PUT'])]
     public function editAction(Request $request, User $user)
     {
         $form = $this->createForm(UserApiType::class, $user);
@@ -84,11 +80,8 @@ class UserController extends BaseController
         return $this->showAction($user, $request);
     }
 
-    /**
-     * @Route("/api/users/", name="api_usurio_new")
-     * @Route("/api/users")
-     * @Method("POST")
-     */
+    #[Route('/api/users/', name: 'api_usurio_new', methods: ['POST'])]
+    #[Route('/api/users', methods: ['POST'])]
     public function newAction(Request $request)
     {
         $user = new User();
@@ -101,8 +94,10 @@ class UserController extends BaseController
 
         $data = json_decode($request->getContent(), true);
         $plainPassword = @$data['password'];
-        $password = $this->get('security.password_encoder')
-            ->encodePassword($user, $plainPassword);
+        // Use the new PasswordHasher instead of the deprecated password encoder.  
+        // See Symfony docs for details: `UserPasswordHasherInterface::hashPassword()`【648800746586457†L401-L406】.  
+        $passwordHasher = $this->get('security.user_password_hasher');
+        $password = $passwordHasher->hashPassword($user, (string) $plainPassword);
         $user->setPassword($password);
 
         $roles = ['ROLE_USER', 'ROLE_INTRANET'];
@@ -129,10 +124,7 @@ class UserController extends BaseController
         return $this->showAction($user, $request);
     }
 
-    /**
-     * @Route("/api/users/{id}", name="api_usurio_delete")
-     * @Method({"DELETE"})
-     */
+    #[Route('/api/users/{id}', name: 'api_usurio_delete', methods: ['DELETE'])]
     public function deleteAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
@@ -145,10 +137,7 @@ class UserController extends BaseController
         return $this->createApiResponseEncodeArray([], 200);
     }
 
-    /**
-     * @Route("/api/users/{id}/password", name="api_usurio_password_update")
-     * @Method({"PATCH", "PUT"})
-     */
+    #[Route('/api/users/{id}/password', name: 'api_usurio_password_update', methods: ['PATCH','PUT'])]
     public function updatePasswordAction(Request $request, User $user)
     {
 
@@ -160,8 +149,9 @@ class UserController extends BaseController
         }
 
         $plainPassword = @$data['password'];
-        $password = $this->get('security.password_encoder')
-            ->encodePassword($user, $plainPassword);
+        // Hash the new password using the PasswordHasher interface【648800746586457†L401-L406】.
+        $passwordHasher = $this->get('security.user_password_hasher');
+        $password = $passwordHasher->hashPassword($user, (string) $plainPassword);
         $user->setPassword($password);
 
         $em = $this->getDoctrine()->getManager();

@@ -15,12 +15,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Uloc\ApiBundle\Entity\Person\Person;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 interface UserManagerInterface
 {
 
-    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, PersonManagerInterface $personManager, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null);
+    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, PersonManagerInterface $personManager, UserPasswordHasherInterface $passwordHasher = null, EventDispatcherInterface $eventDispatcher = null);
 
     /**
      * @param string $name

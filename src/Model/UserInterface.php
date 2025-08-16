@@ -4,8 +4,16 @@ namespace Uloc\ApiBundle\Model;
 
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface as DefaultUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-interface UserInterface extends DefaultUserInterface, EquatableInterface, \Serializable
+/**
+ * Extends both the legacy UserInterface and the new PasswordAuthenticatedUserInterface.
+ *
+ * Symfony 5.3 introduced PasswordAuthenticatedUserInterface for the hashed password,
+ * and the old UserInterface now requires getUserIdentifier() rather than getUsername().
+ * By implementing both interfaces we remain compatible with Symfony 5.x and 6/7.  
+ */
+interface UserInterface extends DefaultUserInterface, PasswordAuthenticatedUserInterface, EquatableInterface, \Serializable
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';

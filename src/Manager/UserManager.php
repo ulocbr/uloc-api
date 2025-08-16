@@ -3,7 +3,7 @@
 namespace Uloc\ApiBundle\Manager;
 
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Uloc\ApiBundle\Entity\App\GlobalConfig;
@@ -21,15 +21,15 @@ use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 class UserManager extends CustomManager implements UserManagerInterface
 {
     private $encoder;
-    private $passwordEncoder;
+    private $passwordHasher;
     private $eventDispatcher;
     /* @var PersonManager */
     private $personManager;
 
-    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, PersonManagerInterface $personManager, UserPasswordEncoderInterface $passwordEncoder = null, EventDispatcherInterface $eventDispatcher = null)
+    public function __construct(ObjectManager $om, JWTEncoderInterface $encoder, PersonManagerInterface $personManager, UserPasswordHasherInterface $passwordHasher = null, EventDispatcherInterface $eventDispatcher = null)
     {
         $this->encoder = $encoder;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->eventDispatcher = $eventDispatcher;
         $this->personManager = $personManager;
         parent::__construct($om);
@@ -48,8 +48,8 @@ class UserManager extends CustomManager implements UserManagerInterface
             $password = $this->generatePassword();
         }
         $user->setPlainPassword($password);
-        if ($this->passwordEncoder) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        if ($this->passwordHasher) {
+            $user->setPassword($this->passwordHasher->hashPassword($user, $password));
         } else {
             $user->setPassword($user->getPlainPassword());
         }
@@ -190,8 +190,8 @@ class UserManager extends CustomManager implements UserManagerInterface
 
     public function isPasswordValid($password)
     {
-        if ($this->passwordEncoder) {
-            return $this->passwordEncoder->isPasswordValid($this->user, $password);
+        if ($this->passwordHasher) {
+            return $this->passwordHasher->isPasswordValid($this->user, $password);
         }
         return strcmp($this->user->getPassword(), $password) === 0;
     }
@@ -256,8 +256,8 @@ class UserManager extends CustomManager implements UserManagerInterface
         $password = null === $password ? $this->generatePassword() : $password;
         $user = $this->user;
         $user->setPlainPassword($password);
-        if ($this->passwordEncoder) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        if ($this->passwordHasher) {
+            $user->setPassword($this->passwordHasher->hashPassword($user, $password));
         } else {
             $user->setPassword($user->getPlainPassword());
         }
