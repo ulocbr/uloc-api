@@ -11,32 +11,12 @@
   ],
   "require": {
     "php": "^8.4",
-
-    /*
-     * Bump all Symfony components to 7.x to support Symfony 7 and PHP 8.2+.
-     * The SensioFrameworkExtraBundle routing and method annotations are
-     * deprecated; Symfony 7 has built-in PHP attributes instead【837428287990660†L73-L79】【837428287990660†L153-L157】.
-     */
     "symfony/config": "^7.0",
     "symfony/dependency-injection": "^7.0",
     "symfony/http-kernel": "^7.0",
-
-    /*
-     * Use the latest JWT library which supports PHP 8.2+ and provides an
-     * immutable builder and validator API【736172790993246†L55-L63】.
-     */
     "lcobucci/jwt": "^5.4",
-
-    /*
-     * Retain namshi/jose for backwards compatibility with the deprecated
-     * DefaultJWSProvider. Keeping the package avoids autoload errors if the
-     * class is referenced. This dependency will be removed in a future
-     * major release when the deprecated provider is dropped【837428287990660†L73-L79】.
-     */
     "namshi/jose": "^7.2",
-
     "symfony/security-bundle": "^7.0",
-    /* Doctrine Bundle 2.15+ supports Symfony 7 and PHP 8.2+. */
     "doctrine/doctrine-bundle": "^2.15",
     "symfony/form": "^7.0",
     "symfony/event-dispatcher": "^7.0",
@@ -45,15 +25,10 @@
     "symfony/mailer": "^7.0",
     "symfony/messenger": "^7.0",
     "twig/twig": "^3.2",
-
-    /*
-     * Add PSR Clock and Lcobucci Clock packages required by lcobucci/jwt v5.
-     */
     "psr/clock": "^1.0",
     "lcobucci/clock": "^3.2"
   },
   "require-dev": {
-    /* PHPUnit 9.5+ supports PHP 8 and integrates with Symfony's PHPUnit bridge. */
     "phpunit/phpunit": "^9.5",
     "symfony/phpunit-bridge": "^7.0",
     "symfony/browser-kit": "^7.0",
@@ -62,7 +37,6 @@
     "symfony/var-dumper": "^7.0",
     "symfony/yaml": "^7.0",
     "doctrine/doctrine-fixtures-bundle": "^3.3",
-    /* Upgrade Guzzle to v7 to support PHP 8. */
     "guzzlehttp/guzzle": "^7.8"
   },
   "autoload": {
