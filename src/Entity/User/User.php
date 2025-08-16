@@ -223,7 +223,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         return $this->salt; // TODO: API need this?
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
@@ -271,7 +271,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqualTo(DefaultUserInterface $user)
+    public function isEqualTo(DefaultUserInterface $user): bool
     {
         if (!$user instanceof self) {
             return false;
