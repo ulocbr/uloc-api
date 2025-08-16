@@ -117,7 +117,8 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         return $this->username;
     }
 
-    public function getUserIdentifier() {
+    public function getUserIdentifier(): string
+    {
         return $this->username;
     }
 
@@ -138,7 +139,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         return $this;
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -149,7 +150,7 @@ class User extends FormEntity implements UserInterface, GroupableInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = $this->roles;
 
@@ -694,4 +695,19 @@ class User extends FormEntity implements UserInterface, GroupableInterface
     }
 
 
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'username' => $this->getUsername(),
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->email = $data['email'];
+        $this->password = $data['password'];
+    }
 }
