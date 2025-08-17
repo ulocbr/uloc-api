@@ -3,6 +3,8 @@
 namespace Uloc\ApiBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface; /* TODO: Configurar a dependência do ObjectManager como serviço e preconfigurado no Extension */
+
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,10 +14,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Uloc\ApiBundle\Entity\User\User;
 use Uloc\ApiBundle\Services\JWT\Encoder\JWTEncoderInterface;
 
+#[AsCommand(
+    name: 'uloc:token:get',
+    description: 'uloc:token:get'
+)]
 class UlocTokenGetCommand extends Command
 {
     protected static $defaultName = 'uloc:token:get';
-
+    
     private $em;
     private $encoder;
 
